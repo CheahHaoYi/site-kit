@@ -55,7 +55,7 @@ const hasData = headers && rows;
     width: 100%;
     margin: var(--space-6) 0;
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
     background-color: var(--color-bg-surface);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
@@ -77,57 +77,60 @@ const hasData = headers && rows;
 
   .table-caption {
     caption-side: top;
-    padding: var(--space-3) var(--space-4);
+    padding: var(--space-3) var(--space-5);
     font-family: var(--font-display);
-    font-size: var(--text-xs);
+    font-size: var(--text-2xs);
     font-weight: var(--font-weight-semibold);
     color: var(--color-text-muted);
     text-align: left;
     text-transform: uppercase;
     letter-spacing: var(--tracking-wider);
     border-bottom: 1px solid var(--color-border);
-    background-color: var(--color-bg-elevated);
+    background-color: var(--color-bg-surface-container);
   }
 
   .table-element th {
-    background-color: var(--color-bg-elevated);
+    background-color: var(--color-bg-surface-container);
     color: var(--color-text-primary);
     font-family: var(--font-display);
     font-weight: var(--font-weight-semibold);
-    font-size: var(--text-xs);
+    font-size: var(--text-2xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wider);
-    padding: var(--space-3) var(--space-4);
+    padding: var(--space-3-5) var(--space-5);
     border-bottom: 1px solid var(--color-border);
   }
 
   .table-element td {
-    padding: var(--space-3) var(--space-4);
+    padding: var(--space-3-5) var(--space-5);
     border-bottom: 1px solid var(--color-border-subtle);
     color: var(--color-text-secondary);
-    font-variant-numeric: tabular-nums;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
   }
 
-  .table-element tr:last-child td {
+  .table-element tbody tr:last-child td {
     border-bottom: none;
   }
 
-  .table-element tbody tr {
-    transition: background-color var(--transition-fast);
-  }
-
-  .table-element tbody tr:hover {
-    background-color: var(--color-bg-elevated);
+  .table-element tbody tr:hover td {
+    background-color: var(--color-bg-surface-container-low);
     color: var(--color-text-primary);
   }
 
   /* Striped Rows */
-  .table--striped tbody tr:nth-child(even) {
-    background-color: var(--color-bg-elevated);
+  .table--striped tbody tr:nth-child(even) td {
+    background-color: var(--color-bg-surface-container-low);
   }
 
-  /* Compact Variant */
-  .table--compact th,
+  .table--striped tbody tr:nth-child(even):hover td {
+    background-color: var(--color-bg-surface-container);
+  }
+
+  /* Compact */
+  .table--compact th {
+    padding: var(--space-2) var(--space-3);
+  }
+
   .table--compact td {
     padding: var(--space-2) var(--space-3);
     font-size: var(--text-xs);

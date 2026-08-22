@@ -1,27 +1,33 @@
 # @cheahhaoyi/site-kit
 
-> Single source of truth for design tokens and Astro UI components across the **@cheahhaoyi** multi-repo network engineering & AI security portfolio.
+> Single source of truth for design tokens, typography, and typed Astro UI components across the **@cheahhaoyi** multi-repo network engineering & AI security portfolio.
 
 [![CI & Living Style Guide](https://github.com/cheahhaoyi/site-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/cheahhaoyi/site-kit/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-1.0.0-0284c7.svg)](https://github.com/cheahhaoyi/site-kit/releases/tag/v1.0.0)
+[![Version](https://img.shields.io/badge/version-1.0.0-7c3aed.svg)](https://github.com/cheahhaoyi/site-kit/releases/tag/v1.0.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-slate.svg)](LICENSE)
 
 ---
 
-## 1. Overview & Architecture
+## 1. Overview & Aesthetic Framework
 
-`@cheahhaoyi/site-kit` provides shared CSS design tokens, typography, and typed Astro components for every site in the multi-repo portfolio (root domain, CISSP/CCNA/RHCSA certification study guides, project showcases).
+`@cheahhaoyi/site-kit` provides shared CSS design tokens, typography, and typed Astro components for every site in the multi-repo portfolio (root domain, CISSP/CCNA/RHCSA certification study guides, AI security showcases).
 
-### Key Architectural Tenets:
-- **Light Mode by Default**: Interfaces load with a high-contrast, clean slate aesthetic by default, prioritizing technical readability.
-- **Dark Mode Alternative**: Instant, zero-flash transition to a dark obsidian terminal aesthetic with `localStorage` persistence.
-- **Design Framework Synthesis**:
-  - **Google Material Design 3 (M3)**: Dynamic tonal surface elevation (`--color-bg-surface-container`), clear semantic roles, and interactive state layers.
-  - **Apple Human Interface Guidelines (HIG)**: Translucent frosted glass materials (`backdrop-filter: blur(16px)` + specular rim highlights), tactile spring micro-presses, and strict typographic hierarchy.
-- **Zero-Bundling Source Distribution**: Consuming Astro sites compile raw `.astro` components at *their* build time. No pre-bundled artifacts or JavaScript wrapper runtime.
-- **Pure CSS Custom Properties**: All design tokens are defined as standard CSS variables in `tokens.css`. TailwindCSS and CSS-in-JS are strictly avoided.
-- **Base-Path Aware**: Components seamlessly resolve links whether deployed at domain root (`/`) or under subpaths (`/rhcsa`, `/cissp`).
-- **WCAG AA Compliant**: High contrast ratios in both light and dark modes, visible keyboard focus indicators, and reduced-motion safety.
+### Design Synthesis:
+1. **Apple Human Interface Guidelines (HIG)**:
+   - **San Francisco System Hierarchy**: Tight typographic tracking (`-0.04em`), clear visual hierarchy, and monospace technical formatting.
+   - **Translucent Frosted Glass (Vibrancy)**: `backdrop-filter: blur(20px)`, top specular rim highlights (`inset 0 1px 0 0 rgba(255,255,255,0.95)`), and translucent hairlines.
+   - **Native iOS System Colors**: Built-in tokens for iOS Purple, Indigo, Blue, Mint, Green, Orange, and Pink.
+   - **Double-Bezel (Doppelrand) Architecture**: Machined hardware aesthetic with nested concentric squircle enclosures.
+   - **Meaningful Spring Physics**: Smooth natural motion curves (`cubic-bezier(0.32, 0.72, 0, 1)`) and tactile micro-presses (`scale(0.975)`).
+
+2. **Google Material Design 3 (M3)**:
+   - **Dynamic Tonal Color Capabilities**: All surface container levels, active tints, and state layers are dynamically derived from the key seed color **Purple (`#7c3aed`)**.
+   - **Prominent Surface Elevations**: Tonal elevation system (Base, Surface Low, Level 1–3 Container, Elevated).
+   - **Pill-Shaped Container Architecture**: Rounded capsule geometries for floating navigation islands, action buttons, status badges, and tags.
+
+3. **Light Mode Default & Dark Mode Alternative**:
+   - Interfaces load with high-contrast, luminous Light Mode as the primary default baseline, prioritizing technical reading legibility.
+   - Seamless, zero-flash toggle to an Obsidian Dark Mode alternative stored in `localStorage['site-kit-theme']`.
 
 ---
 
@@ -30,8 +36,6 @@
 Add `@cheahhaoyi/site-kit` directly as a Git dependency in your consumer repository's `package.json`:
 
 ### Option A: Semver Range (Recommended)
-Automatically receives backwards-compatible patch and minor token updates:
-
 ```json
 {
   "dependencies": {
@@ -41,8 +45,6 @@ Automatically receives backwards-compatible patch and minor token updates:
 ```
 
 ### Option B: Pinned Release Tag
-Pins to an exact release tag:
-
 ```json
 {
   "dependencies": {
@@ -52,7 +54,6 @@ Pins to an exact release tag:
 ```
 
 Then run:
-
 ```bash
 npm install
 ```
@@ -61,60 +62,40 @@ npm install
 
 ## 3. Quick Start & Usage
 
-### 3.1 Using the Base Layout
-
-The `<Layout />` component automatically imports design tokens, initializes light mode by default without flash, sets up SEO metadata, and includes responsive navigation and footer.
+### 3.1 Base Layout with Floating Glass Nav
 
 ```astro
 ---
-import { Layout } from '@cheahhaoyi/site-kit';
+import { Layout, Button, Card, Badge, Tag } from '@cheahhaoyi/site-kit';
 
 const breadcrumbs = [
   { label: 'Home', href: '/' },
-  { label: 'RHCSA', href: '/rhcsa' },
-  { label: 'Storage Automation' },
+  { label: 'CISSP', href: '/cissp' },
+  { label: 'Domain 4: Network Security' },
 ];
 ---
 
 <Layout
-  title="Storage & LVM Automation"
-  description="Guide to configuring LVM thin provisioning and Stratis on RHEL 9."
+  title="BGP Route Origin Validation"
+  description="Guide to configuring RPKI and BGP ROV on Cisco IOS-XE."
   breadcrumbs={breadcrumbs}
 >
-  <div class="container">
-    <h1>Storage &amp; LVM Automation</h1>
-    <p>Article content goes here...</p>
-  </div>
-</Layout>
-```
+  <div class="container stack-lg">
+    <div class="cluster">
+      <Badge pill={true} iosColor="purple" pulse={true}>CISSP 2026</Badge>
+      <Tag pill={true} variant="cert">BGP RPKI</Tag>
+    </div>
 
-### 3.2 Markdown / MDX Blog Posts with `<Prose />`
+    <h1>Configuring RPKI on Cisco IOS-XE</h1>
 
-Wrap any Markdown content in `<Prose />` to inherit typography rules (headings, lists, blockquotes, code, tables) in both light and dark modes:
-
-```astro
----
-import { Layout, Prose, Callout, CodeBlock } from '@cheahhaoyi/site-kit';
----
-
-<Layout title="BGP Route Origin Validation">
-  <div class="container">
-    <Prose>
-      <h1>Configuring RPKI on Cisco IOS-XE</h1>
-      <p>
-        RPKI ensures that only authorized Autonomous Systems can announce specific IP prefixes.
-      </p>
-
-      <Callout variant="warning" title="Prefix Filtering Requirement">
-        Ensure your router's clock is synchronized via NTP before enabling ROA cryptographic validation.
-      </Callout>
-
-      <CodeBlock
-        filename="cisco-rpki.cfg"
-        lang="bash"
-        code={`router bgp 65000\n neighbor 192.0.2.1 remote-as 65001\n address-family ipv4 unicast\n  rpki validate`}
-      />
-    </Prose>
+    <Card variant="glass" doubleBezel={true} title="Verification Summary">
+      <p>Cryptographic validation ensures AS origin authenticity.</p>
+      
+      <Button pill={true} variant="primary" size="md">
+        <span>Verify Route State</span>
+        <span class="btn-icon-wrapper">&rarr;</span>
+      </Button>
+    </Card>
   </div>
 </Layout>
 ```
@@ -125,17 +106,17 @@ import { Layout, Prose, Callout, CodeBlock } from '@cheahhaoyi/site-kit';
 
 | Component | Props Interface | Description |
 |---|---|---|
-| `<Layout />` | `LayoutProps` | Root HTML wrapper with light mode default, metadata, nav, breadcrumbs, and footer |
-| `<Nav />` | `NavProps` | Responsive header navigation with frosted glass, mobile drawer, and theme switcher |
-| `<Button />` | `ButtonProps` | Tactile spring buttons (`primary`, `secondary`, `outline`, `ghost`, `danger`) |
-| `<Card />` | `CardProps` | Interactive cards with `default`, `tonal` (M3), and `glass` (Apple HIG) variants |
-| `<CodeBlock />` | `CodeBlockProps` | Dual Shiki syntax highlighting (Light default + Dark alternative) and copy feedback |
-| `<Table />` | `TableProps` | Inset tabular data container with full horizontal scroll safety on mobile |
+| `<Layout />` | `LayoutProps` | Root HTML wrapper with light mode default, metadata, floating nav, and footer |
+| `<Nav />` | `NavProps` | Apple floating glass island with mobile drawer and theme toggle |
+| `<Button />` | `ButtonProps` | Spring-press buttons with `pill`, purple tonal states, and button-in-button trailing icons |
+| `<Card />` | `CardProps` | Machined hardware cards with `default`, `tonal` (M3), `glass` (Apple), and `doubleBezel` |
+| `<CodeBlock />` | `CodeBlockProps` | Dual Shiki syntax highlighting (GitHub Light default + GitHub Dark alternative) |
+| `<Table />` | `TableProps` | Inset tabular data container with smooth row hover layers and mobile scroll |
 | `<Callout />` | `CalloutProps` | Semantic notice banners (`info`, `tip`, `warning`, `danger`) |
-| `<Badge />` | `BadgeProps` | Domain and certification status pills with optional pulsing telemetry light |
-| `<Tag />` | `TagProps` | Interactive topic tags with hover and active states |
+| `<Badge />` | `BadgeProps` | Pill status indicators with pulsing telemetry lights and native `iosColor` support |
+| `<Tag />` | `TagProps` | Interactive topic pills with hover states and native `iosColor` support |
 | `<Breadcrumbs />` | `BreadcrumbsProps` | Base-path aware breadcrumb trail with Schema.org JSON-LD |
-| `<ThemeToggle />` | `ThemeToggleProps` | Synchronized light mode default / dark mode alternative toggle button |
+| `<ThemeToggle />` | `ThemeToggleProps` | Synchronized Light Mode default / Dark Mode alternative toggle switch |
 | `<Prose />` | `ProseProps` | Typographic container formatting Markdown/MDX elements |
 
 ---
@@ -160,5 +141,5 @@ npm run build
 
 ## 6. Live Test Pages
 
-- **Style Guide Kitchen Sink**: `http://localhost:4321/`
-- **Material 3 & Apple HIG Benchmark**: `http://localhost:4321/demo`
+- **Style Guide Living Baseline**: `http://localhost:4321/`
+- **Framework Benchmark (Apple HIG vs Google M3)**: `http://localhost:4321/demo`

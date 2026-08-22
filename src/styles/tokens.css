@@ -1,12 +1,14 @@
 /**
  * @cheahhaoyi/site-kit - Design Tokens
  * Single source of truth for color, typography, spacing, elevation, and layout.
- * Synthesizes Google Material Design 3 (tonal elevation, semantic roles, state layers)
- * and Apple Human Interface Guidelines (vibrancy, translucent materials, spring motion, typography precision).
+ * Synthesizes Apple Human Interface Guidelines (San Francisco typography hierarchy,
+ * translucent frosted glassmorphism, native iOS system colors, spring motion)
+ * and Google Material Design 3 (dynamic tonal palettes derived from key color Purple,
+ * prominent surface elevations, and structured state layers).
  *
  * Light Mode is the DEFAULT foundation, with a high-contrast Dark Mode alternative.
  *
- * BREAKPOINTS (for use in component @media queries - CSS custom properties cannot be used in media queries):
+ * BREAKPOINTS:
  * - Mobile S:   320px
  * - Mobile L:   480px
  * - Tablet:     640px  (@media (min-width: 640px))
@@ -16,87 +18,107 @@
  */
 
 /* ==========================================================================
-   Light Mode (Default Theme)
+   Light Mode (Default Baseline)
    ========================================================================== */
 :root {
   --theme-name: 'light';
 
-  /* Surface / Background Levels (Material 3 Tonal Surfaces & Apple Inset Bases) */
-  --color-bg-base: #f8fafc;                /* Cool engineering chalk base */
-  --color-bg-surface: #ffffff;             /* Card & container pure surface */
-  --color-bg-surface-container: #f1f5f9;   /* M3 Surface Container (Slate 100) */
-  --color-bg-surface-container-high: #e2e8f0; /* M3 Surface Container High (Slate 200) */
-  --color-bg-surface-container-low: #f8fafc;  /* M3 Surface Container Low */
-  --color-bg-elevated: #f1f5f9;            /* Raised layers */
-  --color-bg-sunken: #e2e8f0;              /* Inset wells */
-  --color-bg-overlay: rgba(15, 23, 42, 0.4);
+  /* Dynamic Key Color & Tonal Palette (Key: Deep Purple #7c3aed) */
+  --key-color-purple: #7c3aed;
+  
+  /* Primary Accent & Tonal Layers (Derived from Key Purple) */
+  --color-accent-primary: #7c3aed;      /* Primary Purple (Purple 600) */
+  --color-accent-hover: #6d28d9;        /* Purple 700 */
+  --color-accent-active: #5b21b6;       /* Purple 800 */
+  --color-accent-subtle: #f3e8ff;       /* Primary Container (Purple 100) */
+  --color-accent-on-container: #581c87; /* On-Primary Container (Purple 900) */
+  --color-accent-contrast: #ffffff;
 
-  /* Apple HIG Translucent Material & Vibrancy */
-  --glass-bg: rgba(255, 255, 255, 0.82);
-  --glass-bg-elevated: rgba(255, 255, 255, 0.94);
-  --glass-border: rgba(226, 232, 240, 0.85);
-  --glass-blur: blur(16px);
-  --glass-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  /* Native iOS System Colors (Apple HIG Palette) */
+  --ios-purple: #af52de;
+  --ios-indigo: #5856d6;
+  --ios-blue: #007aff;
+  --ios-teal: #30b0c7;
+  --ios-mint: #00c7be;
+  --ios-green: #34c759;
+  --ios-yellow: #ffcc00;
+  --ios-orange: #ff9500;
+  --ios-pink: #ff2d55;
+  --ios-red: #ff3b30;
 
-  /* Text Levels (WCAG AAA / AA compliant) */
-  --color-text-primary: #0f172a;   /* Deep obsidian slate (Slate 900) */
-  --color-text-secondary: #475569; /* Balanced technical steel (Slate 600) */
-  --color-text-muted: #64748b;     /* Subdued metadata / captions (Slate 500) */
+  /* Surface & Background Levels (Google M3 Dynamic Tonal Elevation + Apple Inset Bases) */
+  --color-bg-base: #fbfaff;                   /* Clean luminous base with faint violet undertone */
+  --color-bg-surface: #ffffff;                /* Pure container surface */
+  --color-bg-surface-container-low: #f8f6fc;  /* M3 Surface Container Low */
+  --color-bg-surface-container: #f2eefa;      /* M3 Surface Container (Level 1) */
+  --color-bg-surface-container-high: #e9e2f6; /* M3 Surface Container High (Level 2) */
+  --color-bg-surface-container-highest: #dfd6f2; /* M3 Surface Container Highest (Level 3) */
+  --color-bg-elevated: #f4f0fb;               /* Raised components */
+  --color-bg-sunken: #ede8f5;                 /* Inset wells */
+  --color-bg-overlay: rgba(15, 10, 30, 0.45);
+
+  /* Apple HIG Frosted Glassmorphism, Vibrancy & Double-Bezel Specular Rims */
+  --glass-bg: rgba(255, 255, 255, 0.80);
+  --glass-bg-elevated: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(220, 212, 238, 0.75);
+  --glass-blur: blur(20px);
+  --glass-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
+  --glass-bezel-outer: rgba(124, 58, 237, 0.05);
+
+  /* Typography Colors (Apple San Francisco High-Legibility Slate) */
+  --color-text-primary: #120e24;     /* Deep obsidian-violet */
+  --color-text-secondary: #4a445e;   /* Refined technical slate */
+  --color-text-muted: #6f6885;       /* Subdued metadata / captions */
   --color-text-inverse: #ffffff;
 
   /* Borders & Hairlines */
-  --color-border: #e2e8f0;         /* Slate 200 */
-  --color-border-subtle: #f1f5f9;  /* Slate 100 */
-  --color-border-hover: #cbd5e1;   /* Slate 300 */
-  --color-border-focus: #0284c7;
+  --color-border: #e6e0f2;           /* Subtle violet-slate hairline */
+  --color-border-subtle: #f0ecf7;    /* Ultra-light separator */
+  --color-border-hover: #d2c7e8;     /* Active hover border */
+  --color-border-focus: #7c3aed;
 
-  /* Primary Accent (Sky / Signal Telemetry) */
-  --color-accent-primary: #0284c7; /* Sky 600 */
-  --color-accent-hover: #0369a1;   /* Sky 700 */
-  --color-accent-subtle: #e0f2fe;  /* Sky 100 */
-  --color-accent-contrast: #ffffff;
-
-  /* Secondary / Telemetry Accent (Amber) */
-  --color-telemetry: #d97706;      /* Amber 600 */
+  /* Secondary / Telemetry Accents */
+  --color-telemetry: #f59e0b;        /* Amber 500 */
   --color-telemetry-subtle: #fef3c7; /* Amber 100 */
 
-  /* Semantic Callout & Status Levels (Light Mode) */
-  --color-info-text: #0369a1;
+  /* Semantic Status Levels (Light Mode) */
+  --color-info-text: #0284c7;
   --color-info-bg: #f0f9ff;
   --color-info-border: #bae6fd;
   --color-info-icon: #0284c7;
 
-  --color-success-text: #047857;
+  --color-success-text: #059669;
   --color-success-bg: #ecfdf5;
   --color-success-border: #a7f3d0;
   --color-success-icon: #059669;
 
-  --color-warning-text: #b45309;
+  --color-warning-text: #d97706;
   --color-warning-bg: #fffbeb;
   --color-warning-border: #fde68a;
   --color-warning-icon: #d97706;
 
-  --color-danger-text: #b91c1c;
+  --color-danger-text: #dc2626;
   --color-danger-bg: #fef2f2;
   --color-danger-border: #fecaca;
   --color-danger-icon: #dc2626;
 
   /* Code Block Colors (Light Mode Default) */
-  --color-code-bg: #f8fafc;
-  --color-code-text: #0f172a;
-  --color-code-border: #e2e8f0;
-  --color-code-header-bg: #f1f5f9;
-  --color-code-header-text: #475569;
-  --color-inline-code-bg: #f1f5f9;
-  --color-inline-code-text: #0284c7;
-  --color-inline-code-border: #e2e8f0;
+  --color-code-bg: #f8f6fc;
+  --color-code-text: #120e24;
+  --color-code-border: #e6e0f2;
+  --color-code-header-bg: #f1edfa;
+  --color-code-header-text: #5a5272;
+  --color-inline-code-bg: #f3e8ff;
+  --color-inline-code-text: #7c3aed;
+  --color-inline-code-border: #e9d5ff;
 
-  /* Typography Families */
-  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* Typography Families (Apple San Francisco Priority Stack) */
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Geist", "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Geist", "Inter", system-ui, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
 
   /* Type Scale */
+  --text-2xs: 0.6875rem; /* 11px */
   --text-xs: 0.75rem;     /* 12px */
   --text-sm: 0.875rem;    /* 14px */
   --text-base: 1rem;      /* 16px */
@@ -106,30 +128,31 @@
   --text-3xl: 1.875rem;   /* 30px */
   --text-4xl: 2.25rem;    /* 36px */
   --text-5xl: 3rem;       /* 48px */
+  --text-6xl: 3.75rem;    /* 60px */
 
   /* Line Heights */
   --leading-none: 1;
-  --leading-tight: 1.25;
-  --leading-snug: 1.375;
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
   --leading-normal: 1.5;
   --leading-relaxed: 1.65;
-  --leading-loose: 2;
 
-  /* Letter Spacing */
-  --tracking-tighter: -0.035em;
-  --tracking-tight: -0.02em;
+  /* Letter Spacing (Apple SF Tracking Hierarchy) */
+  --tracking-tighter: -0.04em;
+  --tracking-tight: -0.025em;
   --tracking-normal: 0em;
-  --tracking-wide: 0.025em;
-  --tracking-wider: 0.05em;
-  --tracking-widest: 0.1em;
+  --tracking-wide: 0.02em;
+  --tracking-wider: 0.06em;
+  --tracking-widest: 0.12em;
 
   /* Font Weights */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+  --font-weight-heavy: 800;
 
-  /* Spacing Scale (4px Base) */
+  /* Spacing Scale (Macro-Whitespace Generosity) */
   --space-0: 0;
   --space-0-5: 0.125rem; /* 2px */
   --space-1: 0.25rem;   /* 4px */
@@ -146,35 +169,39 @@
   --space-16: 4rem;     /* 64px */
   --space-20: 5rem;     /* 80px */
   --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
 
-  /* Radii (Apple HIG Rounded Primitives & M3 Shape System) */
+  /* Radii (Apple Squircle Scale & Pill Containers) */
   --radius-none: 0px;
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 8px;     /* Apple Standard Control */
-  --radius-lg: 12px;    /* Apple Standard Card / M3 Small Container */
-  --radius-xl: 16px;    /* M3 Medium Container / Apple Dialog */
-  --radius-2xl: 24px;   /* M3 Large Container */
-  --radius-full: 9999px;/* Pill / Capsule */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;     /* Apple Standard Control */
+  --radius-lg: 16px;     /* Apple Standard Card */
+  --radius-xl: 22px;     /* M3 Medium Container / Apple Dialog */
+  --radius-2xl: 28px;    /* Apple Double-Bezel Outer Shell */
+  --radius-3xl: 36px;    /* Prominent Hero Pod */
+  --radius-full: 9999px; /* Pure Pill / Capsule */
 
-  /* Elevation & Shadows (M3 Ambient Tonal Elevation + Apple Specular Rim) */
-  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
-  --shadow-inner: inset 0 2px 4px 0 rgba(15, 23, 42, 0.04);
+  /* Surface Elevations & Ambient Diffused Shadows */
+  --shadow-sm: 0 1px 3px 0 rgba(76, 29, 149, 0.04), 0 1px 2px -1px rgba(76, 29, 149, 0.02);
+  --shadow-md: 0 4px 12px -2px rgba(76, 29, 149, 0.06), 0 2px 6px -2px rgba(76, 29, 149, 0.04);
+  --shadow-lg: 0 12px 28px -4px rgba(76, 29, 149, 0.08), 0 4px 10px -4px rgba(76, 29, 149, 0.04);
+  --shadow-xl: 0 24px 48px -8px rgba(76, 29, 149, 0.12), 0 8px 16px -6px rgba(76, 29, 149, 0.06);
+  --shadow-inner: inset 0 2px 4px 0 rgba(76, 29, 149, 0.04);
   --shadow-focus: 0 0 0 2px var(--color-bg-surface), 0 0 0 4px var(--color-accent-primary);
 
-  /* Animation & Transitions (Apple Spring & M3 Decelerate Curves) */
-  --ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --ease-m3: cubic-bezier(0.05, 0.7, 0.1, 1);
-  --transition-fast: 150ms var(--ease-spring);
-  --transition-normal: 250ms var(--ease-spring);
-  --transition-slow: 350ms var(--ease-m3);
+  /* Meaningful Motion (Apple Fluid Spring & Haptic Curves) */
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring-bouncy: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-m3-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --transition-fast: 180ms var(--ease-spring);
+  --transition-normal: 280ms var(--ease-spring);
+  --transition-slow: 450ms var(--ease-spring);
 
   /* Layout Widths */
   --content-max-width: 1200px;
   --prose-max-width: 72ch;
-  --nav-height: 4rem; /* 64px */
+  --nav-height: 4.25rem;
 }
 
 /* ==========================================================================
@@ -183,81 +210,98 @@
 [data-theme="dark"] {
   --theme-name: 'dark';
 
-  /* Surface / Background Levels (M3 Dark Tone Surfaces & Apple Dark Inset Base) */
-  --color-bg-base: #0b0f17;                /* Deep obsidian / network rack dark */
-  --color-bg-surface: #111827;             /* High-density component surface */
-  --color-bg-surface-container: #1e293b;   /* M3 Dark Surface Container */
-  --color-bg-surface-container-high: #273549; /* M3 Dark Surface Container High */
-  --color-bg-surface-container-low: #0f172a;  /* M3 Dark Surface Container Low */
-  --color-bg-elevated: #1e293b;            /* Raised layers (Slate 800) */
-  --color-bg-sunken: #070a10;              /* Inset wells */
-  --color-bg-overlay: rgba(0, 0, 0, 0.7);
+  /* Primary Accent & Tonal Layers (Derived from Key Purple) */
+  --color-accent-primary: #a78bfa;      /* Radiant Lavender Purple (Purple 400) */
+  --color-accent-hover: #c4b5fd;        /* Purple 300 */
+  --color-accent-active: #ddd6fe;       /* Purple 200 */
+  --color-accent-subtle: rgba(167, 139, 250, 0.16);
+  --color-accent-on-container: #ede9fe;
+  --color-accent-contrast: #130e24;
 
-  /* Apple HIG Dark Translucent Material & Vibrancy */
-  --glass-bg: rgba(17, 24, 39, 0.82);
-  --glass-bg-elevated: rgba(30, 41, 59, 0.90);
-  --glass-border: rgba(30, 41, 59, 0.85);
-  --glass-blur: blur(18px);
-  --glass-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  /* Native iOS System Colors (Dark Vibrant Equivalents) */
+  --ios-purple: #bf5af2;
+  --ios-indigo: #5e5ce6;
+  --ios-blue: #0a84ff;
+  --ios-teal: #40c8e0;
+  --ios-mint: #63e6e2;
+  --ios-green: #30d158;
+  --ios-yellow: #ffd60a;
+  --ios-orange: #ff9f0a;
+  --ios-pink: #ff375f;
+  --ios-red: #ff453a;
+
+  /* Surface & Background Levels (M3 Dark Tone Surfaces & Apple Dark Inset Base) */
+  --color-bg-base: #0c0914;                   /* Deep obsidian base with violet dusk undertone */
+  --color-bg-surface: #141021;                /* Component dark surface */
+  --color-bg-surface-container-low: #100c1a;  /* M3 Surface Container Low */
+  --color-bg-surface-container: #191428;      /* M3 Surface Container (Level 1) */
+  --color-bg-surface-container-high: #221c36; /* M3 Surface Container High (Level 2) */
+  --color-bg-surface-container-highest: #2c2445; /* M3 Surface Container Highest (Level 3) */
+  --color-bg-elevated: #1e1830;               /* Raised layers */
+  --color-bg-sunken: #08060d;                 /* Inset wells */
+  --color-bg-overlay: rgba(0, 0, 0, 0.75);
+
+  /* Apple HIG Frosted Glassmorphism & Double-Bezel Specular Rims */
+  --glass-bg: rgba(20, 16, 33, 0.80);
+  --glass-bg-elevated: rgba(30, 24, 48, 0.90);
+  --glass-border: rgba(167, 139, 250, 0.18);
+  --glass-blur: blur(22px);
+  --glass-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  --glass-bezel-outer: rgba(167, 139, 250, 0.08);
 
   /* Text Levels */
-  --color-text-primary: #f8fafc;   /* Slate 50 */
-  --color-text-secondary: #94a3b8; /* Slate 400 */
-  --color-text-muted: #64748b;     /* Slate 500 */
-  --color-text-inverse: #0f172a;
+  --color-text-primary: #faf5ff;   /* Luminous lavender white */
+  --color-text-secondary: #a39cb8; /* Slate lavender */
+  --color-text-muted: #746d87;     /* Subdued caption */
+  --color-text-inverse: #0c0914;
 
   /* Borders & Hairlines */
-  --color-border: #1e293b;         /* Slate 800 */
-  --color-border-subtle: #162032;  /* Slate 900 */
-  --color-border-hover: #334155;   /* Slate 700 */
-  --color-border-focus: #38bdf8;
+  --color-border: #26203a;         /* Dark hairline */
+  --color-border-subtle: #1c172d;  /* Ultra-dark separator */
+  --color-border-hover: #3e345c;   /* Active dark hover */
+  --color-border-focus: #a78bfa;
 
-  /* Primary Accent (Sky 400) */
-  --color-accent-primary: #38bdf8;
-  --color-accent-hover: #7dd3fc;
-  --color-accent-subtle: rgba(56, 189, 248, 0.12);
-  --color-accent-contrast: #0f172a;
-
-  /* Secondary / Telemetry Accent (Amber 400) */
+  /* Secondary / Telemetry Accents */
   --color-telemetry: #fbbf24;
-  --color-telemetry-subtle: rgba(251, 191, 36, 0.12);
+  --color-telemetry-subtle: rgba(251, 191, 36, 0.14);
 
-  /* Semantic Callout & Status Levels (Dark Mode) */
+  /* Semantic Status Levels (Dark Mode) */
   --color-info-text: #7dd3fc;
-  --color-info-bg: rgba(2, 132, 199, 0.12);
-  --color-info-border: rgba(56, 189, 248, 0.3);
+  --color-info-bg: rgba(2, 132, 199, 0.14);
+  --color-info-border: rgba(56, 189, 248, 0.28);
   --color-info-icon: #38bdf8;
 
   --color-success-text: #6ee7b7;
-  --color-success-bg: rgba(5, 150, 105, 0.12);
-  --color-success-border: rgba(52, 211, 153, 0.3);
+  --color-success-bg: rgba(5, 150, 105, 0.14);
+  --color-success-border: rgba(52, 211, 153, 0.28);
   --color-success-icon: #34d399;
 
   --color-warning-text: #fcd34d;
-  --color-warning-bg: rgba(217, 119, 6, 0.12);
-  --color-warning-border: rgba(251, 191, 36, 0.3);
+  --color-warning-bg: rgba(217, 119, 6, 0.14);
+  --color-warning-border: rgba(251, 191, 36, 0.28);
   --color-warning-icon: #fbbf24;
 
   --color-danger-text: #fca5a5;
-  --color-danger-bg: rgba(220, 38, 38, 0.12);
-  --color-danger-border: rgba(248, 113, 113, 0.3);
+  --color-danger-bg: rgba(220, 38, 38, 0.14);
+  --color-danger-border: rgba(248, 113, 113, 0.28);
   --color-danger-icon: #f87171;
 
   /* Code Block Colors (Dark Mode Alternative) */
-  --color-code-bg: #070a10;
-  --color-code-text: #f1f5f9;
-  --color-code-border: #1e293b;
-  --color-code-header-bg: #111827;
-  --color-code-header-text: #94a3b8;
-  --color-inline-code-bg: #1e293b;
-  --color-inline-code-text: #38bdf8;
-  --color-inline-code-border: #334155;
+  --color-code-bg: #0e0a17;
+  --color-code-text: #faf5ff;
+  --color-code-border: #26203a;
+  --color-code-header-bg: #151022;
+  --color-code-header-text: #a39cb8;
+  --color-inline-code-bg: rgba(167, 139, 250, 0.16);
+  --color-inline-code-text: #c4b5fd;
+  --color-inline-code-border: rgba(167, 139, 250, 0.25);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
-  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  /* Ambient Deep Shadows */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.6), 0 2px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.7), 0 4px 10px -4px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 24px 48px -8px rgba(0, 0, 0, 0.85);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.6);
   --shadow-focus: 0 0 0 2px var(--color-bg-base), 0 0 0 4px var(--color-accent-primary);
 }
 

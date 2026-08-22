@@ -1,8 +1,12 @@
 /**
  * Type definitions for @cheahhaoyi/site-kit components and design system
+ * Synthesizing Apple Human Interface Guidelines (San Francisco hierarchy, glassmorphism, iOS colors, spring motion)
+ * and Google Material Design 3 (dynamic tonal elevation, key color Purple, state layers).
  */
 
 export type Theme = 'light' | 'dark';
+
+export type IOSColor = 'purple' | 'indigo' | 'blue' | 'teal' | 'mint' | 'green' | 'orange' | 'pink' | 'red';
 
 export interface NavLink {
   label: string;
@@ -25,6 +29,7 @@ export interface ButtonProps {
   href?: string;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
+  pill?: boolean;
   class?: string;
   target?: string;
   rel?: string;
@@ -46,6 +51,8 @@ export interface CardProps {
   image?: string;
   imageAlt?: string;
   variant?: CardVariant;
+  pill?: boolean;
+  doubleBezel?: boolean;
   class?: string;
 }
 
@@ -97,6 +104,8 @@ export interface TagProps {
   size?: TagSize;
   href?: string;
   interactive?: boolean;
+  pill?: boolean;
+  iosColor?: IOSColor;
   class?: string;
 }
 
@@ -104,6 +113,8 @@ export interface BadgeProps {
   variant?: BadgeVariant;
   size?: TagSize;
   pulse?: boolean;
+  pill?: boolean;
+  iosColor?: IOSColor;
   class?: string;
 }
 

@@ -9,6 +9,7 @@ const {
   href,
   type = 'button',
   disabled = false,
+  pill = false,
   class: className = '',
   target,
   rel,
@@ -33,6 +34,7 @@ const computedRel = target === '_blank' && !rel ? 'noopener noreferrer' : rel;
     'button',
     `button--${variant}`,
     `button--${size}`,
+    { 'button--pill': pill },
     { 'button--disabled': disabled },
     className,
   ]}
@@ -60,6 +62,10 @@ const computedRel = target === '_blank' && !rel ? 'noopener noreferrer' : rel;
     overflow: hidden;
   }
 
+  .button--pill {
+    border-radius: var(--radius-full);
+  }
+
   .button:hover {
     text-decoration: none;
   }
@@ -76,7 +82,7 @@ const computedRel = target === '_blank' && !rel ? 'noopener noreferrer' : rel;
     box-shadow: var(--shadow-focus);
   }
 
-  /* Sizes (Apple 44px touch target on md/lg, compact on sm) */
+  /* Sizes */
   .button--sm {
     font-size: var(--text-xs);
     padding: var(--space-1-5) var(--space-3);
@@ -96,39 +102,47 @@ const computedRel = target === '_blank' && !rel ? 'noopener noreferrer' : rel;
     border-radius: var(--radius-lg);
   }
 
-  /* Variants */
+  .button--lg.button--pill {
+    border-radius: var(--radius-full);
+  }
+
+  /* Variants (Derived from Key Purple & M3 Tonal Palette) */
   .button--primary {
     background-color: var(--color-accent-primary);
     color: var(--color-accent-contrast);
-    border-color: var(--color-accent-primary);
     box-shadow: var(--shadow-sm);
   }
 
   .button--primary:hover:not(.button--disabled) {
     background-color: var(--color-accent-hover);
-    border-color: var(--color-accent-hover);
     box-shadow: var(--shadow-md);
   }
 
+  .button--primary:active:not(.button--disabled) {
+    background-color: var(--color-accent-active);
+  }
+
+  /* Secondary: Google M3 Tonal Purple Container */
   .button--secondary {
-    background-color: var(--color-bg-surface-container);
-    color: var(--color-text-primary);
-    border-color: var(--color-border);
+    background-color: var(--color-accent-subtle);
+    color: var(--color-accent-on-container);
+    border-color: var(--color-border-subtle);
   }
 
   .button--secondary:hover:not(.button--disabled) {
-    background-color: var(--color-bg-surface-container-high);
+    background-color: var(--color-bg-surface-container-highest);
+    color: var(--color-text-primary);
     border-color: var(--color-border-hover);
   }
 
   .button--outline {
     background-color: transparent;
     color: var(--color-text-primary);
-    border-color: var(--color-border-hover);
+    border-color: var(--color-border);
   }
 
   .button--outline:hover:not(.button--disabled) {
-    background-color: var(--color-accent-subtle);
+    background-color: var(--color-bg-surface-container);
     border-color: var(--color-accent-primary);
     color: var(--color-accent-primary);
   }
@@ -136,7 +150,6 @@ const computedRel = target === '_blank' && !rel ? 'noopener noreferrer' : rel;
   .button--ghost {
     background-color: transparent;
     color: var(--color-text-secondary);
-    border-color: transparent;
   }
 
   .button--ghost:hover:not(.button--disabled) {
@@ -153,17 +166,42 @@ const computedRel = target === '_blank' && !rel ? 'noopener noreferrer' : rel;
   .button--danger:hover:not(.button--disabled) {
     background-color: var(--color-danger-icon);
     color: #ffffff;
-    border-color: var(--color-danger-icon);
-    box-shadow: var(--shadow-sm);
   }
 
   /* Disabled State */
-  .button--disabled,
-  .button[disabled] {
-    opacity: 0.45;
+  .button--disabled {
+    opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
-    box-shadow: none;
-    transform: none !important;
+  }
+
+  /* Button-in-Button Trailing Icon Architecture */
+  .button :global(.btn-icon-wrapper) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: var(--radius-full);
+    background-color: rgba(255, 255, 255, 0.2);
+    margin-left: var(--space-1);
+    transition: transform var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .button--outline :global(.btn-icon-wrapper),
+  .button--ghost :global(.btn-icon-wrapper),
+  .button--secondary :global(.btn-icon-wrapper) {
+    background-color: var(--color-border);
+  }
+
+  .button:hover :global(.btn-icon-wrapper) {
+    transform: translateX(2px);
+  }
+
+  .button :global(svg) {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    transition: transform var(--transition-fast);
   }
 </style>

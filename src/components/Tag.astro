@@ -8,6 +8,8 @@ const {
   size = 'md',
   href,
   interactive = Boolean(href),
+  pill = true,
+  iosColor,
   class: className = '',
 } = Astro.props;
 
@@ -20,7 +22,9 @@ const TagElement = href ? 'a' : 'span';
     'tag',
     `tag--${variant}`,
     `tag--${size}`,
+    { 'tag--pill': pill },
     { 'tag--interactive': interactive },
+    iosColor ? `tag--ios-${iosColor}` : undefined,
     className,
   ]}
 >
@@ -37,13 +41,17 @@ const TagElement = href ? 'a' : 'span';
     font-weight: var(--font-weight-medium);
     line-height: var(--leading-none);
     border-radius: var(--radius-sm);
-    padding: var(--space-1) var(--space-2);
+    padding: var(--space-1) var(--space-2-5);
     border: 1px solid var(--color-border);
-    background-color: var(--color-bg-elevated);
+    background-color: var(--color-bg-surface-container);
     color: var(--color-text-secondary);
     text-decoration: none;
-    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
     white-space: nowrap;
+  }
+
+  .tag--pill {
+    border-radius: var(--radius-full);
   }
 
   .tag--sm {
@@ -53,12 +61,12 @@ const TagElement = href ? 'a' : 'span';
 
   .tag--md {
     font-size: var(--text-xs);
-    padding: var(--space-1) var(--space-2);
+    padding: var(--space-1) var(--space-2-5);
   }
 
   /* Variants */
   .tag--default {
-    background-color: var(--color-bg-elevated);
+    background-color: var(--color-bg-surface-container);
     color: var(--color-text-secondary);
     border-color: var(--color-border);
   }
@@ -100,17 +108,61 @@ const TagElement = href ? 'a' : 'span';
     color: var(--color-text-secondary);
   }
 
-  /* Interactive / Link Hover */
-  .tag--interactive:hover {
-    border-color: var(--color-accent-primary);
-    color: var(--color-accent-primary);
-    background-color: var(--color-accent-subtle);
-    cursor: pointer;
-    text-decoration: none;
+  /* Native iOS Colors */
+  .tag--ios-purple {
+    background-color: rgba(175, 82, 222, 0.12);
+    color: var(--ios-purple);
+    border-color: rgba(175, 82, 222, 0.3);
   }
 
-  .tag:focus-visible {
-    outline: 2px solid var(--color-accent-primary);
-    outline-offset: 2px;
+  .tag--ios-indigo {
+    background-color: rgba(88, 86, 214, 0.12);
+    color: var(--ios-indigo);
+    border-color: rgba(88, 86, 214, 0.3);
+  }
+
+  .tag--ios-blue {
+    background-color: rgba(0, 122, 255, 0.12);
+    color: var(--ios-blue);
+    border-color: rgba(0, 122, 255, 0.3);
+  }
+
+  .tag--ios-mint {
+    background-color: rgba(0, 199, 190, 0.12);
+    color: var(--ios-mint);
+    border-color: rgba(0, 199, 190, 0.3);
+  }
+
+  .tag--ios-green {
+    background-color: rgba(52, 199, 89, 0.12);
+    color: var(--ios-green);
+    border-color: rgba(52, 199, 89, 0.3);
+  }
+
+  .tag--ios-orange {
+    background-color: rgba(255, 149, 0, 0.12);
+    color: var(--ios-orange);
+    border-color: rgba(255, 149, 0, 0.3);
+  }
+
+  .tag--ios-pink {
+    background-color: rgba(255, 45, 85, 0.12);
+    color: var(--ios-pink);
+    border-color: rgba(255, 45, 85, 0.3);
+  }
+
+  /* Interactive Hover & Spring Micro-Press */
+  .tag--interactive {
+    cursor: pointer;
+  }
+
+  .tag--interactive:hover {
+    background-color: var(--color-bg-surface-container-high);
+    color: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+  }
+
+  .tag--interactive:active {
+    transform: scale(0.96);
   }
 </style>

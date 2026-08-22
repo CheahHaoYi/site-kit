@@ -1,21 +1,30 @@
 # AGENTS.md — Coding Agent Guide for `@cheahhaoyi/site-kit`
 
-This document provides essential technical context, architectural rules, coding standards, and testing procedures for coding agents working within this repository or integrating `@cheahhaoyi/site-kit` into downstream portfolio repositories.
+This document provides essential technical context, architectural rules, aesthetic standards, and testing procedures for coding agents working within this repository or integrating `@cheahhaoyi/site-kit` into downstream portfolio repositories.
 
 ---
 
-## 1. Project Overview
+## 1. Project Overview & Aesthetic Synthesis
 
 `@cheahhaoyi/site-kit` is the **single source of truth** for design tokens, typography, and typed UI components across the `@cheahhaoyi` multi-repo portfolio (root domain, CISSP, CCNA, RHCSA certification blogs, AI security showcases).
 
-### Core Architectural Principles
+### Core Architectural & Aesthetic Principles
 1. **Light Mode by Default**: All components, layouts, and typography are styled with **Light Mode as the default initial baseline**, offering maximum legibility on high-density technical and networking content.
 2. **High-Contrast Dark Mode Alternative**: Full support for a high-contrast dark mode alternative (`data-theme="dark"`), saved in `localStorage['site-kit-theme']` and toggled with zero flash or layout shift.
-3. **Zero-Bundling Source Distribution**: Consuming Astro sites import raw `.astro` components and compile them during *their* build step (`astro build`). Do not introduce a bundle/dist compile step for components.
-4. **Pure CSS Custom Properties**: All design tokens live in standard CSS variables (`tokens.css`). TailwindCSS and CSS-in-JS are strictly forbidden unless explicitly requested.
-5. **Synthesis of Google Material Design 3 & Apple HIG**:
-   - **Google Material Design 3**: Tonal surface containers (`--color-bg-surface-container`), state layers (`:hover`, `:active`), clear semantic roles, and high accessibility contrast.
-   - **Apple Human Interface Guidelines (HIG)**: Translucent frosted glass materials (`backdrop-filter: blur(16px)` + specular rim highlights), tactile spring micro-interactions (`transform: scale(0.975)`), crisp typography, and segmented controls.
+3. **Synthesis of Google Material Design 3 & Apple HIG**:
+   - **Google Material Design 3**:
+     - Dynamic Color Tonal Palettes derived from key color **Purple (`#7c3aed`)** (`--color-accent-primary`, `--color-accent-subtle`, `--color-accent-on-container`).
+     - Prominent surface elevations (`--color-bg-surface-container-low`, `--color-bg-surface-container`, `--color-bg-surface-container-high`).
+     - Structured state layers and pill-shaped container geometry.
+   - **Apple Human Interface Guidelines (HIG)**:
+     - San Francisco system typography hierarchy with tight negative tracking (`-0.04em`).
+     - Translucent frosted glassmorphism (`backdrop-filter: blur(20px)`) with specular top rim reflections (`inset 0 1px 0 0 rgba(255,255,255,0.95)`).
+     - Native iOS system colors (`--ios-purple`, `--ios-indigo`, `--ios-blue`, `--ios-mint`, `--ios-green`, `--ios-orange`, `--ios-pink`).
+     - Double-Bezel (Doppelrand) nested hardware architecture (`doubleBezel={true}`).
+     - Button-in-Button trailing action icon architecture with kinetic spring hover tension.
+     - Natural spring motion physics (`--ease-spring: cubic-bezier(0.32, 0.72, 0, 1)`).
+4. **Zero-Bundling Source Distribution**: Consuming Astro sites import raw `.astro` components and compile them during *their* build step (`astro build`). Do not introduce a bundle/dist compile step for components.
+5. **Pure CSS Custom Properties**: All design tokens live in standard CSS variables (`tokens.css`). TailwindCSS and CSS-in-JS are strictly forbidden unless explicitly requested.
 6. **Dual-Theme Code Highlighting**: `<CodeBlock />` uses Shiki dual themes (`github-light` in default light mode, `github-dark` in dark mode).
 7. **Base-Path Awareness**: All links and static asset references must handle subpath deployments (e.g. `/rhcsa`, `/cissp`) via `import.meta.env.BASE_URL` or `resolveUrl()`.
 8. **Zero-Flash Theme Initialization**: Theme selection is initialized by an inline, render-blocking `<head>` script defaulting to `light` unless `dark` is explicitly stored in `localStorage`.
@@ -52,7 +61,7 @@ npm run build
 
 ### 3.2 CSS & Design Tokens
 - Place scoped styles within `<style>` blocks in each `.astro` file.
-- Reference CSS variables defined in `src/styles/tokens.css` (e.g., `var(--color-bg-surface)`, `var(--space-4)`, `var(--radius-lg)`).
+- Reference CSS variables defined in `src/styles/tokens.css` (e.g., `var(--color-accent-primary)`, `var(--color-bg-surface-container)`, `var(--glass-rim)`).
 - Never hardcode arbitrary hex colors or pixel padding inside components; use token variables.
 - Maintain responsive breakpoints:
   - Mobile: `< 640px`
@@ -83,13 +92,14 @@ npm run check && npm run build
 - `npm run build` must cleanly generate all static routes (`/index.html`, `/demo/index.html`).
 
 ### 4.2 Visual & Functional Regression Checklist
-1. **Default Light Mode**: Verify the initial page load renders in Light Mode with high-contrast slate typography and light container surfaces.
-2. **Theme Switcher**: Click the theme toggle button in the navigation header. Ensure instantaneous light/dark transition across all surfaces, cards, and code blocks with zero layout shift.
+1. **Default Light Mode & Purple Tonal Palette**: Verify the initial page load renders in Light Mode with vibrant Purple accents (`#7c3aed`), high-contrast slate typography, and soft purple-tinted container surfaces.
+2. **Theme Switcher**: Click the theme toggle button in the floating navigation header. Ensure instantaneous light/dark transition across all surfaces, cards, and code blocks with zero layout shift.
 3. **Dual Syntax Highlighting**: Verify `<CodeBlock />` switches from GitHub Light theme in light mode to GitHub Dark theme in dark mode.
 4. **Tactile Spring Physics**: Click and hold buttons to verify the physical micro-press animation (`scale(0.975) translateY(1px)`).
-5. **Glassmorphism**: Verify that glass cards (`variant="glass"`) render with backdrop blur, specular top rim, and subtle translucent border in both light and dark modes.
-6. **Shiki Code Copy**: Click the copy button in `<CodeBlock />` and confirm the checkmark icon and text feedback appear before resetting.
-7. **Mobile Responsiveness**: Test viewport down to 320px width. Confirm that `<Table />` scrolls horizontally without squishing headers and the mobile navigation drawer toggles cleanly.
+5. **Glassmorphism & Double-Bezel**: Verify that glass cards (`variant="glass"`) and double-bezel enclosures render with backdrop blur, specular top rim, and subtle translucent border in both light and dark modes.
+6. **Button-in-Button Micro-Interactions**: Hover over CTA buttons with trailing icons and verify the nested icon circle undergoes kinetic spring translation.
+7. **Shiki Code Copy**: Click the copy button in `<CodeBlock />` and confirm the checkmark icon and text feedback appear before resetting.
+8. **Mobile Responsiveness**: Test viewport down to 320px width. Confirm that `<Table />` scrolls horizontally without squishing headers and the mobile navigation drawer toggles cleanly.
 
 ---
 
@@ -124,6 +134,6 @@ In consumer repository `package.json`:
 In consumer `.astro` files:
 ```astro
 ---
-import { Layout, Prose, Button, Card, CodeBlock, Callout, Table } from '@cheahhaoyi/site-kit';
+import { Layout, Prose, Button, Card, CodeBlock, Callout, Table, Badge, Tag } from '@cheahhaoyi/site-kit';
 ---
 ```

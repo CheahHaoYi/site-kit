@@ -1,11 +1,9 @@
 ---
 import Layout from '../components/Layout.astro';
-import Prose from '../components/Prose.astro';
 import Button from '../components/Button.astro';
 import Card from '../components/Card.astro';
 import CodeBlock from '../components/CodeBlock.astro';
 import Table from '../components/Table.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Callout from '../components/Callout.astro';
 import Tag from '../components/Tag.astro';
 import Badge from '../components/Badge.astro';
@@ -14,18 +12,18 @@ import ThemeToggle from '../components/ThemeToggle.astro';
 const breadcrumbsData = [
   { label: 'Network & AI Security', href: '/' },
   { label: 'Design System', href: '/' },
-  { label: 'Kitchen Sink Baseline' },
+  { label: 'Living Component Baseline' },
 ];
 
 const sampleSubnetHeaders = ['CIDR / Prefix', 'Subnet Mask', 'Total IPs', 'Usable Hosts', 'Use Case'];
 const sampleSubnetRows = [
-  ['/30', '255.255.252', 4, 2, 'Point-to-Point Router Links'],
+  ['/30', '255.255.255.252', 4, 2, 'Point-to-Point Router Links & BGP Peering'],
   ['/28', '255.255.255.240', 16, 14, 'Small DMZ / AI Model Cluster Gateway'],
   ['/24', '255.255.255.0', 256, 254, 'Standard Department VLAN / Kubernetes Pod Subnet'],
   ['/22', '255.255.252.0', 1024, 1022, 'Enterprise Campus Floor / Multi-Rack Data Center'],
 ];
 
-const bashExample = `# Configure persistent VLAN interface and firewall zone (RHEL / RHCSA)
+const bashExample = `# Configure persistent VLAN interface & firewall zone (RHEL 9 / RHCSA)
 sudo nmcli connection add type vlan con-name vlan100 dev eth0 id 100 ip4 10.100.1.1/24
 sudo firewall-cmd --zone=internal --add-interface=vlan100 --permanent
 sudo firewall-cmd --reload
@@ -49,576 +47,717 @@ def inspect_prompt_payload(prompt: str, user_context: Dict[str, Any]) -> bool:
             return False  # Security trigger: quarantine payload
     return True`;
 
-const yamlExample = `apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: ai-security-guardrail
-  namespace: telemetry-defense
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: guardrail-ingress
-  template:
-    spec:
-      containers:
-      - name: inspector
-        image: ghcr.io/cheahhaoyi/guardrail:v1.0.0
-        resources:
-          limits:
-            cpu: "2"
-            memory: "4Gi"`;
+const iosColors = [
+  { name: 'Purple (Key)', token: '--ios-purple', hex: '#af52de', role: 'Primary Accent & Dynamic Seed' },
+  { name: 'Indigo', token: '--ios-indigo', hex: '#5856d6', role: 'Secondary Tonal & Deep Accents' },
+  { name: 'Blue', token: '--ios-blue', hex: '#007aff', role: 'Interactive Links & Info Banners' },
+  { name: 'Mint / Teal', token: '--ios-mint', hex: '#00c7be', role: 'Security Audits & Telemetry OK' },
+  { name: 'Green', token: '--ios-green', hex: '#34c759', role: 'Passed Exams & Active Nodes' },
+  { name: 'Orange', token: '--ios-orange', hex: '#ff9500', role: 'Warnings & Packet Loss Alerts' },
+  { name: 'Pink / Red', token: '--ios-pink', hex: '#ff2d55', role: 'Critical Vulnerabilities & CVEs' },
+];
+
+const tonalPurplePalette = [
+  { level: 'Primary', token: '--color-accent-primary', hex: '#7c3aed', desc: 'Main interactive buttons, active indicators' },
+  { level: 'Primary Container', token: '--color-accent-subtle', hex: '#f3e8ff', desc: 'Tonal secondary buttons, active pills' },
+  { level: 'On-Container', token: '--color-accent-on-container', hex: '#581c87', desc: 'High-contrast typography on tonal beds' },
+  { level: 'Surface Container Low', token: '--color-bg-surface-container-low', hex: '#f8f6fc', desc: 'Soft inset backgrounds, table striping' },
+  { level: 'Surface Container Level 1', token: '--color-bg-surface-container', hex: '#f2eefa', desc: 'M3 Base container, tags, badges' },
+  { level: 'Surface Container Level 2', token: '--color-bg-surface-container-high', hex: '#e9e2f6', desc: 'Elevated hover layers, modal headers' },
+];
 ---
 
 <Layout
-  title="Style Guide & Kitchen Sink"
-  description="Single source of truth design system and UI component showcase for @cheahhaoyi portfolio and technical certification blogs. Light mode by default with dark mode alternative."
+  title="Style Guide & Living Baseline"
+  description="High-end design system synthesizing Apple Human Interface Guidelines and Google Material Design 3. Light mode by default with dark mode alternative."
   breadcrumbs={breadcrumbsData}
 >
-  <div class="container stack-lg">
-    <!-- Hero / Header Section -->
+  <div class="container page-wrapper">
+    <!-- 1. Hero Section (Apple Generous Whitespace & Minimalist Split) -->
     <section class="hero-section">
-      <div class="hero-content stack">
-        <div class="cluster">
-          <Badge variant="cert" pulse={true}>
+      <div class="hero-content">
+        <div class="eyebrow-cluster">
+          <Badge pill={true} iosColor="purple" pulse={true}>
             SYSTEM STATUS: OPERATIONAL
           </Badge>
-          <Tag variant="accent">Light Mode Default</Tag>
-          <Tag variant="outline">Dark Mode Alternative</Tag>
-          <Tag variant="outline">Astro 5.x Native</Tag>
+          <Tag pill={true} variant="cert">Light Mode Default</Tag>
+          <Tag pill={true} variant="outline">Dark Mode Alternative</Tag>
+          <Tag pill={true} variant="outline">Key Color: Purple</Tag>
         </div>
 
         <h1 class="hero-title">
-          Site-Kit Design System &amp; Component Baseline
+          Precision Systems Design for Network &amp; AI Security
         </h1>
 
         <p class="hero-lead">
-          The single source of truth for design tokens, typography, and UI components across the
-          entire <strong>@cheahhaoyi</strong> network and AI security portfolio. Built with a crisp 
-          <strong>Light Mode default</strong> foundation, complete with a high-contrast 
-          <strong>Dark Mode alternative</strong>.
+          The single source of truth design system synthesized from <strong>Apple Human Interface Guidelines</strong> 
+          (San Francisco typography, translucent frosted glass, native iOS system colors, spring motion) and 
+          <strong>Google Material Design 3</strong> (dynamic purple tonal palettes, prominent surface elevations, pill containers).
         </p>
 
-        <div class="cluster hero-actions">
-          <Button variant="primary" href="/demo">
-            View Design Benchmark &rarr;
+        <div class="hero-actions">
+          <Button href="/demo" variant="primary" size="lg" pill={true}>
+            <span>Explore Design Benchmark</span>
+            <span class="btn-icon-wrapper" aria-hidden="true">&rarr;</span>
           </Button>
-          <Button variant="outline" href="#components">
-            Component Gallery
-          </Button>
-          <Button variant="ghost" href="#prose-test">
-            Prose Test
+
+          <Button href="#tonal-system" variant="secondary" size="lg" pill={true}>
+            <span>Inspect Tonal Tokens</span>
           </Button>
         </div>
       </div>
+
+      <!-- Quick Interactive Theme Control Card (Double-Bezel Architecture) -->
+      <div class="hero-preview-card">
+        <Card variant="glass" doubleBezel={true} class="hero-glass-card">
+          <div class="live-theme-box">
+            <div class="live-theme-box__header">
+              <span class="live-theme-box__dot"></span>
+              <div>
+                <h4 class="live-theme-box__title">Live Interface Controller</h4>
+                <p class="live-theme-box__desc">Instant zero-flash synchronization with localStorage</p>
+              </div>
+            </div>
+
+            <div class="live-theme-toggle-row">
+              <span class="theme-state-label">Current State: <strong id="theme-status-text">Light Mode (Default)</strong></span>
+              <ThemeToggle size="md" />
+            </div>
+
+            <div class="live-metrics-grid">
+              <div class="metric-item">
+                <span class="metric-label">Primary Seed</span>
+                <span class="metric-val" style="color: var(--color-accent-primary);">#7C3AED</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Motion Curve</span>
+                <span class="metric-val">Spring Fluid</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">WCAG Target</span>
+                <span class="metric-val">AAA Compliant</span>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
     </section>
 
-    <!-- Theme Status Callout -->
-    <section class="install-section">
-      <Callout variant="tip" title="Dual-Theme Architecture: Light Mode Default + Dark Mode Alternative">
-        <p>
-          All components render in <strong>Light Mode by default</strong> with high-contrast surfaces, slate typography, and 
-          tonal elevation containers. Use the theme toggle in the header navigation or below to test the 
-          <strong>Dark Mode alternative</strong> with zero layout shift or flashing.
-        </p>
-        <div class="theme-quick-bar cluster">
-          <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-secondary);">TRY LIVE TOGGLE:</span>
-          <ThemeToggle size="sm" />
-          <ThemeToggle size="md" />
-        </div>
-      </Callout>
-    </section>
-
-    <!-- Section 1: Design Tokens (Color & Type) -->
-    <section id="tokens" class="section-card stack">
+    <!-- 2. Dynamic Color & Tonal System (Google M3 + Apple iOS Colors) -->
+    <section id="tonal-system" class="section-block">
       <div class="section-header">
-        <h2 class="section-heading">01 // Design Tokens &amp; Palette</h2>
-        <p class="section-subtext">
-          Precision HSL/Hex palette designed specifically for high-contrast technical reading in light (default) and dark themes.
+        <Badge pill={true} iosColor="indigo">DYNAMIC COLOR ARCHITECTURE</Badge>
+        <h2 class="section-title">Google Material 3 Tonal Palette &amp; Native iOS Colors</h2>
+        <p class="section-desc">
+          All surface elevations, container backgrounds, and state layers are dynamically derived from the key color 
+          <strong>Purple (#7c3aed)</strong>, combined with native Apple iOS system colors for status telemetry.
         </p>
       </div>
 
-      <div class="token-grid">
-        <div class="swatch-group">
-          <h3 class="swatch-group__title">Surface Levels</h3>
-          <div class="swatch-row">
-            <div class="swatch" style="background-color: var(--color-bg-base); border: 1px solid var(--color-border);">
-              <span class="swatch__label">bg-base</span>
+      <!-- M3 Purple Tonal Layers -->
+      <h3 class="subsection-title">Derived Purple Tonal Palette (M3 Container Roles)</h3>
+      <div class="tonal-palette-grid">
+        {tonalPurplePalette.map((item) => (
+          <div class="tonal-card">
+            <div class="tonal-swatch" style={`background-color: var(${item.token});`}></div>
+            <div class="tonal-meta">
+              <span class="tonal-level">{item.level}</span>
+              <code class="tonal-token">{item.token}</code>
+              <span class="tonal-desc">{item.desc}</span>
             </div>
-            <div class="swatch" style="background-color: var(--color-bg-surface); border: 1px solid var(--color-border);">
-              <span class="swatch__label">bg-surface</span>
+          </div>
+        ))}
+      </div>
+
+      <!-- Apple iOS Native System Colors -->
+      <h3 class="subsection-title" style="margin-top: var(--space-8);">Native Apple iOS System Colors</h3>
+      <div class="ios-colors-grid">
+        {iosColors.map((color) => (
+          <div class="ios-color-chip">
+            <span class="ios-color-dot" style={`background-color: var(${color.token});`}></span>
+            <div class="ios-color-info">
+              <span class="ios-color-name">{color.name}</span>
+              <code class="ios-color-token">{color.token}</code>
+              <span class="ios-color-role">{color.role}</span>
             </div>
-            <div class="swatch" style="background-color: var(--color-bg-surface-container); border: 1px solid var(--color-border);">
-              <span class="swatch__label">surface-container</span>
-            </div>
-            <div class="swatch" style="background-color: var(--color-bg-elevated); border: 1px solid var(--color-border);">
-              <span class="swatch__label">bg-elevated</span>
-            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 3. Doppelrand (Double-Bezel) & Apple Glassmorphism Cards -->
+    <section class="section-block">
+      <div class="section-header">
+        <Badge pill={true} iosColor="mint">HARDWARE ARCHITECTURE</Badge>
+        <h2 class="section-title">Double-Bezel Nested Enclosures &amp; Translucent Glass</h2>
+        <p class="section-desc">
+          Components feature physical hardware-inspired double-bezel nested enclosures (concentric squircle curves) 
+          and translucent frosted glass with top specular rim reflections.
+        </p>
+      </div>
+
+      <div class="cards-grid">
+        <Card
+          title="CISSP Domain 4: Network Security"
+          description="Deep dive into cryptographic protocols, BGP route security, and zero-trust transport boundary architecture."
+          href="#"
+          badge="CISSP 2026"
+          badgeVariant="cert"
+          date="Domain 04"
+          variant="glass"
+          doubleBezel={true}
+          tags={['BGP RPKI', 'IPSec IKEv2', '802.1X', 'TLS 1.3']}
+        />
+
+        <Card
+          title="RHCSA 9: Stratis & LVM Thin Pools"
+          description="Automating storage allocation, snapshot management, and systemd timer integration on Red Hat Enterprise Linux 9."
+          href="#"
+          badge="RHCSA"
+          badgeVariant="default"
+          date="Storage"
+          variant="tonal"
+          doubleBezel={true}
+          tags={['Stratis', 'LVM', 'systemd', 'XFS']}
+        />
+
+        <Card
+          title="AI Security: LLM Prompt Firewalls"
+          description="Real-time heuristic & semantic inspection pipelines defending against jailbreaks and unauthorized tool invocation."
+          href="#"
+          badge="AI Security"
+          badgeVariant="accent"
+          date="Research"
+          variant="glass"
+          doubleBezel={true}
+          tags={['Guardrails', 'LangChain', 'AST Filter', 'FastAPI']}
+        />
+      </div>
+    </section>
+
+    <!-- 4. Pill Components & Button-in-Button CTA Architecture -->
+    <section class="section-block">
+      <div class="section-header">
+        <Badge pill={true} iosColor="purple">PILL CONTAINERS &amp; INTERACTIVE CONTROLS</Badge>
+        <h2 class="section-title">Nested CTAs, Pill Containers &amp; Tactile Micro-Press</h2>
+        <p class="section-desc">
+          Interactive controls feature Apple-style rounded pill geometry, tactile spring micro-press physics 
+          (`active: scale(0.975)`), and nested button-in-button trailing icon kinetic animations.
+        </p>
+      </div>
+
+      <div class="interactive-showcase-box">
+        <div class="interactive-group">
+          <h4 class="group-title">Button-in-Button Action Pills</h4>
+          <div class="buttons-row">
+            <Button variant="primary" pill={true} size="lg">
+              <span>Deploy Firewall Policy</span>
+              <span class="btn-icon-wrapper">&rarr;</span>
+            </Button>
+
+            <Button variant="secondary" pill={true} size="lg">
+              <span>View Route Table</span>
+              <span class="btn-icon-wrapper">&#8600;</span>
+            </Button>
+
+            <Button variant="outline" pill={true} size="lg">
+              <span>Download Schema</span>
+              <span class="btn-icon-wrapper">&#8595;</span>
+            </Button>
+
+            <Button variant="danger" pill={true} size="lg">
+              <span>Quarantine Host</span>
+              <span class="btn-icon-wrapper">&times;</span>
+            </Button>
           </div>
         </div>
 
-        <div class="swatch-group">
-          <h3 class="swatch-group__title">Text Levels</h3>
-          <div class="swatch-row">
-            <div class="swatch" style="background-color: var(--color-text-primary);">
-              <span class="swatch__label" style="color: var(--color-text-inverse);">text-primary</span>
-            </div>
-            <div class="swatch" style="background-color: var(--color-text-secondary);">
-              <span class="swatch__label" style="color: #ffffff;">text-secondary</span>
-            </div>
-            <div class="swatch" style="background-color: var(--color-text-muted);">
-              <span class="swatch__label" style="color: #ffffff;">text-muted</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="swatch-group">
-          <h3 class="swatch-group__title">Accents &amp; Telemetry</h3>
-          <div class="swatch-row">
-            <div class="swatch" style="background-color: var(--color-accent-primary);">
-              <span class="swatch__label" style="color: #ffffff;">accent-primary</span>
-            </div>
-            <div class="swatch" style="background-color: var(--color-accent-hover);">
-              <span class="swatch__label" style="color: #ffffff;">accent-hover</span>
-            </div>
-            <div class="swatch" style="background-color: var(--color-telemetry);">
-              <span class="swatch__label" style="color: #ffffff;">telemetry</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="swatch-group">
-          <h3 class="swatch-group__title">Semantic Status Levels</h3>
-          <div class="swatch-row">
-            <div class="swatch" style="background-color: var(--color-info-icon);">
-              <span class="swatch__label" style="color: #ffffff;">info</span>
-            </div>
-            <div class="swatch" style="background-color: var(--color-success-icon);">
-              <span class="swatch__label" style="color: #ffffff;">success / tip</span>
-            </div>
-            <div class="swatch" style="background-color: var(--color-warning-icon);">
-              <span class="swatch__label" style="color: #ffffff;">warning</span>
-            </div>
-            <div class="swatch" style="background-color: var(--color-danger-icon);">
-              <span class="swatch__label" style="color: #ffffff;">danger</span>
-            </div>
+        <div class="interactive-group" style="margin-top: var(--space-6);">
+          <h4 class="group-title">Status Pills &amp; Telemetry Tags</h4>
+          <div class="pills-row">
+            <Badge pill={true} iosColor="purple" pulse={true}>Core BGP Mesh</Badge>
+            <Badge pill={true} iosColor="mint">Zero Packet Drop</Badge>
+            <Badge pill={true} iosColor="indigo">Mutual TLS Active</Badge>
+            <Badge pill={true} iosColor="orange">BGP Flap Warning</Badge>
+            <Badge pill={true} iosColor="pink">CVE-2026-1188</Badge>
+            <Tag pill={true} interactive={true}>#cisco-ios-xe</Tag>
+            <Tag pill={true} interactive={true}>#wireguard</Tag>
+            <Tag pill={true} interactive={true}>#ebpf-xdp</Tag>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Section 2: Component Library Gallery -->
-    <section id="components" class="stack-lg">
+    <!-- 5. Dual Shiki Code Highlighting & Technical Data Tables -->
+    <section class="section-block">
       <div class="section-header">
-        <h2 class="section-heading">02 // Component Library Gallery</h2>
-        <p class="section-subtext">
-          Astro UI components with strict TypeScript props, zero client-side framework bloat, and base-path awareness.
+        <Badge pill={true} iosColor="blue">DUAL SHIKI HIGHLIGHTING</Badge>
+        <h2 class="section-title">High-Contrast Technical Code &amp; Inset Tables</h2>
+        <p class="section-desc">
+          Code blocks use official Shiki engine with dual themes (GitHub Light in default light mode, GitHub Dark in dark mode). 
+          Data tables provide safe horizontal scrolling with zero squishing on mobile.
         </p>
       </div>
 
-      <!-- Breadcrumbs & ThemeToggle Navigation Showcase -->
-      <div class="component-showcase stack">
-        <h3 class="showcase-title">Navigation Primitives (<code class="inline-code">&lt;Breadcrumbs /&gt;</code>, <code class="inline-code">&lt;ThemeToggle /&gt;</code>)</h3>
-        <p class="showcase-desc">Base-path aware breadcrumbs with Schema.org microdata and accessible theme toggle with instant flash-prevention.</p>
-        
-        <div class="stack-sm">
-          <span style="font-size: var(--text-xs); color: var(--color-text-muted); font-family: var(--font-mono);">STANDALONE BREADCRUMB TRAIL:</span>
-          <Breadcrumbs
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Certifications', href: '/certs' },
-              { label: 'CISSP', href: '/cissp' },
-              { label: 'Domain 4: Network & Communication Security' },
-            ]}
+      <div class="code-and-table-grid">
+        <div>
+          <CodeBlock
+            code={bashExample}
+            lang="bash"
+            filename="vlan-automation.sh"
+            showLineNumbers={true}
           />
         </div>
 
-        <div class="cluster" style="align-items: center;">
-          <span style="font-size: var(--text-xs); color: var(--color-text-muted); font-family: var(--font-mono);">STANDALONE THEME TOGGLE (TRY CLICKING):</span>
-          <ThemeToggle size="sm" />
-          <ThemeToggle size="md" />
-          <ThemeToggle size="lg" />
+        <div>
+          <CodeBlock
+            code={pythonExample}
+            lang="python"
+            filename="prompt_guardrail.py"
+            showLineNumbers={true}
+          />
         </div>
       </div>
 
-      <!-- Buttons -->
-      <div class="component-showcase stack">
-        <h3 class="showcase-title">Buttons (<code class="inline-code">&lt;Button /&gt;</code>)</h3>
-        <p class="showcase-desc">Polymorphic button / anchor element with responsive variants, sizes, and states.</p>
-        
-        <div class="cluster">
-          <Button variant="primary">Primary Action</Button>
-          <Button variant="secondary">Secondary Action</Button>
-          <Button variant="outline">Outline Variant</Button>
-          <Button variant="ghost">Ghost Button</Button>
-          <Button variant="danger">Danger Action</Button>
-        </div>
-
-        <div class="cluster">
-          <Button variant="primary" size="sm">Small (sm)</Button>
-          <Button variant="primary" size="md">Medium (md)</Button>
-          <Button variant="primary" size="lg">Large (lg)</Button>
-          <Button variant="secondary" disabled={true}>Disabled State</Button>
-          <Button variant="outline" href="https://github.com" target="_blank">
-            External Link Button
-            <svg style="width: 1rem; height: 1rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-              <polyline points="15 3 21 3 21 9"></polyline>
-              <line x1="10" y1="14" x2="21" y2="3"></line>
-            </svg>
-          </Button>
-        </div>
-      </div>
-
-      <!-- Tags & Badges -->
-      <div class="component-showcase stack">
-        <h3 class="showcase-title">Badges &amp; Tags (<code class="inline-code">&lt;Badge /&gt;</code>, <code class="inline-code">&lt;Tag /&gt;</code>)</h3>
-        <p class="showcase-desc">Used for certification domains, difficulty levels, taxonomy, and live telemetry pulses.</p>
-        
-        <div class="cluster">
-          <Badge variant="cert" pulse={true}>CISSP CERTIFIED</Badge>
-          <Badge variant="accent">CCNA ROUTING</Badge>
-          <Badge variant="success">RHCSA PASSED</Badge>
-          <Badge variant="warning">AI THREAT MODELING</Badge>
-          <Badge variant="danger">CRITICAL VULNERABILITY</Badge>
-          <Badge variant="outline">RFC 1918</Badge>
-        </div>
-
-        <div class="cluster">
-          <Tag variant="default">Default Tag</Tag>
-          <Tag variant="accent">#NetworkSecurity</Tag>
-          <Tag variant="cert">#BGP-Hijacking</Tag>
-          <Tag variant="success">#RHEL9</Tag>
-          <Tag variant="warning">#ZeroTrust</Tag>
-          <Tag variant="danger">#CVE-2026-9912</Tag>
-          <Tag variant="outline" href="/tags/ai-safety">Clickable Tag Link &rarr;</Tag>
-        </div>
-      </div>
-
-      <!-- Callouts -->
-      <div class="component-showcase stack">
-        <h3 class="showcase-title">Callouts (<code class="inline-code">&lt;Callout /&gt;</code>)</h3>
-        <p class="showcase-desc">High-visibility callouts designed for technical blogs, exam caveats, and security notices.</p>
-        
-        <Callout variant="info" title="Network Architecture Note">
-          In spine-leaf topologies, ECMP (Equal-Cost Multi-Path) enables all links between leaf and spine switches to forward traffic simultaneously without spanning-tree port blocking.
-        </Callout>
-
-        <Callout variant="tip" title="RHCSA EX200 Exam Tip">
-          Always test your <code>/etc/fstab</code> entries with <code>sudo mount -a</code> before rebooting. A syntax error in <code>fstab</code> will drop the system into emergency target mode during the exam grading reboot.
-        </Callout>
-
-        <Callout variant="warning" title="CISSP Domain 4: BGP Route Leaking">
-          Without RPKI Route Origin Authorization (ROA) validation, your autonomous system is vulnerable to accidental route leaks and malicious prefix hijacking.
-        </Callout>
-
-        <Callout variant="danger" title="AI Security Warning: Indirect Prompt Injection">
-          Untrusted text fetched from third-party APIs must never be interpolated directly into LLM system prompts without structural schema boundaries or token-isolation barriers.
-        </Callout>
-      </div>
-
-      <!-- Code Blocks -->
-      <div class="component-showcase stack">
-        <h3 class="showcase-title">Code Blocks (<code class="inline-code">&lt;CodeBlock /&gt;</code>)</h3>
-        <p class="showcase-desc">Dual Shiki syntax highlighting (GitHub Light in default light mode, GitHub Dark in dark mode), terminal status dots, and one-click copy feedback.</p>
-        
-        <CodeBlock
-          filename="rhel9-vlan-config.sh"
-          lang="bash"
-          code={bashExample}
-        />
-
-        <CodeBlock
-          filename="prompt_guardrail.py"
-          lang="python"
-          code={pythonExample}
-        />
-
-        <CodeBlock
-          filename="k8s-security-deployment.yaml"
-          lang="yaml"
-          code={yamlExample}
-        />
-      </div>
-
-      <!-- Tables -->
-      <div class="component-showcase stack">
-        <h3 class="showcase-title">Responsive Tables (<code class="inline-code">&lt;Table /&gt;</code>)</h3>
-        <p class="showcase-desc">Full horizontal scrolling safety on narrow mobile viewports (down to 320px) with tabular numeric alignment.</p>
-        
+      <div style="margin-top: var(--space-8);">
         <Table
-          caption="IPv4 Subnetting &amp; Telemetry Planning Reference"
           headers={sampleSubnetHeaders}
           rows={sampleSubnetRows}
+          caption="IPv4 Subnet Planning Matrix (Network Engineering Reference)"
           striped={true}
         />
       </div>
-
-      <!-- Cards Grid -->
-      <div class="component-showcase stack">
-        <h3 class="showcase-title">Cards &amp; Teasers (<code class="inline-code">&lt;Card /&gt;</code>)</h3>
-        <p class="showcase-desc">Interactive cards with hover telemetry signal lines, badges, metadata, and tags.</p>
-        
-        <div class="grid-responsive">
-          <Card
-            variant="glass"
-            title="CISSP Domain 3: Security Architecture & Engineering"
-            description="Deep dive into cryptographic systems, trusted computing bases (TCB), security models (Bell-LaPadula, Biba), and cloud isolation primitives."
-            href="/cissp/domain-3-security-architecture"
-            badge="CISSP"
-            badgeVariant="cert"
-            date="Aug 2026"
-            tags={['Cryptography', 'Zero-Trust', 'Hardware Security']}
-          />
-
-          <Card
-            variant="tonal"
-            title="Red Hat RHCSA: Storage & LVM Automation"
-            description="Complete operational playbook for managing Stratis, VDO deduplication, LVM thin provisioning, and persistent LUKS disk encryption on RHEL 9."
-            href="/rhcsa/lvm-storage-automation"
-            badge="RHCSA"
-            badgeVariant="success"
-            date="Jul 2026"
-            tags={['LVM', 'XFS', 'LUKS', 'SELinux']}
-          />
-
-          <Card
-            variant="glass"
-            title="AI Security: LLM Red-Teaming & Guardrails"
-            description="Architecture of autonomous defensive agents inspecting multi-modal token streams for prompt extraction, privilege escalation, and tool poisoning."
-            href="/projects/ai-guardrail-engine"
-            badge="AI Security"
-            badgeVariant="warning"
-            date="Jun 2026"
-            tags={['LLM Security', 'Prompt Injection', 'Python']}
-          />
-        </div>
-      </div>
     </section>
 
-    <!-- Section 3: Full Markdown / MDX Prose Stress Test -->
-    <section id="prose-test" class="section-card stack">
+    <!-- 6. Semantic Callouts & Notices -->
+    <section class="section-block">
       <div class="section-header">
-        <h2 class="section-heading">03 // Full Markdown / MDX &lt;Prose&gt; Stress Test</h2>
-        <p class="section-subtext">
-          Validates that raw Markdown generated by blog posts renders with optimal typographic hierarchy, margins, and readability in both themes.
-        </p>
+        <Badge pill={true} iosColor="orange">SEMANTIC CALLOUTS</Badge>
+        <h2 class="section-title">Tactile Notices &amp; Certification Callouts</h2>
       </div>
 
-      <div class="prose-container">
-        <Prose>
-          <h1>Enterprise Network Segmentation &amp; AI Boundary Defense</h1>
-          
-          <p>
-            Modern cybersecurity architecture requires defending both traditional packet transport layers and emergent probabilistic AI runtime environments. When implementing <a href="#zero-trust">Zero Trust Network Architecture (ZTNA)</a>, perimeter defenses must be complemented by granular micro-segmentation and token-level runtime verification.
-          </p>
+      <div class="callouts-grid">
+        <Callout variant="tip" title="CISSP Exam Tip — Asymmetric Key Management">
+          When encrypting data at rest using envelope encryption (DEK/KEK), the data encryption key is generated locally 
+          by symmetric AES-256 and wrapped by the public key of the KMS master key.
+        </Callout>
 
-          <h2>1. Layered Defense Architecture (OSI to Application)</h2>
-          
-          <p>
-            Consider a typical high-throughput data center housing machine learning inference clusters. Traffic flows through multiple evaluation tiers:
-          </p>
-
-          <ul>
-            <li><strong>L3/L4 Network Layer:</strong> BGP EVPN with VXLAN encapsulation separating tenant workloads across distinct Virtual Routing and Forwarding (VRF) instances.</li>
-            <li><strong>L7 Proxy Layer:</strong> Mutual TLS (mTLS) termination with cryptographic hardware security module (HSM) attestation.</li>
-            <li><strong>AI Runtime Layer:</strong> Semantic guardrails and token inspection evaluating inputs before vector database queries are executed.</li>
-          </ul>
-
-          <h3>System Inspection Commands</h3>
-          <p>
-            To inspect active kernel routing tables and firewall drop counters, execute the following commands in your administrative terminal:
-          </p>
-
-          <pre><code># Check active kernel routing table and VRF assignments
-$ ip route show table 100
-10.100.0.0/16 dev vrf-secure proto kernel scope link src 10.100.1.1
-default via 10.100.0.1 dev vrf-secure proto static
-
-# View dropped packets logged by netfilter
-$ sudo nft list table inet filter | grep drop</code></pre>
-
-          <blockquote>
-            "Security is not a product, but a process. In distributed AI systems, every API boundary is a potential vector for unauthorized lateral traversal."
-          </blockquote>
-
-          <h3>Keyboard Shortcuts Reference</h3>
-          <p>
-            During interactive terminal investigations, use <kbd>Ctrl</kbd> + <kbd>C</kbd> to interrupt running packet captures, or press <kbd>Ctrl</kbd> + <kbd>R</kbd> to search shell history for previous <code>nmcli</code> commands.
-          </p>
-
-          <hr />
-
-          <h2>2. Certification Objective Checklist</h2>
-          
-          <ol>
-            <li>Understand the 8 domains of the (ISC)² CISSP CBK.</li>
-            <li>Configure persistent network teaming and IPv6 address resolution on Red Hat Enterprise Linux.</li>
-            <li>Implement OSPFv3 multi-area routing protocols on Cisco IOS-XE routers.</li>
-            <li>Analyze OWASP Top 10 vulnerabilities for Large Language Model Applications.</li>
-          </ol>
-        </Prose>
+        <Callout variant="warning" title="BGP Route Origin Validation (ROV)">
+          Always ensure Network Time Protocol (NTP) is synchronized with authoritative stratum-1 sources before enabling 
+          RPKI validation, as ROA validity states expire strictly based on UTC timestamps.
+        </Callout>
       </div>
     </section>
   </div>
 </Layout>
 
 <style>
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-24);
+  }
+
+  /* 1. Hero Section */
   .hero-section {
-    padding: var(--space-10) 0 var(--space-6);
-    border-bottom: 1px solid var(--color-border);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    align-items: center;
+    padding-top: var(--space-6);
+  }
+
+  @media (min-width: 960px) {
+    .hero-section {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: var(--space-12);
+    }
   }
 
   .hero-content {
-    max-width: 850px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .eyebrow-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
   }
 
   .hero-title {
-    font-size: var(--text-4xl);
-    line-height: var(--leading-tight);
+    font-size: var(--text-3xl);
     letter-spacing: var(--tracking-tighter);
+    line-height: var(--leading-tight);
+    font-weight: var(--font-weight-heavy);
     color: var(--color-text-primary);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
+    .hero-title {
+      font-size: var(--text-4xl);
+    }
+  }
+
+  @media (min-width: 1024px) {
     .hero-title {
       font-size: var(--text-5xl);
     }
   }
 
   .hero-lead {
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     line-height: var(--leading-relaxed);
     color: var(--color-text-secondary);
+    max-width: 62ch;
   }
 
-  .hero-actions {
-    margin-top: var(--space-4);
-  }
-
-  .install-section {
-    margin: var(--space-2) 0;
-  }
-
-  .theme-quick-bar {
-    margin-top: var(--space-3);
-    align-items: center;
-  }
-
-  /* Section Card */
-  .section-card {
-    background-color: var(--color-bg-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    padding: var(--space-6);
-    box-shadow: var(--shadow-sm);
-    transition: background-color var(--transition-fast), border-color var(--transition-fast);
-  }
-
-  @media (min-width: 768px) {
-    .section-card {
-      padding: var(--space-8);
+  @media (min-width: 640px) {
+    .hero-lead {
+      font-size: var(--text-lg);
     }
   }
 
-  .section-header {
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: var(--space-4);
-    margin-bottom: var(--space-4);
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
   }
 
-  .section-heading {
-    font-family: var(--font-mono);
-    font-size: var(--text-xl);
+  /* Hero Live Theme Box */
+  .hero-preview-card {
+    width: 100%;
+  }
+
+  .live-theme-box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .live-theme-box__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .live-theme-box__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--color-accent-primary);
+    box-shadow: 0 0 12px var(--color-accent-primary);
+  }
+
+  .live-theme-box__title {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
-    letter-spacing: var(--tracking-tight);
+    margin: 0;
   }
 
-  .section-subtext {
+  .live-theme-box__desc {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .live-theme-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-bg-surface-container);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+  }
+
+  .theme-state-label {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+
+  .live-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+    text-align: center;
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-2-5);
+    background-color: var(--color-bg-surface-container-low);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .metric-label {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .metric-val {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--text-xs);
+    color: var(--color-text-primary);
+    margin-top: var(--space-0-5);
+  }
+
+  /* Section Styles */
+  .section-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .section-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: 75ch;
+  }
+
+  .section-title {
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .section-title {
+      font-size: var(--text-3xl);
+    }
+  }
+
+  .section-desc {
     font-size: var(--text-sm);
     color: var(--color-text-secondary);
-    margin-top: var(--space-1);
+    line-height: var(--leading-relaxed);
   }
 
-  /* Token Swatch Grid */
-  .token-grid {
+  .subsection-title {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  /* Tonal Palette Grid */
+  .tonal-palette-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 640px) {
+    .tonal-palette-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tonal-palette-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .tonal-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .tonal-swatch {
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+  }
+
+  .tonal-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-0-5);
+  }
+
+  .tonal-level {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+  }
+
+  .tonal-token {
+    font-size: var(--text-2xs);
+    color: var(--color-accent-primary);
+  }
+
+  .tonal-desc {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+  }
+
+  /* iOS Colors Grid */
+  .ios-colors-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2-5);
+  }
+
+  @media (min-width: 640px) {
+    .ios-colors-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .ios-colors-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .ios-color-chip {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2-5) var(--space-3);
+    background-color: var(--color-bg-surface-container);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .ios-color-dot {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .ios-color-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .ios-color-name {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .ios-color-token {
+    font-size: 0.625rem;
+    color: var(--color-text-muted);
+  }
+
+  .ios-color-role {
+    font-size: 0.625rem;
+    color: var(--color-text-secondary);
+  }
+
+  /* Cards Grid */
+  .cards-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-6);
   }
 
-  @media (min-width: 640px) {
-    .token-grid {
-      grid-template-columns: repeat(2, 1fr);
+  @media (min-width: 768px) {
+    .cards-grid {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
-  .swatch-group__title {
+  /* Interactive Showcase Box */
+  .interactive-showcase-box {
+    padding: var(--space-6);
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .group-title {
     font-family: var(--font-display);
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     font-weight: var(--font-weight-semibold);
-    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-text-muted);
     margin-bottom: var(--space-3);
   }
 
-  .swatch-row {
+  .buttons-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .pills-row {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
   }
 
-  .swatch {
-    flex: 1 1 70px;
-    min-height: 54px;
-    border-radius: var(--radius-md);
-    padding: var(--space-2);
-    display: flex;
-    align-items: flex-end;
-    box-shadow: var(--shadow-sm);
+  /* Code Grid */
+  .code-and-table-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
   }
 
-  .swatch__label {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    font-weight: var(--font-weight-medium);
+  @media (min-width: 900px) {
+    .code-and-table-grid {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
-  /* Component Showcase */
-  .component-showcase {
-    background-color: var(--color-bg-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-6);
-    box-shadow: var(--shadow-sm);
-    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  /* Callouts Grid */
+  .callouts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 
-  .showcase-title {
-    font-family: var(--font-display);
-    font-size: var(--text-lg);
-    color: var(--color-text-primary);
-  }
-
-  .showcase-desc {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-    margin-top: -0.5rem;
-  }
-
-  .inline-code {
-    font-family: var(--font-mono);
-    color: var(--color-accent-primary);
-    background-color: var(--color-bg-elevated);
-    padding: 0.1em 0.3em;
-    border-radius: var(--radius-sm);
-    font-size: 0.85em;
-  }
-
-  .prose-container {
-    background-color: var(--color-bg-base);
-    padding: var(--space-6);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--color-border);
-    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  @media (min-width: 768px) {
+    .callouts-grid {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 </style>
+
+<script is:inline>
+  (function () {
+    const updateThemeStatus = () => {
+      const el = document.getElementById('theme-status-text');
+      if (!el) return;
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      el.textContent = current === 'dark' ? 'Dark Mode (Alternative)' : 'Light Mode (Default)';
+    };
+
+    updateThemeStatus();
+
+    const observer = new MutationObserver(updateThemeStatus);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  })();
+</script>
