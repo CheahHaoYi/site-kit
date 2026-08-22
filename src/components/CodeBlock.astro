@@ -63,7 +63,12 @@ const displayLabel = filename || lang.toUpperCase();
     </button>
   </div>
   <div class="code-block-content">
-    <Code code={trimmedCode} lang={lang as any} theme="github-dark" />
+    <Code
+      code={trimmedCode}
+      lang={lang as any}
+      themes={{ light: 'github-light', dark: 'github-dark' }}
+      defaultColor={false}
+    />
   </div>
 </div>
 
@@ -75,7 +80,8 @@ const displayLabel = filename || lang.toUpperCase();
     background-color: var(--color-code-bg);
     margin: var(--space-6) 0;
     overflow: hidden;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
   }
 
   .code-block-header {
@@ -86,6 +92,7 @@ const displayLabel = filename || lang.toUpperCase();
     background-color: var(--color-code-header-bg);
     border-bottom: 1px solid var(--color-code-border);
     user-select: none;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
   }
 
   .code-block-header__left {
@@ -101,8 +108,8 @@ const displayLabel = filename || lang.toUpperCase();
   }
 
   .dot {
-    width: 9px;
-    height: 9px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     display: inline-block;
   }
@@ -110,9 +117,11 @@ const displayLabel = filename || lang.toUpperCase();
   .dot--red {
     background-color: #ef4444;
   }
+
   .dot--amber {
     background-color: #f59e0b;
   }
+
   .dot--green {
     background-color: #10b981;
   }
@@ -120,6 +129,7 @@ const displayLabel = filename || lang.toUpperCase();
   .code-block-label {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
     color: var(--color-code-header-text);
     letter-spacing: var(--tracking-wide);
   }
@@ -127,26 +137,31 @@ const displayLabel = filename || lang.toUpperCase();
   .code-copy-button {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-1-5);
+    gap: var(--space-1);
     background: transparent;
-    border: 1px solid transparent;
-    color: var(--color-code-header-text);
-    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    padding: var(--space-1) var(--space-2);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
   }
 
   .code-copy-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    background-color: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-hover);
+  }
+
+  .code-copy-button:active {
+    transform: scale(0.96);
   }
 
   .code-copy-button:focus-visible {
     outline: 2px solid var(--color-accent-primary);
-    outline-offset: 2px;
+    outline-offset: 1px;
   }
 
   .copy-icon {
@@ -156,13 +171,7 @@ const displayLabel = filename || lang.toUpperCase();
 
   .copy-icon--success {
     display: none;
-    color: #34d399;
-  }
-
-  .code-copy-button.copied {
-    color: #34d399;
-    border-color: rgba(52, 211, 153, 0.3);
-    background-color: rgba(52, 211, 153, 0.1);
+    color: var(--color-success-icon);
   }
 
   .code-copy-button.copied .copy-icon--default {
@@ -173,24 +182,43 @@ const displayLabel = filename || lang.toUpperCase();
     display: inline-block;
   }
 
-  .code-block-content {
-    overflow-x: auto;
+  .code-copy-button.copied .copy-text {
+    color: var(--color-success-text);
   }
 
-  .code-block-content :global(pre) {
-    margin: 0 !important;
-    padding: var(--space-4) !important;
+  /* Dual Theme Syntax Highlighting Support */
+  :global(html:not([data-theme="dark"])) .code-block-content :global(pre.astro-code),
+  :global(html:not([data-theme="dark"])) .code-block-content :global(pre.astro-code span) {
+    color: var(--shiki-light) !important;
     background-color: transparent !important;
+    font-style: var(--shiki-light-font-style) !important;
+    font-weight: var(--shiki-light-font-weight) !important;
+    text-decoration: var(--shiki-light-text-decoration) !important;
+  }
+
+  :global(html[data-theme="dark"]) .code-block-content :global(pre.astro-code),
+  :global(html[data-theme="dark"]) .code-block-content :global(pre.astro-code span) {
+    color: var(--shiki-dark) !important;
+    background-color: transparent !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+
+  :global(.code-block-content pre) {
+    margin: 0 !important;
+    padding: var(--space-4) var(--space-5) !important;
+    background-color: var(--color-code-bg) !important;
     font-family: var(--font-mono) !important;
     font-size: var(--text-sm) !important;
     line-height: var(--leading-relaxed) !important;
-    border: none !important;
-    border-radius: 0 !important;
+    overflow-x: auto;
+    transition: background-color var(--transition-fast);
   }
 
-  .code-block-content :global(code) {
-    font-family: inherit !important;
-    font-size: inherit !important;
+  :global(.code-block-content code) {
+    font-family: inherit;
+    font-size: inherit;
     background: transparent !important;
     padding: 0 !important;
     border: none !important;
@@ -198,41 +226,43 @@ const displayLabel = filename || lang.toUpperCase();
 </style>
 
 <script is:inline>
-  (function() {
-    const initCopyButtons = () => {
-      const buttons = document.querySelectorAll('.code-copy-button');
-      buttons.forEach(btn => {
-        // Prevent duplicate listener binding
-        if (btn.dataset.initialized) return;
-        btn.dataset.initialized = 'true';
+  (function () {
+    const attachCopyListeners = () => {
+      const copyButtons = document.querySelectorAll('.code-copy-button');
 
-        btn.addEventListener('click', async () => {
-          const code = btn.getAttribute('data-code');
-          if (!code) return;
+      copyButtons.forEach((button) => {
+        // Prevent duplicate listener attachments on page swap
+        if (button.dataset.listenerAttached === 'true') return;
+        button.dataset.listenerAttached = 'true';
+
+        button.addEventListener('click', async () => {
+          const codeToCopy = button.getAttribute('data-code') || '';
+          if (!codeToCopy) return;
 
           try {
-            await navigator.clipboard.writeText(code);
-            btn.classList.add('copied');
-            const textSpan = btn.querySelector('.copy-text');
-            if (textSpan) textSpan.textContent = 'Copied!';
+            await navigator.clipboard.writeText(codeToCopy);
+            button.classList.add('copied');
+            const copyText = button.querySelector('.copy-text');
+            if (copyText) copyText.textContent = 'Copied!';
 
             setTimeout(() => {
-              btn.classList.remove('copied');
-              if (textSpan) textSpan.textContent = 'Copy';
+              button.classList.remove('copied');
+              if (copyText) copyText.textContent = 'Copy';
             }, 2000);
           } catch (err) {
-            console.error('Failed to copy code', err);
+            console.error('Failed to copy code block:', err);
           }
         });
       });
     };
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initCopyButtons);
+      document.addEventListener('DOMContentLoaded', attachCopyListeners);
     } else {
-      initCopyButtons();
+      attachCopyListeners();
     }
 
-    document.addEventListener('astro:after-swap', initCopyButtons);
+    // Support Astro View Transitions if enabled
+    document.addEventListener('astro:after-swap', attachCopyListeners);
   })();
 </script>

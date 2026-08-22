@@ -9,12 +9,11 @@ const { class: className = '', size = 'md' } = Astro.props;
 
 <button
   type="button"
-  id="site-kit-theme-toggle"
-  class:list={['theme-toggle', `theme-toggle--${size}`, className]}
+  class:list={['theme-toggle', 'site-kit-theme-toggle-btn', `theme-toggle--${size}`, className]}
   aria-label="Toggle color theme"
   title="Toggle light / dark theme"
 >
-  <!-- Sun Icon (shown in dark mode) -->
+  <!-- Sun Icon (shown in dark mode to switch back to light) -->
   <svg
     class="theme-icon theme-icon--sun"
     xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +36,7 @@ const { class: className = '', size = 'md' } = Astro.props;
     <path d="m19.07 4.93-1.41 1.41"></path>
   </svg>
 
-  <!-- Moon Icon (shown in light mode) -->
+  <!-- Moon Icon (shown in light mode to switch to dark) -->
   <svg
     class="theme-icon theme-icon--moon"
     xmlns="http://www.w3.org/2000/svg"
@@ -59,12 +58,12 @@ const { class: className = '', size = 'md' } = Astro.props;
     align-items: center;
     justify-content: center;
     position: relative;
-    background: transparent;
+    background-color: var(--color-bg-surface-container);
     color: var(--color-text-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     cursor: pointer;
-    transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+    transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
     padding: 0;
   }
 
@@ -84,9 +83,13 @@ const { class: className = '', size = 'md' } = Astro.props;
   }
 
   .theme-toggle:hover {
-    background-color: var(--color-bg-elevated);
+    background-color: var(--color-bg-surface-container-high);
     color: var(--color-text-primary);
     border-color: var(--color-border-hover);
+  }
+
+  .theme-toggle:active {
+    transform: scale(0.95);
   }
 
   .theme-toggle:focus-visible {
@@ -110,7 +113,7 @@ const { class: className = '', size = 'md' } = Astro.props;
     height: 1.35rem;
   }
 
-  /* In Light mode, show moon (to switch to dark), hide sun */
+  /* In Light mode (default), show moon (to switch to dark), hide sun */
   :root .theme-icon--sun,
   :root:not([data-theme="dark"]) .theme-icon--sun {
     display: none;
@@ -120,7 +123,7 @@ const { class: className = '', size = 'md' } = Astro.props;
     display: block;
   }
 
-  /* In Dark mode, show sun (to switch to light), hide moon */
+  /* In Dark mode (alternative), show sun (to switch to light), hide moon */
   :root[data-theme="dark"] .theme-icon--sun {
     display: block;
   }
@@ -131,29 +134,38 @@ const { class: className = '', size = 'md' } = Astro.props;
 
 <script is:inline>
   (function() {
-    const initThemeToggle = () => {
-      const toggle = document.getElementById('site-kit-theme-toggle');
-      if (!toggle) return;
+    const initThemeToggles = () => {
+      const toggles = document.querySelectorAll('.site-kit-theme-toggle-btn');
+      if (!toggles || toggles.length === 0) return;
 
-      toggle.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        document.documentElement.setAttribute('data-theme', nextTheme);
-        localStorage.setItem('site-kit-theme', nextTheme);
+      toggles.forEach((toggle) => {
+        if (toggle.dataset.listenerAttached === 'true') return;
+        toggle.dataset.listenerAttached = 'true';
 
-        // Dispatch custom event for consumers needing reactivity
-        window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme: nextTheme } }));
+        toggle.addEventListener('click', () => {
+          const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+          const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          
+          document.documentElement.setAttribute('data-theme', nextTheme);
+          try {
+            localStorage.setItem('site-kit-theme', nextTheme);
+          } catch (e) {
+            // LocalStorage disabled fallback
+          }
+
+          // Dispatch custom event for consumers needing reactivity
+          window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme: nextTheme } }));
+        });
       });
     };
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initThemeToggle);
+      document.addEventListener('DOMContentLoaded', initThemeToggles);
     } else {
-      initThemeToggle();
+      initThemeToggles();
     }
 
     // Support Astro View Transitions if enabled in consumer apps
-    document.addEventListener('astro:after-swap', initThemeToggle);
+    document.addEventListener('astro:after-swap', initThemeToggles);
   })();
 </script>

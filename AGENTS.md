@@ -9,13 +9,16 @@ This document provides essential technical context, architectural rules, coding 
 `@cheahhaoyi/site-kit` is the **single source of truth** for design tokens, typography, and typed UI components across the `@cheahhaoyi` multi-repo portfolio (root domain, CISSP, CCNA, RHCSA certification blogs, AI security showcases).
 
 ### Core Architectural Principles
-1. **Zero-Bundling Source Distribution**: Consuming Astro sites import raw `.astro` components and compile them during *their* build step (`astro build`). Do not introduce a bundle/dist compile step for components.
-2. **Pure CSS Custom Properties**: All design tokens live in standard CSS variables (`tokens.css`). TailwindCSS and CSS-in-JS are strictly forbidden unless explicitly requested.
-3. **Synthesis of Google Material Design 3 & Apple HIG**:
+1. **Light Mode by Default**: All components, layouts, and typography are styled with **Light Mode as the default initial baseline**, offering maximum legibility on high-density technical and networking content.
+2. **High-Contrast Dark Mode Alternative**: Full support for a high-contrast dark mode alternative (`data-theme="dark"`), saved in `localStorage['site-kit-theme']` and toggled with zero flash or layout shift.
+3. **Zero-Bundling Source Distribution**: Consuming Astro sites import raw `.astro` components and compile them during *their* build step (`astro build`). Do not introduce a bundle/dist compile step for components.
+4. **Pure CSS Custom Properties**: All design tokens live in standard CSS variables (`tokens.css`). TailwindCSS and CSS-in-JS are strictly forbidden unless explicitly requested.
+5. **Synthesis of Google Material Design 3 & Apple HIG**:
    - **Google Material Design 3**: Tonal surface containers (`--color-bg-surface-container`), state layers (`:hover`, `:active`), clear semantic roles, and high accessibility contrast.
    - **Apple Human Interface Guidelines (HIG)**: Translucent frosted glass materials (`backdrop-filter: blur(16px)` + specular rim highlights), tactile spring micro-interactions (`transform: scale(0.975)`), crisp typography, and segmented controls.
-4. **Base-Path Awareness**: All links and static asset references must handle subpath deployments (e.g. `/rhcsa`, `/cissp`) via `import.meta.env.BASE_URL` or `resolveUrl()`.
-5. **Zero-Flash Theme Initialization**: Theme selection (`data-theme="light"` / `"dark"`) is set by an inline, render-blocking `<head>` script with `localStorage` and `prefers-color-scheme` fallback.
+6. **Dual-Theme Code Highlighting**: `<CodeBlock />` uses Shiki dual themes (`github-light` in default light mode, `github-dark` in dark mode).
+7. **Base-Path Awareness**: All links and static asset references must handle subpath deployments (e.g. `/rhcsa`, `/cissp`) via `import.meta.env.BASE_URL` or `resolveUrl()`.
+8. **Zero-Flash Theme Initialization**: Theme selection is initialized by an inline, render-blocking `<head>` script defaulting to `light` unless `dark` is explicitly stored in `localStorage`.
 
 ---
 
@@ -80,11 +83,13 @@ npm run check && npm run build
 - `npm run build` must cleanly generate all static routes (`/index.html`, `/demo/index.html`).
 
 ### 4.2 Visual & Functional Regression Checklist
-1. **Theme Switcher**: Click the theme toggle button in the navigation header. Ensure instantaneous light/dark transition across all surfaces, cards, and code blocks with zero layout shift.
-2. **Tactile Spring Physics**: Click and hold buttons to verify the physical micro-press animation (`scale(0.975) translateY(1px)`).
-3. **Glassmorphism**: Verify that glass cards (`variant="glass"`) render with backdrop blur, specular top rim, and subtle translucent border in both light and dark modes.
-4. **Shiki Code Copy**: Click the copy button in `<CodeBlock />` and confirm the checkmark icon and text feedback appear before resetting.
-5. **Mobile Responsiveness**: Test viewport down to 320px width. Confirm that `<Table />` scrolls horizontally without squishing headers and the mobile navigation drawer toggles cleanly.
+1. **Default Light Mode**: Verify the initial page load renders in Light Mode with high-contrast slate typography and light container surfaces.
+2. **Theme Switcher**: Click the theme toggle button in the navigation header. Ensure instantaneous light/dark transition across all surfaces, cards, and code blocks with zero layout shift.
+3. **Dual Syntax Highlighting**: Verify `<CodeBlock />` switches from GitHub Light theme in light mode to GitHub Dark theme in dark mode.
+4. **Tactile Spring Physics**: Click and hold buttons to verify the physical micro-press animation (`scale(0.975) translateY(1px)`).
+5. **Glassmorphism**: Verify that glass cards (`variant="glass"`) render with backdrop blur, specular top rim, and subtle translucent border in both light and dark modes.
+6. **Shiki Code Copy**: Click the copy button in `<CodeBlock />` and confirm the checkmark icon and text feedback appear before resetting.
+7. **Mobile Responsiveness**: Test viewport down to 320px width. Confirm that `<Table />` scrolls horizontally without squishing headers and the mobile navigation drawer toggles cleanly.
 
 ---
 
@@ -101,7 +106,7 @@ npm run check && npm run build
    - Do not use `set:html` with untrusted or unsanitized user inputs.
    - Shiki code highlighting in `<CodeBlock />` must use official Shiki engine tokenization with escaped HTML entities.
 4. **Zero-Flash Inline Scripts**:
-   - The inline theme-init script in `<Layout.astro>` must only read/write `localStorage['site-kit-theme']` within a `try/catch` block to prevent exceptions when cookies or storage are disabled.
+   - The inline theme-init script in `<Layout.astro>` must default to `light` mode and safely handle `localStorage` within a `try/catch` block.
 
 ---
 

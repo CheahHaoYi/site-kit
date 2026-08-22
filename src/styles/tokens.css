@@ -4,6 +4,8 @@
  * Synthesizes Google Material Design 3 (tonal elevation, semantic roles, state layers)
  * and Apple Human Interface Guidelines (vibrancy, translucent materials, spring motion, typography precision).
  *
+ * Light Mode is the DEFAULT foundation, with a high-contrast Dark Mode alternative.
+ *
  * BREAKPOINTS (for use in component @media queries - CSS custom properties cannot be used in media queries):
  * - Mobile S:   320px
  * - Mobile L:   480px
@@ -17,6 +19,8 @@
    Light Mode (Default Theme)
    ========================================================================== */
 :root {
+  --theme-name: 'light';
+
   /* Surface / Background Levels (Material 3 Tonal Surfaces & Apple Inset Bases) */
   --color-bg-base: #f8fafc;                /* Cool engineering chalk base */
   --color-bg-surface: #ffffff;             /* Card & container pure surface */
@@ -28,16 +32,16 @@
   --color-bg-overlay: rgba(15, 23, 42, 0.4);
 
   /* Apple HIG Translucent Material & Vibrancy */
-  --glass-bg: rgba(255, 255, 255, 0.78);
-  --glass-bg-elevated: rgba(255, 255, 255, 0.90);
+  --glass-bg: rgba(255, 255, 255, 0.82);
+  --glass-bg-elevated: rgba(255, 255, 255, 0.94);
   --glass-border: rgba(226, 232, 240, 0.85);
   --glass-blur: blur(16px);
   --glass-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
 
   /* Text Levels (WCAG AAA / AA compliant) */
-  --color-text-primary: #0f172a;   /* Slate 900 */
-  --color-text-secondary: #475569; /* Slate 600 */
-  --color-text-muted: #64748b;     /* Slate 500 */
+  --color-text-primary: #0f172a;   /* Deep obsidian slate (Slate 900) */
+  --color-text-secondary: #475569; /* Balanced technical steel (Slate 600) */
+  --color-text-muted: #64748b;     /* Subdued metadata / captions (Slate 500) */
   --color-text-inverse: #ffffff;
 
   /* Borders & Hairlines */
@@ -77,14 +81,14 @@
   --color-danger-border: #fecaca;
   --color-danger-icon: #dc2626;
 
-  /* Code Block Colors (Light Mode) */
-  --color-code-bg: #0f172a;
-  --color-code-text: #f8fafc;
-  --color-code-border: #1e293b;
-  --color-code-header-bg: #1e293b;
-  --color-code-header-text: #94a3b8;
+  /* Code Block Colors (Light Mode Default) */
+  --color-code-bg: #f8fafc;
+  --color-code-text: #0f172a;
+  --color-code-border: #e2e8f0;
+  --color-code-header-bg: #f1f5f9;
+  --color-code-header-text: #475569;
   --color-inline-code-bg: #f1f5f9;
-  --color-inline-code-text: #0f172a;
+  --color-inline-code-text: #0284c7;
   --color-inline-code-border: #e2e8f0;
 
   /* Typography Families */
@@ -174,9 +178,11 @@
 }
 
 /* ==========================================================================
-   Dark Mode Theme
+   Dark Mode (Alternative Theme)
    ========================================================================== */
 [data-theme="dark"] {
+  --theme-name: 'dark';
+
   /* Surface / Background Levels (M3 Dark Tone Surfaces & Apple Dark Inset Base) */
   --color-bg-base: #0b0f17;                /* Deep obsidian / network rack dark */
   --color-bg-surface: #111827;             /* High-density component surface */
@@ -188,8 +194,8 @@
   --color-bg-overlay: rgba(0, 0, 0, 0.7);
 
   /* Apple HIG Dark Translucent Material & Vibrancy */
-  --glass-bg: rgba(17, 24, 39, 0.78);
-  --glass-bg-elevated: rgba(30, 41, 59, 0.88);
+  --glass-bg: rgba(17, 24, 39, 0.82);
+  --glass-bg-elevated: rgba(30, 41, 59, 0.90);
   --glass-border: rgba(30, 41, 59, 0.85);
   --glass-blur: blur(18px);
   --glass-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
@@ -237,7 +243,7 @@
   --color-danger-border: rgba(248, 113, 113, 0.3);
   --color-danger-icon: #f87171;
 
-  /* Code Block Colors (Dark Mode) */
+  /* Code Block Colors (Dark Mode Alternative) */
   --color-code-bg: #070a10;
   --color-code-text: #f1f5f9;
   --color-code-border: #1e293b;

@@ -10,14 +10,18 @@
 
 ## 1. Overview & Architecture
 
-`site-kit` provides shared CSS design tokens, typography, and typed Astro components for every site in the multi-repo portfolio (root domain, CISSP/CCNA/RHCSA certification study guides, project showcases).
+`@cheahhaoyi/site-kit` provides shared CSS design tokens, typography, and typed Astro components for every site in the multi-repo portfolio (root domain, CISSP/CCNA/RHCSA certification study guides, project showcases).
 
 ### Key Architectural Tenets:
-- **Zero-Bundling Source Distribution**: Consuming Astro sites compile `.astro` components at *their* build time. No pre-bundled artifacts required.
-- **Pure CSS Custom Properties**: All design tokens are defined as standard CSS variables in `tokens.css`. No Tailwind or CSS-in-JS dependencies required in consumer configs.
+- **Light Mode by Default**: Interfaces load with a high-contrast, clean slate aesthetic by default, prioritizing technical readability.
+- **Dark Mode Alternative**: Instant, zero-flash transition to a dark obsidian terminal aesthetic with `localStorage` persistence.
+- **Design Framework Synthesis**:
+  - **Google Material Design 3 (M3)**: Dynamic tonal surface elevation (`--color-bg-surface-container`), clear semantic roles, and interactive state layers.
+  - **Apple Human Interface Guidelines (HIG)**: Translucent frosted glass materials (`backdrop-filter: blur(16px)` + specular rim highlights), tactile spring micro-presses, and strict typographic hierarchy.
+- **Zero-Bundling Source Distribution**: Consuming Astro sites compile raw `.astro` components at *their* build time. No pre-bundled artifacts or JavaScript wrapper runtime.
+- **Pure CSS Custom Properties**: All design tokens are defined as standard CSS variables in `tokens.css`. TailwindCSS and CSS-in-JS are strictly avoided.
 - **Base-Path Aware**: Components seamlessly resolve links whether deployed at domain root (`/`) or under subpaths (`/rhcsa`, `/cissp`).
-- **Zero-Flash Dark Mode**: Instant theme initialization via an inline `<head>` script with `localStorage` persistence and `prefers-color-scheme` fallback.
-- **WCAG AA Compliant**: High contrast ratios in both light and dark modes, visible keyboard focus indicators, and reduced-motion support.
+- **WCAG AA Compliant**: High contrast ratios in both light and dark modes, visible keyboard focus indicators, and reduced-motion safety.
 
 ---
 
@@ -59,7 +63,7 @@ npm install
 
 ### 3.1 Using the Base Layout
 
-The `<Layout />` component automatically imports design tokens, initializes the theme without flash, sets up SEO metadata, and includes responsive navigation and footer.
+The `<Layout />` component automatically imports design tokens, initializes light mode by default without flash, sets up SEO metadata, and includes responsive navigation and footer.
 
 ```astro
 ---
@@ -86,7 +90,7 @@ const breadcrumbs = [
 
 ### 3.2 Markdown / MDX Blog Posts with `<Prose />`
 
-Wrap any Markdown content in `<Prose />` to inherit typography rules (headings, lists, blockquotes, code, tables):
+Wrap any Markdown content in `<Prose />` to inherit typography rules (headings, lists, blockquotes, code, tables) in both light and dark modes:
 
 ```astro
 ---
@@ -98,19 +102,17 @@ import { Layout, Prose, Callout, CodeBlock } from '@cheahhaoyi/site-kit';
     <Prose>
       <h1>Configuring RPKI on Cisco IOS-XE</h1>
       <p>
-        BGP prefix hijacking poses a fundamental risk to autonomous system routing.
+        RPKI ensures that only authorized Autonomous Systems can announce specific IP prefixes.
       </p>
 
-      <Callout variant="warning" title="Routing Caveat">
-        Always ensure multiple RPKI validator caches are configured for high availability.
+      <Callout variant="warning" title="Prefix Filtering Requirement">
+        Ensure your router's clock is synchronized via NTP before enabling ROA cryptographic validation.
       </Callout>
 
       <CodeBlock
         filename="cisco-rpki.cfg"
-        lang="cisco"
-        code={`router bgp 65001
-  neighbor 192.0.2.1 remote-as 65002
-  neighbor 192.0.2.1 route-map RPKI-VALIDATION in`}
+        lang="bash"
+        code={`router bgp 65000\n neighbor 192.0.2.1 remote-as 65001\n address-family ipv4 unicast\n  rpki validate`}
       />
     </Prose>
   </div>
@@ -121,73 +123,42 @@ import { Layout, Prose, Callout, CodeBlock } from '@cheahhaoyi/site-kit';
 
 ## 4. Component Reference
 
-All components are typed with TypeScript interfaces exported from `@cheahhaoyi/site-kit`.
-
-| Component | Export Path | Description |
-| :--- | :--- | :--- |
-| `<Layout />` | `@cheahhaoyi/site-kit` | Base HTML shell with SEO meta, theme-init, Nav, Breadcrumbs, and Footer. |
-| `<Prose />` | `@cheahhaoyi/site-kit` | Typographic container for Markdown/MDX blogs. |
-| `<Button />` | `@cheahhaoyi/site-kit` | Polymorphic button or link (`href`). Variants: `primary`, `secondary`, `outline`, `ghost`, `danger`. |
-| `<Card />` | `@cheahhaoyi/site-kit` | Teaser card for cert areas and projects with telemetry hover accent. |
-| `<CodeBlock />` | `@cheahhaoyi/site-kit` | Shiki-powered syntax highlighter with copy button and terminal header. |
-| `<Table />` | `@cheahhaoyi/site-kit` | Responsive table wrapper preventing horizontal overflow on mobile screens. |
-| `<Nav />` | `@cheahhaoyi/site-kit` | Base-path aware header nav with mobile drawer and theme toggle. |
-| `<Breadcrumbs />` | `@cheahhaoyi/site-kit` | Base-path aware navigation breadcrumb trail with microdata. |
-| `<Callout />` | `@cheahhaoyi/site-kit` | Callout boxes for exam tips and notices (`info`, `tip`, `warning`, `danger`). |
-| `<Tag />` | `@cheahhaoyi/site-kit` | Taxonomy tags with optional link behavior. |
-| `<Badge />` | `@cheahhaoyi/site-kit` | Status pills with optional live pulse indicator (`pulse={true}`). |
-| `<ThemeToggle />` | `@cheahhaoyi/site-kit` | Accessible light/dark theme switch button. |
+| Component | Props Interface | Description |
+|---|---|---|
+| `<Layout />` | `LayoutProps` | Root HTML wrapper with light mode default, metadata, nav, breadcrumbs, and footer |
+| `<Nav />` | `NavProps` | Responsive header navigation with frosted glass, mobile drawer, and theme switcher |
+| `<Button />` | `ButtonProps` | Tactile spring buttons (`primary`, `secondary`, `outline`, `ghost`, `danger`) |
+| `<Card />` | `CardProps` | Interactive cards with `default`, `tonal` (M3), and `glass` (Apple HIG) variants |
+| `<CodeBlock />` | `CodeBlockProps` | Dual Shiki syntax highlighting (Light default + Dark alternative) and copy feedback |
+| `<Table />` | `TableProps` | Inset tabular data container with full horizontal scroll safety on mobile |
+| `<Callout />` | `CalloutProps` | Semantic notice banners (`info`, `tip`, `warning`, `danger`) |
+| `<Badge />` | `BadgeProps` | Domain and certification status pills with optional pulsing telemetry light |
+| `<Tag />` | `TagProps` | Interactive topic tags with hover and active states |
+| `<Breadcrumbs />` | `BreadcrumbsProps` | Base-path aware breadcrumb trail with Schema.org JSON-LD |
+| `<ThemeToggle />` | `ThemeToggleProps` | Synchronized light mode default / dark mode alternative toggle button |
+| `<Prose />` | `ProseProps` | Typographic container formatting Markdown/MDX elements |
 
 ---
 
-## 5. Design Tokens (CSS Custom Properties)
-
-Design tokens are located in `src/styles/tokens.css` (imported automatically by `<Layout />` or manually via `import '@cheahhaoyi/site-kit/tokens.css'`).
-
-### 5.1 Color Palette
-- **Surfaces**: `--color-bg-base`, `--color-bg-surface`, `--color-bg-elevated`, `--color-bg-sunken`
-- **Text**: `--color-text-primary`, `--color-text-secondary`, `--color-text-muted`, `--color-text-inverse`
-- **Borders**: `--color-border`, `--color-border-subtle`, `--color-border-hover`
-- **Accents**: `--color-accent-primary` (Sky 600 / 400), `--color-accent-hover`, `--color-telemetry` (Amber 600 / 400)
-- **Status Levels**:
-  - Info: `--color-info-text`, `--color-info-bg`, `--color-info-border`, `--color-info-icon`
-  - Success/Tip: `--color-success-text`, `--color-success-bg`, `--color-success-border`, `--color-success-icon`
-  - Warning: `--color-warning-text`, `--color-warning-bg`, `--color-warning-border`, `--color-warning-icon`
-  - Danger: `--color-danger-text`, `--color-danger-bg`, `--color-danger-border`, `--color-danger-icon`
-
-### 5.2 Typography
-- **Display / Headings**: `--font-display` (`Plus Jakarta Sans`)
-- **Body Text**: `--font-body` (`Inter`)
-- **Monospace / CLI**: `--font-mono` (`JetBrains Mono`)
-- **Scale**: `--text-xs` (12px), `--text-sm` (14px), `--text-base` (16px), `--text-lg` (18px), `--text-xl` (20px), `--text-2xl` (24px), `--text-3xl` (30px), `--text-4xl` (36px), `--text-5xl` (48px)
-
-### 5.3 Spacing (4px Base Scale)
-`--space-1` (4px), `--space-2` (8px), `--space-3` (12px), `--space-4` (16px), `--space-6` (24px), `--space-8` (32px), `--space-12` (48px), `--space-16` (64px), `--space-20` (80px).
-
----
-
-## 6. Local Development & Testing
+## 5. Development & Testing
 
 ```bash
-# Clone the repository
-git clone https://github.com/cheahhaoyi/site-kit.git
-cd site-kit
-
 # Install dependencies
 npm install
 
-# Start development server with live style-guide preview
+# Start local Astro development server
 npm run dev
 
-# Run type checks across all Astro components
+# Run Astro TypeScript typechecking (0 errors / 0 warnings required)
 npm run check
 
-# Build static smoke-test bundle
+# Build static production smoke-test
 npm run build
 ```
 
 ---
 
-## 7. License
+## 6. Live Test Pages
 
-MIT &copy; [Hao Yi Cheah](https://github.com/cheahhaoyi).
+- **Style Guide Kitchen Sink**: `http://localhost:4321/`
+- **Material 3 & Apple HIG Benchmark**: `http://localhost:4321/demo`

@@ -19,7 +19,7 @@ const breadcrumbsData = [
 
 const sampleSubnetHeaders = ['CIDR / Prefix', 'Subnet Mask', 'Total IPs', 'Usable Hosts', 'Use Case'];
 const sampleSubnetRows = [
-  ['/30', '255.255.255.252', 4, 2, 'Point-to-Point Router Links'],
+  ['/30', '255.255.252', 4, 2, 'Point-to-Point Router Links'],
   ['/28', '255.255.255.240', 16, 14, 'Small DMZ / AI Model Cluster Gateway'],
   ['/24', '255.255.255.0', 256, 254, 'Standard Department VLAN / Kubernetes Pod Subnet'],
   ['/22', '255.255.252.0', 1024, 1022, 'Enterprise Campus Floor / Multi-Rack Data Center'],
@@ -72,7 +72,7 @@ spec:
 
 <Layout
   title="Style Guide & Kitchen Sink"
-  description="Single source of truth design system and UI component showcase for @cheahhaoyi portfolio and technical certification blogs."
+  description="Single source of truth design system and UI component showcase for @cheahhaoyi portfolio and technical certification blogs. Light mode by default with dark mode alternative."
   breadcrumbs={breadcrumbsData}
 >
   <div class="container stack-lg">
@@ -83,9 +83,9 @@ spec:
           <Badge variant="cert" pulse={true}>
             SYSTEM STATUS: OPERATIONAL
           </Badge>
-          <Tag variant="accent">v1.0.0</Tag>
+          <Tag variant="accent">Light Mode Default</Tag>
+          <Tag variant="outline">Dark Mode Alternative</Tag>
           <Tag variant="outline">Astro 5.x Native</Tag>
-          <Tag variant="outline">No Tailwind / Pure CSS Tokens</Tag>
         </div>
 
         <h1 class="hero-title">
@@ -94,8 +94,9 @@ spec:
 
         <p class="hero-lead">
           The single source of truth for design tokens, typography, and UI components across the
-          entire <strong>@cheahhaoyi</strong> network and AI security portfolio. Designed with precision,
-          deep technical legibility, and architectural rigor.
+          entire <strong>@cheahhaoyi</strong> network and AI security portfolio. Built with a crisp 
+          <strong>Light Mode default</strong> foundation, complete with a high-contrast 
+          <strong>Dark Mode alternative</strong>.
         </p>
 
         <div class="cluster hero-actions">
@@ -112,18 +113,19 @@ spec:
       </div>
     </section>
 
-    <!-- Installation & Consumption Note -->
+    <!-- Theme Status Callout -->
     <section class="install-section">
-      <Callout variant="tip" title="Consumer Installation & Git Dependency Pattern">
+      <Callout variant="tip" title="Dual-Theme Architecture: Light Mode Default + Dark Mode Alternative">
         <p>
-          Consume this package across portfolio repositories directly via git without pre-compilation:
+          All components render in <strong>Light Mode by default</strong> with high-contrast surfaces, slate typography, and 
+          tonal elevation containers. Use the theme toggle in the header navigation or below to test the 
+          <strong>Dark Mode alternative</strong> with zero layout shift or flashing.
         </p>
-        <div class="install-code-box">
-          <code>"dependencies": &#123; "@cheahhaoyi/site-kit": "github:cheahhaoyi/site-kit#v1.0.0" &#125;</code>
+        <div class="theme-quick-bar cluster">
+          <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-secondary);">TRY LIVE TOGGLE:</span>
+          <ThemeToggle size="sm" />
+          <ThemeToggle size="md" />
         </div>
-        <p>
-          Or use semver range: <code>"github:cheahhaoyi/site-kit#semver:^1.0.0"</code> to automatically receive non-breaking design token updates.
-        </p>
       </Callout>
     </section>
 
@@ -132,7 +134,7 @@ spec:
       <div class="section-header">
         <h2 class="section-heading">01 // Design Tokens &amp; Palette</h2>
         <p class="section-subtext">
-          Precision HSL/Hex palette designed specifically for high-contrast technical reading in light and dark themes.
+          Precision HSL/Hex palette designed specifically for high-contrast technical reading in light (default) and dark themes.
         </p>
       </div>
 
@@ -145,6 +147,9 @@ spec:
             </div>
             <div class="swatch" style="background-color: var(--color-bg-surface); border: 1px solid var(--color-border);">
               <span class="swatch__label">bg-surface</span>
+            </div>
+            <div class="swatch" style="background-color: var(--color-bg-surface-container); border: 1px solid var(--color-border);">
+              <span class="swatch__label">surface-container</span>
             </div>
             <div class="swatch" style="background-color: var(--color-bg-elevated); border: 1px solid var(--color-border);">
               <span class="swatch__label">bg-elevated</span>
@@ -315,7 +320,7 @@ spec:
       <!-- Code Blocks -->
       <div class="component-showcase stack">
         <h3 class="showcase-title">Code Blocks (<code class="inline-code">&lt;CodeBlock /&gt;</code>)</h3>
-        <p class="showcase-desc">Built-in Shiki syntax highlighting, terminal status dots, language labels, and instant one-click copy with micro-feedback.</p>
+        <p class="showcase-desc">Dual Shiki syntax highlighting (GitHub Light in default light mode, GitHub Dark in dark mode), terminal status dots, and one-click copy feedback.</p>
         
         <CodeBlock
           filename="rhel9-vlan-config.sh"
@@ -356,6 +361,7 @@ spec:
         
         <div class="grid-responsive">
           <Card
+            variant="glass"
             title="CISSP Domain 3: Security Architecture & Engineering"
             description="Deep dive into cryptographic systems, trusted computing bases (TCB), security models (Bell-LaPadula, Biba), and cloud isolation primitives."
             href="/cissp/domain-3-security-architecture"
@@ -366,6 +372,7 @@ spec:
           />
 
           <Card
+            variant="tonal"
             title="Red Hat RHCSA: Storage & LVM Automation"
             description="Complete operational playbook for managing Stratis, VDO deduplication, LVM thin provisioning, and persistent LUKS disk encryption on RHEL 9."
             href="/rhcsa/lvm-storage-automation"
@@ -376,6 +383,7 @@ spec:
           />
 
           <Card
+            variant="glass"
             title="AI Security: LLM Red-Teaming & Guardrails"
             description="Architecture of autonomous defensive agents inspecting multi-modal token streams for prompt extraction, privilege escalation, and tool poisoning."
             href="/projects/ai-guardrail-engine"
@@ -393,7 +401,7 @@ spec:
       <div class="section-header">
         <h2 class="section-heading">03 // Full Markdown / MDX &lt;Prose&gt; Stress Test</h2>
         <p class="section-subtext">
-          Validates that raw Markdown generated by blog posts renders with optimal typographic hierarchy, margins, and readability.
+          Validates that raw Markdown generated by blog posts renders with optimal typographic hierarchy, margins, and readability in both themes.
         </p>
       </div>
 
@@ -492,18 +500,9 @@ $ sudo nft list table inet filter | grep drop</code></pre>
     margin: var(--space-2) 0;
   }
 
-  .install-code-box {
-    margin: var(--space-3) 0;
-    padding: var(--space-3) var(--space-4);
-    background-color: var(--color-code-bg);
-    border: 1px solid var(--color-code-border);
-    border-radius: var(--radius-md);
-  }
-
-  .install-code-box code {
-    font-family: var(--font-mono);
-    color: var(--color-accent-primary);
-    font-size: var(--text-sm);
+  .theme-quick-bar {
+    margin-top: var(--space-3);
+    align-items: center;
   }
 
   /* Section Card */
@@ -513,6 +512,7 @@ $ sudo nft list table inet filter | grep drop</code></pre>
     border-radius: var(--radius-xl);
     padding: var(--space-6);
     box-shadow: var(--shadow-sm);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
   }
 
   @media (min-width: 768px) {
@@ -568,7 +568,7 @@ $ sudo nft list table inet filter | grep drop</code></pre>
   }
 
   .swatch {
-    flex: 1 1 80px;
+    flex: 1 1 70px;
     min-height: 54px;
     border-radius: var(--radius-md);
     padding: var(--space-2);
@@ -590,6 +590,7 @@ $ sudo nft list table inet filter | grep drop</code></pre>
     border-radius: var(--radius-lg);
     padding: var(--space-6);
     box-shadow: var(--shadow-sm);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
   }
 
   .showcase-title {
@@ -618,5 +619,6 @@ $ sudo nft list table inet filter | grep drop</code></pre>
     padding: var(--space-6);
     border-radius: var(--radius-lg);
     border: 1px solid var(--color-border);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
   }
 </style>

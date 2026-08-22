@@ -8,6 +8,7 @@ import Table from '../components/Table.astro';
 import Callout from '../components/Callout.astro';
 import Tag from '../components/Tag.astro';
 import Badge from '../components/Badge.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 const breadcrumbsData = [
   { label: 'Site-Kit', href: '/' },
@@ -47,7 +48,7 @@ class TelemetryGuardrail:
 
 <Layout
   title="Material 3 & Apple HIG Design Testbed"
-  description="Live test website benchmarking Google Material Design 3 and Apple Human Interface Guidelines synthesis for @cheahhaoyi site-kit."
+  description="Live test website benchmarking Google Material Design 3 and Apple Human Interface Guidelines synthesis for @cheahhaoyi site-kit. Light mode default with dark mode alternative."
   breadcrumbs={breadcrumbsData}
 >
   <div class="container stack-lg">
@@ -55,9 +56,9 @@ class TelemetryGuardrail:
     <header class="demo-hero stack">
       <div class="cluster">
         <Badge variant="accent" pulse={true}>DESIGN BENCHMARK TESTBED</Badge>
-        <Tag variant="cert">Material 3</Tag>
-        <Tag variant="cert">Apple HIG</Tag>
-        <Tag variant="outline">Interactive Proof of Concept</Tag>
+        <Tag variant="accent">Light Mode Default</Tag>
+        <Tag variant="cert">Dark Mode Alternative</Tag>
+        <Tag variant="outline">Material 3 + Apple HIG</Tag>
       </div>
 
       <h1 class="demo-title">
@@ -65,9 +66,15 @@ class TelemetryGuardrail:
       </h1>
       
       <p class="demo-lead">
-        Proof-of-concept test page verifying the design system elements before consumer repositories 
-        (e.g., CISSP blog, CCNA notes, portfolio showcase) import <code>@cheahhaoyi/site-kit</code>.
+        Proof-of-concept test page verifying that components render in <strong>Light Mode by default</strong> 
+        with crisp readability, while seamlessly supporting a full <strong>Dark Mode alternative</strong>.
       </p>
+
+      <div class="theme-switch-showcase cluster">
+        <span class="theme-switch-label">Live Theme Switcher:</span>
+        <ThemeToggle size="md" />
+        <span class="theme-switch-hint">(Click to toggle between default Light Mode &amp; Dark Mode alternative)</span>
+      </div>
 
       <Callout variant="tip" title="Design Language Convergence">
         Combines Material Design 3's high-contrast tonal elevations and structured state roles with Apple HIG's 
@@ -83,7 +90,7 @@ class TelemetryGuardrail:
           <div class="framework-badge m3-badge">Google Material Design 3</div>
           <h2 class="framework-title">Tonal Surfaces &amp; State Layers</h2>
           <p class="framework-desc">
-            Expressive tonal containers, semantic role tokens, and dynamic depth without heavy artificial drop-shadows.
+            Expressive tonal containers, semantic role tokens, and dynamic depth calibrated for light and dark themes.
           </p>
         </div>
 
@@ -92,7 +99,7 @@ class TelemetryGuardrail:
           <Card
             variant="tonal"
             title="M3 Surface Container"
-            description="Uses --color-bg-surface-container for low-strain readability and seamless hierarchy."
+            description="Uses --color-bg-surface-container for low-strain readability and seamless hierarchy in light mode."
             badge="M3 TONAL"
             badgeVariant="accent"
             tags={['Tonal Elevation', 'Slate-100/800', 'State Tint']}
@@ -222,7 +229,7 @@ class TelemetryGuardrail:
 
       <!-- Code Block Test -->
       <div class="stack-sm">
-        <h3 class="showcase-title">Interactive Terminal CodeBlock (Zero-Dependency Shiki)</h3>
+        <h3 class="showcase-title">Interactive Terminal CodeBlock (Dual Shiki Light/Dark Themes)</h3>
         <CodeBlock
           filename="telemetry_guardrail.py"
           lang="python"
@@ -240,9 +247,10 @@ class TelemetryGuardrail:
             <strong>Apple Human Interface Guidelines</strong> (vibrancy, translucent glass materials, tactile spring feedback).
           </p>
           <ul>
+            <li><strong>Light Mode Default:</strong> High contrast, clean slate surfaces, and optimized reading comfort.</li>
+            <li><strong>Dark Mode Alternative:</strong> Seamless one-click transition with zero flash and persistence.</li>
             <li><strong>Zero Client-Side Framework Bloat:</strong> Pure Astro + standard CSS custom properties.</li>
             <li><strong>Multi-Repo Base-Path Awareness:</strong> Smooth subpath deployment under <code>/rhcsa</code>, <code>/cissp</code>, or root.</li>
-            <li><strong>Zero Theme Flashing:</strong> Instant inline theme execution before first paint.</li>
           </ul>
         </Prose>
       </div>
@@ -275,6 +283,27 @@ class TelemetryGuardrail:
     line-height: var(--leading-relaxed);
   }
 
+  .theme-switch-showcase {
+    align-items: center;
+    background-color: var(--color-bg-surface-container);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    margin: var(--space-2) 0;
+  }
+
+  .theme-switch-label {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .theme-switch-hint {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
   /* Benchmark Comparison Grid */
   .benchmark-grid {
     display: grid;
@@ -294,6 +323,7 @@ class TelemetryGuardrail:
     border-radius: var(--radius-xl);
     padding: var(--space-6);
     box-shadow: var(--shadow-sm);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
   }
 
   .framework-header {
@@ -407,5 +437,6 @@ class TelemetryGuardrail:
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: var(--space-6);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
   }
 </style>

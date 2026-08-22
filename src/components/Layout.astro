@@ -29,7 +29,7 @@ const ogImage = image ? (image.startsWith('http') ? image : new URL(image, siteO
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -58,7 +58,7 @@ const ogImage = image ? (image.startsWith('http') ? image : new URL(image, siteO
       rel="stylesheet"
     />
 
-    <!-- Theme Initialization Script (Blocks paint to prevent any theme flash) -->
+    <!-- Zero-Flash Theme Initialization Script (Light mode default with dark mode alternative) -->
     <script is:inline>
       (function () {
         try {
@@ -67,9 +67,8 @@ const ogImage = image ? (image.startsWith('http') ? image : new URL(image, siteO
           if (saved === 'dark' || saved === 'light') {
             document.documentElement.setAttribute('data-theme', saved);
           } else {
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const defaultTheme = prefersDark ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', defaultTheme);
+            // Default to light mode explicitly as the primary design baseline
+            document.documentElement.setAttribute('data-theme', 'light');
           }
         } catch (e) {
           // Fallback if localStorage is disabled
@@ -109,7 +108,7 @@ const ogImage = image ? (image.startsWith('http') ? image : new URL(image, siteO
           </div>
           <div class="site-footer__meta">
             <p class="footer-text">
-              Single source of truth design system powered by <code>@cheahhaoyi/site-kit</code>.
+              Light mode default with dark mode alternative powered by <code>@cheahhaoyi/site-kit</code>.
             </p>
             <p class="footer-subtext">
               &copy; {new Date().getFullYear()} Hao Yi Cheah. All rights reserved.
@@ -139,6 +138,7 @@ const ogImage = image ? (image.startsWith('http') ? image : new URL(image, siteO
     border-top: 1px solid var(--color-border);
     background-color: var(--color-bg-surface);
     padding: var(--space-8) 0 var(--space-10);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
   }
 
   .site-footer__inner {
