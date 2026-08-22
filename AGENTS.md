@@ -2,6 +2,8 @@
 
 This document provides essential technical context, architectural rules, aesthetic standards, and testing procedures for coding agents working within this repository or integrating `@cheahhaoyi/site-kit` into downstream portfolio repositories.
 
+For downstream implementation details, complete component APIs, design tokens, and layout patterns, see [DESIGN.md](DESIGN.md).
+
 ---
 
 ## 1. Project Overview & Aesthetic Synthesis
@@ -11,15 +13,15 @@ This document provides essential technical context, architectural rules, aesthet
 ### Core Architectural & Aesthetic Principles
 1. **Light Mode by Default**: All components, layouts, and typography are styled with **Light Mode as the default initial baseline**, offering maximum legibility on high-density technical and networking content.
 2. **High-Contrast Dark Mode Alternative**: Full support for a high-contrast dark mode alternative (`data-theme="dark"`), saved in `localStorage['site-kit-theme']` and toggled with zero flash or layout shift.
-3. **Synthesis of Google Material Design 3 & Apple HIG**:
-   - **Google Material Design 3**:
+3. **Synthesis of Modern Interface Standards & Material Design 3 Dynamic Tonal Science**:
+   - **Material Design 3 Principles**:
      - Dynamic Color Tonal Palettes derived from key color **Purple (`#7c3aed`)** (`--color-accent-primary`, `--color-accent-subtle`, `--color-accent-on-container`).
      - Prominent surface elevations (`--color-bg-surface-container-low`, `--color-bg-surface-container`, `--color-bg-surface-container-high`).
      - Structured state layers and pill-shaped container geometry.
-   - **Apple Human Interface Guidelines (HIG)**:
-     - San Francisco system typography hierarchy with tight negative tracking (`-0.04em`).
+   - **Modern System Interface Standards**:
+     - System typography hierarchy with tight negative tracking (`-0.04em`).
      - Translucent frosted glassmorphism (`backdrop-filter: blur(20px)`) with specular top rim reflections (`inset 0 1px 0 0 rgba(255,255,255,0.95)`).
-     - Native iOS system colors (`--ios-purple`, `--ios-indigo`, `--ios-blue`, `--ios-mint`, `--ios-green`, `--ios-orange`, `--ios-pink`).
+     - Native system accent colors (`--ios-purple`, `--ios-indigo`, `--ios-blue`, `--ios-mint`, `--ios-green`, `--ios-orange`, `--ios-pink`).
      - Double-Bezel (Doppelrand) nested hardware architecture (`doubleBezel={true}`).
      - Button-in-Button trailing action icon architecture with kinetic spring hover tension.
      - Natural spring motion physics (`--ease-spring: cubic-bezier(0.32, 0.72, 0, 1)`).
@@ -126,7 +128,7 @@ In consumer repository `package.json`:
 ```json
 {
   "dependencies": {
-    "@cheahhaoyi/site-kit": "github:cheahhaoyi/site-kit#v1.0.0"
+    "@cheahhaoyi/site-kit": "github:cheahhaoyi/site-kit#semver:^1.0.0"
   }
 }
 ```
@@ -137,3 +139,5 @@ In consumer `.astro` files:
 import { Layout, Prose, Button, Card, CodeBlock, Callout, Table, Badge, Tag } from '@cheahhaoyi/site-kit';
 ---
 ```
+
+For the complete API reference, design tokens, utility classes, and agent design rules, see [DESIGN.md](DESIGN.md).
