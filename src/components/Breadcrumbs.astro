@@ -1,0 +1,104 @@
+---
+import type { BreadcrumbsProps } from '../types';
+import { resolveUrl } from '../utils/url';
+
+interface Props extends BreadcrumbsProps {}
+
+const { items, class: className = '' } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class:list={['breadcrumbs-nav', className]}>
+  <ol class="breadcrumbs-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    {items.map((item, index) => {
+      const isLast = index === items.length - 1;
+      const resolvedHref = item.href ? resolveUrl(item.href) : undefined;
+
+      return (
+        <li
+          class:list={['breadcrumb-item', { 'breadcrumb-item--current': isLast }]}
+          itemprop="itemListElement"
+          itemscope
+          itemtype="https://schema.org/ListItem"
+        >
+          {item.href && !isLast ? (
+            <a
+              href={resolvedHref}
+              class="breadcrumb-link"
+              itemprop="item"
+            >
+              <span itemprop="name">{item.label}</span>
+            </a>
+          ) : (
+            <span
+              class="breadcrumb-current"
+              aria-current={isLast ? 'page' : undefined}
+              itemprop="name"
+            >
+              {item.label}
+            </span>
+          )}
+          <meta itemprop="position" content={String(index + 1)} />
+
+          {!isLast && (
+            <span class="breadcrumb-separator" aria-hidden="true">
+              /
+            </span>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+</nav>
+
+<style>
+  .breadcrumbs-nav {
+    width: 100%;
+    margin-bottom: var(--space-4);
+  }
+
+  .breadcrumbs-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    color: var(--color-text-muted);
+    gap: var(--space-1-5);
+  }
+
+  .breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1-5);
+  }
+
+  .breadcrumb-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--color-accent-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .breadcrumb-link:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+  }
+
+  .breadcrumb-current {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .breadcrumb-separator {
+    color: var(--color-border-hover);
+    user-select: none;
+  }
+</style>

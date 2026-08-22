@@ -1,0 +1,244 @@
+/**
+ * @cheahhaoyi/site-kit - Design Tokens
+ * Single source of truth for color, typography, spacing, elevation, and layout.
+ *
+ * BREAKPOINTS (for use in component @media queries - CSS custom properties cannot be used in media queries):
+ * - Mobile S:   320px
+ * - Mobile L:   480px
+ * - Tablet:     640px  (@media (min-width: 640px))
+ * - Laptop/MD:  768px  (@media (min-width: 768px))
+ * - Desktop/LG: 1024px (@media (min-width: 1024px))
+ * - Wide/XL:    1280px (@media (min-width: 1280px))
+ */
+
+/* ==========================================================================
+   Light Mode (Default Theme)
+   ========================================================================== */
+:root {
+  /* Surface / Background Levels */
+  --color-bg-base: #f8fafc;        /* Cool engineering chalk base */
+  --color-bg-surface: #ffffff;     /* Card & container pure surface */
+  --color-bg-elevated: #f1f5f9;    /* Hovered / raised layers (Slate 100) */
+  --color-bg-sunken: #e2e8f0;      /* Recessed / sunken wells (Slate 200) */
+  --color-bg-overlay: rgba(15, 23, 42, 0.4);
+
+  /* Text Levels (WCAG AAA / AA compliant against base & surface) */
+  --color-text-primary: #0f172a;   /* Deep obsidian slate (Slate 900) */
+  --color-text-secondary: #475569; /* Balanced technical steel (Slate 600) */
+  --color-text-muted: #64748b;     /* Subdued metadata / captions (Slate 500) */
+  --color-text-inverse: #ffffff;   /* Text on dark surfaces */
+
+  /* Borders & Hairlines */
+  --color-border: #e2e8f0;         /* Clear structural hairline (Slate 200) */
+  --color-border-subtle: #f1f5f9;  /* Inset / inner divider (Slate 100) */
+  --color-border-hover: #cbd5e1;   /* Interactive border hover (Slate 300) */
+  --color-border-focus: #0284c7;   /* Focus outline */
+
+  /* Primary Accent (Signal Cyan/Blue - network telemetry precision) */
+  --color-accent-primary: #0284c7; /* Sky 600 */
+  --color-accent-hover: #0369a1;   /* Sky 700 */
+  --color-accent-subtle: #e0f2fe;  /* Sky 100 */
+  --color-accent-contrast: #ffffff;
+
+  /* Secondary / Telemetry Accent (Amber - alerts / cert status) */
+  --color-telemetry: #d97706;      /* Amber 600 */
+  --color-telemetry-subtle: #fef3c7; /* Amber 100 */
+
+  /* Semantic Callout & Status Levels (Light Mode) */
+  --color-info-text: #0369a1;      /* Sky 700 */
+  --color-info-bg: #f0f9ff;        /* Sky 50 */
+  --color-info-border: #bae6fd;    /* Sky 200 */
+  --color-info-icon: #0284c7;      /* Sky 600 */
+
+  --color-success-text: #047857;   /* Emerald 700 */
+  --color-success-bg: #ecfdf5;     /* Emerald 50 */
+  --color-success-border: #a7f3d0; /* Emerald 200 */
+  --color-success-icon: #059669;   /* Emerald 600 */
+
+  --color-warning-text: #b45309;   /* Amber 700 */
+  --color-warning-bg: #fffbeb;     /* Amber 50 */
+  --color-warning-border: #fde68a; /* Amber 200 */
+  --color-warning-icon: #d97706;   /* Amber 600 */
+
+  --color-danger-text: #b91c1c;    /* Red 700 */
+  --color-danger-bg: #fef2f2;      /* Red 50 */
+  --color-danger-border: #fecaca;  /* Red 200 */
+  --color-danger-icon: #dc2626;    /* Red 600 */
+
+  /* Code Block Colors (Light Mode) */
+  --color-code-bg: #0f172a;        /* High-contrast deep slate for CLI */
+  --color-code-text: #f8fafc;
+  --color-code-border: #1e293b;
+  --color-code-header-bg: #1e293b;
+  --color-code-header-text: #94a3b8;
+  --color-inline-code-bg: #f1f5f9;
+  --color-inline-code-text: #0f172a;
+  --color-inline-code-border: #e2e8f0;
+
+  /* Typography Families */
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Type Scale */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+  --text-4xl: 2.25rem;    /* 36px */
+  --text-5xl: 3rem;       /* 48px */
+
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+  --leading-loose: 2;
+
+  /* Letter Spacing */
+  --tracking-tighter: -0.035em;
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Spacing Scale (4px Base) */
+  --space-0: 0;
+  --space-0-5: 0.125rem; /* 2px */
+  --space-1: 0.25rem;   /* 4px */
+  --space-1-5: 0.375rem;/* 6px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-2-5: 0.625rem;/* 10px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* Radii */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+
+  /* Elevation & Shadows (Crisp & Technical) */
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-inner: inset 0 2px 4px 0 rgba(15, 23, 42, 0.04);
+  --shadow-focus: 0 0 0 2px var(--color-bg-surface), 0 0 0 4px var(--color-accent-primary);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout Widths */
+  --content-max-width: 1200px;
+  --prose-max-width: 72ch;
+  --nav-height: 4rem; /* 64px */
+}
+
+/* ==========================================================================
+   Dark Mode Theme
+   ========================================================================== */
+[data-theme="dark"] {
+  /* Surface / Background Levels */
+  --color-bg-base: #0b0f17;        /* Deep obsidian / network rack dark */
+  --color-bg-surface: #111827;     /* High-density component surface */
+  --color-bg-elevated: #1e293b;    /* Hovered / raised layers (Slate 800) */
+  --color-bg-sunken: #070a10;      /* Inset wells */
+  --color-bg-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Text Levels */
+  --color-text-primary: #f8fafc;   /* Slate 50 */
+  --color-text-secondary: #94a3b8; /* Slate 400 */
+  --color-text-muted: #64748b;     /* Slate 500 */
+  --color-text-inverse: #0f172a;
+
+  /* Borders & Hairlines */
+  --color-border: #1e293b;         /* Slate 800 */
+  --color-border-subtle: #162032;  /* Slate 900 */
+  --color-border-hover: #334155;   /* Slate 700 */
+  --color-border-focus: #38bdf8;
+
+  /* Primary Accent (Precision Signal Sky) */
+  --color-accent-primary: #38bdf8; /* Sky 400 */
+  --color-accent-hover: #7dd3fc;   /* Sky 300 */
+  --color-accent-subtle: rgba(56, 189, 248, 0.12);
+  --color-accent-contrast: #0f172a;
+
+  /* Secondary / Telemetry Accent */
+  --color-telemetry: #fbbf24;      /* Amber 400 */
+  --color-telemetry-subtle: rgba(251, 191, 36, 0.12);
+
+  /* Semantic Callout & Status Levels (Dark Mode) */
+  --color-info-text: #7dd3fc;      /* Sky 300 */
+  --color-info-bg: rgba(2, 132, 199, 0.12);
+  --color-info-border: rgba(56, 189, 248, 0.3);
+  --color-info-icon: #38bdf8;      /* Sky 400 */
+
+  --color-success-text: #6ee7b7;   /* Emerald 300 */
+  --color-success-bg: rgba(5, 150, 105, 0.12);
+  --color-success-border: rgba(52, 211, 153, 0.3);
+  --color-success-icon: #34d399;   /* Emerald 400 */
+
+  --color-warning-text: #fcd34d;   /* Amber 300 */
+  --color-warning-bg: rgba(217, 119, 6, 0.12);
+  --color-warning-border: rgba(251, 191, 36, 0.3);
+  --color-warning-icon: #fbbf24;   /* Amber 400 */
+
+  --color-danger-text: #fca5a5;    /* Red 300 */
+  --color-danger-bg: rgba(220, 38, 38, 0.12);
+  --color-danger-border: rgba(248, 113, 113, 0.3);
+  --color-danger-icon: #f87171;    /* Red 400 */
+
+  /* Code Block Colors (Dark Mode) */
+  --color-code-bg: #070a10;
+  --color-code-text: #f1f5f9;
+  --color-code-border: #1e293b;
+  --color-code-header-bg: #111827;
+  --color-code-header-text: #94a3b8;
+  --color-inline-code-bg: #1e293b;
+  --color-inline-code-text: #38bdf8;
+  --color-inline-code-border: #334155;
+
+  /* Shadows (Subtler rim light & darkness in dark mode) */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  --shadow-focus: 0 0 0 2px var(--color-bg-base), 0 0 0 4px var(--color-accent-primary);
+}
+
+/* Reduced Motion Safety */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

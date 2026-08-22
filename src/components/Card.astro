@@ -1,0 +1,262 @@
+---
+import type { CardProps } from '../types';
+import { resolveUrl } from '../utils/url';
+import Badge from './Badge.astro';
+import Tag from './Tag.astro';
+
+interface Props extends CardProps {}
+
+const {
+  title,
+  description,
+  href,
+  tags = [],
+  badge,
+  badgeVariant = 'default',
+  date,
+  image,
+  imageAlt = '',
+  variant = 'default',
+  class: className = '',
+} = Astro.props;
+
+const resolvedHref = href ? resolveUrl(href) : undefined;
+const CardTag = href ? 'a' : 'div';
+---
+
+<CardTag
+  href={resolvedHref}
+  class:list={[
+    'card',
+    `card--${variant}`,
+    { 'card--clickable': Boolean(href) },
+    className,
+  ]}
+>
+  <!-- Card Image / Header Visual -->
+  {image && (
+    <div class="card__media">
+      <img src={resolveUrl(image)} alt={imageAlt} loading="lazy" />
+    </div>
+  )}
+  <slot name="image" />
+
+  <div class="card__body">
+    <!-- Meta / Badge / Date -->
+    {(badge || date || Astro.slots.has('meta')) && (
+      <div class="card__meta">
+        {badge && (
+          <Badge variant={badgeVariant as any} size="sm">
+            {badge}
+          </Badge>
+        )}
+        {date && <time class="card__date">{date}</time>}
+        <slot name="meta" />
+      </div>
+    )}
+
+    <!-- Header / Title -->
+    {title && (
+      <h3 class="card__title">
+        {title}
+        {href && (
+          <svg
+            class="card__arrow"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        )}
+      </h3>
+    )}
+    <slot name="header" />
+
+    <!-- Description / Body -->
+    {description && <p class="card__description">{description}</p>}
+    <slot />
+
+    <!-- Footer / Tags -->
+    {(tags.length > 0 || Astro.slots.has('footer')) && (
+      <div class="card__footer">
+        {tags.length > 0 && (
+          <div class="card__tags">
+            {tags.map((tag) => (
+              <Tag size="sm" variant="default">
+                {tag}
+              </Tag>
+            ))}
+          </div>
+        )}
+        <slot name="footer" />
+      </div>
+    )}
+  </div>
+</CardTag>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--color-text-primary);
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .card--default {
+    background-color: var(--color-bg-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card--elevated {
+    background-color: var(--color-bg-surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  .card--bordered {
+    background-color: var(--color-bg-base);
+    border: 1px solid var(--color-border);
+  }
+
+  .card--ghost {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  /* Clickable Card Hover */
+  .card--clickable {
+    cursor: pointer;
+  }
+
+  .card--clickable::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--color-accent-primary);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+  }
+
+  .card--clickable:hover {
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  .card--clickable:hover::before {
+    opacity: 1;
+  }
+
+  .card--clickable:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+  }
+
+  /* Media / Image */
+  .card__media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: var(--color-bg-elevated);
+    overflow: hidden;
+  }
+
+  .card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-normal);
+  }
+
+  .card--clickable:hover .card__media img {
+    transform: scale(1.03);
+  }
+
+  /* Body */
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: var(--space-5);
+    gap: var(--space-3);
+  }
+
+  /* Meta */
+  .card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .card__date {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  /* Title */
+  .card__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    line-height: var(--leading-snug);
+    margin: 0;
+  }
+
+  .card__arrow {
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--color-text-muted);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  .card--clickable:hover .card__arrow {
+    color: var(--color-accent-primary);
+    transform: translate(2px, -2px);
+  }
+
+  /* Description */
+  .card__description {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  /* Footer & Tags */
+  .card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: var(--space-2);
+  }
+
+  .card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1-5);
+  }
+</style>

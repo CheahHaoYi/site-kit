@@ -1,0 +1,169 @@
+---
+import type { CalloutProps } from '../types';
+
+interface Props extends CalloutProps {}
+
+const {
+  variant = 'info',
+  title,
+  icon = true,
+  class: className = '',
+} = Astro.props;
+
+const defaultTitles: Record<string, string> = {
+  info: 'Note',
+  tip: 'Exam Tip',
+  warning: 'Warning',
+  danger: 'Critical Gotcha',
+};
+
+const displayTitle = title ?? defaultTitles[variant];
+---
+
+<aside
+  class:list={['callout', `callout--${variant}`, className]}
+  role="note"
+  aria-label={displayTitle}
+>
+  <div class="callout__header">
+    {icon && (
+      <span class="callout__icon" aria-hidden="true">
+        {variant === 'info' && (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+        )}
+        {variant === 'tip' && (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4"></path>
+            <path d="m4.93 4.93 2.83 2.83"></path>
+            <path d="M2 12h4"></path>
+            <path d="m4.93 19.07 2.83-2.83"></path>
+            <path d="M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"></path>
+            <path d="M9 18h6"></path>
+            <path d="M10 22h4"></path>
+          </svg>
+        )}
+        {variant === 'warning' && (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+            <path d="M12 9v4"></path>
+            <path d="M12 17h.01"></path>
+          </svg>
+        )}
+        {variant === 'danger' && (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="m15 9-6 6"></path>
+            <path d="m9 9 6 6"></path>
+          </svg>
+        )}
+      </span>
+    )}
+    {displayTitle && <h4 class="callout__title">{displayTitle}</h4>}
+  </div>
+  <div class="callout__content">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .callout {
+    position: relative;
+    border-radius: var(--radius-lg);
+    padding: var(--space-4) var(--space-5);
+    margin: var(--space-6) 0;
+    border: 1px solid var(--color-border);
+    border-left-width: 4px;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  .callout__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .callout__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .callout__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .callout__title {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .callout__content {
+    color: var(--color-text-primary);
+  }
+
+  .callout__content :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .callout__content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  /* Info Variant */
+  .callout--info {
+    background-color: var(--color-info-bg);
+    border-color: var(--color-info-border);
+    border-left-color: var(--color-info-icon);
+  }
+  .callout--info .callout__icon,
+  .callout--info .callout__title {
+    color: var(--color-info-text);
+  }
+
+  /* Tip Variant */
+  .callout--tip {
+    background-color: var(--color-success-bg);
+    border-color: var(--color-success-border);
+    border-left-color: var(--color-success-icon);
+  }
+  .callout--tip .callout__icon,
+  .callout--tip .callout__title {
+    color: var(--color-success-text);
+  }
+
+  /* Warning Variant */
+  .callout--warning {
+    background-color: var(--color-warning-bg);
+    border-color: var(--color-warning-border);
+    border-left-color: var(--color-warning-icon);
+  }
+  .callout--warning .callout__icon,
+  .callout--warning .callout__title {
+    color: var(--color-warning-text);
+  }
+
+  /* Danger Variant */
+  .callout--danger {
+    background-color: var(--color-danger-bg);
+    border-color: var(--color-danger-border);
+    border-left-color: var(--color-danger-icon);
+  }
+  .callout--danger .callout__icon,
+  .callout--danger .callout__title {
+    color: var(--color-danger-text);
+  }
+</style>

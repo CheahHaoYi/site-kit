@@ -1,0 +1,622 @@
+---
+import Layout from '../components/Layout.astro';
+import Prose from '../components/Prose.astro';
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import Table from '../components/Table.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Callout from '../components/Callout.astro';
+import Tag from '../components/Tag.astro';
+import Badge from '../components/Badge.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+
+const breadcrumbsData = [
+  { label: 'Network & AI Security', href: '/' },
+  { label: 'Design System', href: '/' },
+  { label: 'Kitchen Sink Baseline' },
+];
+
+const sampleSubnetHeaders = ['CIDR / Prefix', 'Subnet Mask', 'Total IPs', 'Usable Hosts', 'Use Case'];
+const sampleSubnetRows = [
+  ['/30', '255.255.255.252', 4, 2, 'Point-to-Point Router Links'],
+  ['/28', '255.255.255.240', 16, 14, 'Small DMZ / AI Model Cluster Gateway'],
+  ['/24', '255.255.255.0', 256, 254, 'Standard Department VLAN / Kubernetes Pod Subnet'],
+  ['/22', '255.255.252.0', 1024, 1022, 'Enterprise Campus Floor / Multi-Rack Data Center'],
+];
+
+const bashExample = `# Configure persistent VLAN interface and firewall zone (RHEL / RHCSA)
+sudo nmcli connection add type vlan con-name vlan100 dev eth0 id 100 ip4 10.100.1.1/24
+sudo firewall-cmd --zone=internal --add-interface=vlan100 --permanent
+sudo firewall-cmd --reload
+sudo firewall-cmd --zone=internal --list-all`;
+
+const pythonExample = `"""
+AI Security: Prompt Injection & Tool Calling Guardrail
+Validates input telemetry before executing tool calls.
+"""
+from typing import Dict, Any
+import re
+
+def inspect_prompt_payload(prompt: str, user_context: Dict[str, Any]) -> bool:
+    forbidden_patterns = [
+        r"ignore previous instructions",
+        r"system prompt override",
+        r"<script.*?>",
+    ]
+    for pattern in forbidden_patterns:
+        if re.search(pattern, prompt, re.IGNORECASE):
+            return False  # Security trigger: quarantine payload
+    return True`;
+
+const yamlExample = `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-security-guardrail
+  namespace: telemetry-defense
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: guardrail-ingress
+  template:
+    spec:
+      containers:
+      - name: inspector
+        image: ghcr.io/cheahhaoyi/guardrail:v1.0.0
+        resources:
+          limits:
+            cpu: "2"
+            memory: "4Gi"`;
+---
+
+<Layout
+  title="Style Guide & Kitchen Sink"
+  description="Single source of truth design system and UI component showcase for @cheahhaoyi portfolio and technical certification blogs."
+  breadcrumbs={breadcrumbsData}
+>
+  <div class="container stack-lg">
+    <!-- Hero / Header Section -->
+    <section class="hero-section">
+      <div class="hero-content stack">
+        <div class="cluster">
+          <Badge variant="cert" pulse={true}>
+            SYSTEM STATUS: OPERATIONAL
+          </Badge>
+          <Tag variant="accent">v1.0.0</Tag>
+          <Tag variant="outline">Astro 5.x Native</Tag>
+          <Tag variant="outline">No Tailwind / Pure CSS Tokens</Tag>
+        </div>
+
+        <h1 class="hero-title">
+          Site-Kit Design System &amp; Component Baseline
+        </h1>
+
+        <p class="hero-lead">
+          The single source of truth for design tokens, typography, and UI components across the
+          entire <strong>@cheahhaoyi</strong> network and AI security portfolio. Designed with precision,
+          deep technical legibility, and architectural rigor.
+        </p>
+
+        <div class="cluster hero-actions">
+          <Button variant="primary" href="#components">
+            Explore Components
+          </Button>
+          <Button variant="outline" href="#prose-test">
+            Markdown Prose Test
+          </Button>
+          <Button variant="secondary" href="https://github.com/cheahhaoyi/site-kit" target="_blank">
+            GitHub Repository
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation & Consumption Note -->
+    <section class="install-section">
+      <Callout variant="tip" title="Consumer Installation & Git Dependency Pattern">
+        <p>
+          Consume this package across portfolio repositories directly via git without pre-compilation:
+        </p>
+        <div class="install-code-box">
+          <code>"dependencies": &#123; "@cheahhaoyi/site-kit": "github:cheahhaoyi/site-kit#v1.0.0" &#125;</code>
+        </div>
+        <p>
+          Or use semver range: <code>"github:cheahhaoyi/site-kit#semver:^1.0.0"</code> to automatically receive non-breaking design token updates.
+        </p>
+      </Callout>
+    </section>
+
+    <!-- Section 1: Design Tokens (Color & Type) -->
+    <section id="tokens" class="section-card stack">
+      <div class="section-header">
+        <h2 class="section-heading">01 // Design Tokens &amp; Palette</h2>
+        <p class="section-subtext">
+          Precision HSL/Hex palette designed specifically for high-contrast technical reading in light and dark themes.
+        </p>
+      </div>
+
+      <div class="token-grid">
+        <div class="swatch-group">
+          <h3 class="swatch-group__title">Surface Levels</h3>
+          <div class="swatch-row">
+            <div class="swatch" style="background-color: var(--color-bg-base); border: 1px solid var(--color-border);">
+              <span class="swatch__label">bg-base</span>
+            </div>
+            <div class="swatch" style="background-color: var(--color-bg-surface); border: 1px solid var(--color-border);">
+              <span class="swatch__label">bg-surface</span>
+            </div>
+            <div class="swatch" style="background-color: var(--color-bg-elevated); border: 1px solid var(--color-border);">
+              <span class="swatch__label">bg-elevated</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="swatch-group">
+          <h3 class="swatch-group__title">Text Levels</h3>
+          <div class="swatch-row">
+            <div class="swatch" style="background-color: var(--color-text-primary);">
+              <span class="swatch__label" style="color: var(--color-text-inverse);">text-primary</span>
+            </div>
+            <div class="swatch" style="background-color: var(--color-text-secondary);">
+              <span class="swatch__label" style="color: #ffffff;">text-secondary</span>
+            </div>
+            <div class="swatch" style="background-color: var(--color-text-muted);">
+              <span class="swatch__label" style="color: #ffffff;">text-muted</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="swatch-group">
+          <h3 class="swatch-group__title">Accents &amp; Telemetry</h3>
+          <div class="swatch-row">
+            <div class="swatch" style="background-color: var(--color-accent-primary);">
+              <span class="swatch__label" style="color: #ffffff;">accent-primary</span>
+            </div>
+            <div class="swatch" style="background-color: var(--color-accent-hover);">
+              <span class="swatch__label" style="color: #ffffff;">accent-hover</span>
+            </div>
+            <div class="swatch" style="background-color: var(--color-telemetry);">
+              <span class="swatch__label" style="color: #ffffff;">telemetry</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="swatch-group">
+          <h3 class="swatch-group__title">Semantic Status Levels</h3>
+          <div class="swatch-row">
+            <div class="swatch" style="background-color: var(--color-info-icon);">
+              <span class="swatch__label" style="color: #ffffff;">info</span>
+            </div>
+            <div class="swatch" style="background-color: var(--color-success-icon);">
+              <span class="swatch__label" style="color: #ffffff;">success / tip</span>
+            </div>
+            <div class="swatch" style="background-color: var(--color-warning-icon);">
+              <span class="swatch__label" style="color: #ffffff;">warning</span>
+            </div>
+            <div class="swatch" style="background-color: var(--color-danger-icon);">
+              <span class="swatch__label" style="color: #ffffff;">danger</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Component Library Gallery -->
+    <section id="components" class="stack-lg">
+      <div class="section-header">
+        <h2 class="section-heading">02 // Component Library Gallery</h2>
+        <p class="section-subtext">
+          Astro UI components with strict TypeScript props, zero client-side framework bloat, and base-path awareness.
+        </p>
+      </div>
+
+      <!-- Breadcrumbs & ThemeToggle Navigation Showcase -->
+      <div class="component-showcase stack">
+        <h3 class="showcase-title">Navigation Primitives (<code class="inline-code">&lt;Breadcrumbs /&gt;</code>, <code class="inline-code">&lt;ThemeToggle /&gt;</code>)</h3>
+        <p class="showcase-desc">Base-path aware breadcrumbs with Schema.org microdata and accessible theme toggle with instant flash-prevention.</p>
+        
+        <div class="stack-sm">
+          <span style="font-size: var(--text-xs); color: var(--color-text-muted); font-family: var(--font-mono);">STANDALONE BREADCRUMB TRAIL:</span>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Certifications', href: '/certs' },
+              { label: 'CISSP', href: '/cissp' },
+              { label: 'Domain 4: Network & Communication Security' },
+            ]}
+          />
+        </div>
+
+        <div class="cluster" style="align-items: center;">
+          <span style="font-size: var(--text-xs); color: var(--color-text-muted); font-family: var(--font-mono);">STANDALONE THEME TOGGLE (TRY CLICKING):</span>
+          <ThemeToggle size="sm" />
+          <ThemeToggle size="md" />
+          <ThemeToggle size="lg" />
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="component-showcase stack">
+        <h3 class="showcase-title">Buttons (<code class="inline-code">&lt;Button /&gt;</code>)</h3>
+        <p class="showcase-desc">Polymorphic button / anchor element with responsive variants, sizes, and states.</p>
+        
+        <div class="cluster">
+          <Button variant="primary">Primary Action</Button>
+          <Button variant="secondary">Secondary Action</Button>
+          <Button variant="outline">Outline Variant</Button>
+          <Button variant="ghost">Ghost Button</Button>
+          <Button variant="danger">Danger Action</Button>
+        </div>
+
+        <div class="cluster">
+          <Button variant="primary" size="sm">Small (sm)</Button>
+          <Button variant="primary" size="md">Medium (md)</Button>
+          <Button variant="primary" size="lg">Large (lg)</Button>
+          <Button variant="secondary" disabled={true}>Disabled State</Button>
+          <Button variant="outline" href="https://github.com" target="_blank">
+            External Link Button
+            <svg style="width: 1rem; height: 1rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </Button>
+        </div>
+      </div>
+
+      <!-- Tags & Badges -->
+      <div class="component-showcase stack">
+        <h3 class="showcase-title">Badges &amp; Tags (<code class="inline-code">&lt;Badge /&gt;</code>, <code class="inline-code">&lt;Tag /&gt;</code>)</h3>
+        <p class="showcase-desc">Used for certification domains, difficulty levels, taxonomy, and live telemetry pulses.</p>
+        
+        <div class="cluster">
+          <Badge variant="cert" pulse={true}>CISSP CERTIFIED</Badge>
+          <Badge variant="accent">CCNA ROUTING</Badge>
+          <Badge variant="success">RHCSA PASSED</Badge>
+          <Badge variant="warning">AI THREAT MODELING</Badge>
+          <Badge variant="danger">CRITICAL VULNERABILITY</Badge>
+          <Badge variant="outline">RFC 1918</Badge>
+        </div>
+
+        <div class="cluster">
+          <Tag variant="default">Default Tag</Tag>
+          <Tag variant="accent">#NetworkSecurity</Tag>
+          <Tag variant="cert">#BGP-Hijacking</Tag>
+          <Tag variant="success">#RHEL9</Tag>
+          <Tag variant="warning">#ZeroTrust</Tag>
+          <Tag variant="danger">#CVE-2026-9912</Tag>
+          <Tag variant="outline" href="/tags/ai-safety">Clickable Tag Link &rarr;</Tag>
+        </div>
+      </div>
+
+      <!-- Callouts -->
+      <div class="component-showcase stack">
+        <h3 class="showcase-title">Callouts (<code class="inline-code">&lt;Callout /&gt;</code>)</h3>
+        <p class="showcase-desc">High-visibility callouts designed for technical blogs, exam caveats, and security notices.</p>
+        
+        <Callout variant="info" title="Network Architecture Note">
+          In spine-leaf topologies, ECMP (Equal-Cost Multi-Path) enables all links between leaf and spine switches to forward traffic simultaneously without spanning-tree port blocking.
+        </Callout>
+
+        <Callout variant="tip" title="RHCSA EX200 Exam Tip">
+          Always test your <code>/etc/fstab</code> entries with <code>sudo mount -a</code> before rebooting. A syntax error in <code>fstab</code> will drop the system into emergency target mode during the exam grading reboot.
+        </Callout>
+
+        <Callout variant="warning" title="CISSP Domain 4: BGP Route Leaking">
+          Without RPKI Route Origin Authorization (ROA) validation, your autonomous system is vulnerable to accidental route leaks and malicious prefix hijacking.
+        </Callout>
+
+        <Callout variant="danger" title="AI Security Warning: Indirect Prompt Injection">
+          Untrusted text fetched from third-party APIs must never be interpolated directly into LLM system prompts without structural schema boundaries or token-isolation barriers.
+        </Callout>
+      </div>
+
+      <!-- Code Blocks -->
+      <div class="component-showcase stack">
+        <h3 class="showcase-title">Code Blocks (<code class="inline-code">&lt;CodeBlock /&gt;</code>)</h3>
+        <p class="showcase-desc">Built-in Shiki syntax highlighting, terminal status dots, language labels, and instant one-click copy with micro-feedback.</p>
+        
+        <CodeBlock
+          filename="rhel9-vlan-config.sh"
+          lang="bash"
+          code={bashExample}
+        />
+
+        <CodeBlock
+          filename="prompt_guardrail.py"
+          lang="python"
+          code={pythonExample}
+        />
+
+        <CodeBlock
+          filename="k8s-security-deployment.yaml"
+          lang="yaml"
+          code={yamlExample}
+        />
+      </div>
+
+      <!-- Tables -->
+      <div class="component-showcase stack">
+        <h3 class="showcase-title">Responsive Tables (<code class="inline-code">&lt;Table /&gt;</code>)</h3>
+        <p class="showcase-desc">Full horizontal scrolling safety on narrow mobile viewports (down to 320px) with tabular numeric alignment.</p>
+        
+        <Table
+          caption="IPv4 Subnetting &amp; Telemetry Planning Reference"
+          headers={sampleSubnetHeaders}
+          rows={sampleSubnetRows}
+          striped={true}
+        />
+      </div>
+
+      <!-- Cards Grid -->
+      <div class="component-showcase stack">
+        <h3 class="showcase-title">Cards &amp; Teasers (<code class="inline-code">&lt;Card /&gt;</code>)</h3>
+        <p class="showcase-desc">Interactive cards with hover telemetry signal lines, badges, metadata, and tags.</p>
+        
+        <div class="grid-responsive">
+          <Card
+            title="CISSP Domain 3: Security Architecture & Engineering"
+            description="Deep dive into cryptographic systems, trusted computing bases (TCB), security models (Bell-LaPadula, Biba), and cloud isolation primitives."
+            href="/cissp/domain-3-security-architecture"
+            badge="CISSP"
+            badgeVariant="cert"
+            date="Aug 2026"
+            tags={['Cryptography', 'Zero-Trust', 'Hardware Security']}
+          />
+
+          <Card
+            title="Red Hat RHCSA: Storage & LVM Automation"
+            description="Complete operational playbook for managing Stratis, VDO deduplication, LVM thin provisioning, and persistent LUKS disk encryption on RHEL 9."
+            href="/rhcsa/lvm-storage-automation"
+            badge="RHCSA"
+            badgeVariant="success"
+            date="Jul 2026"
+            tags={['LVM', 'XFS', 'LUKS', 'SELinux']}
+          />
+
+          <Card
+            title="AI Security: LLM Red-Teaming & Guardrails"
+            description="Architecture of autonomous defensive agents inspecting multi-modal token streams for prompt extraction, privilege escalation, and tool poisoning."
+            href="/projects/ai-guardrail-engine"
+            badge="AI Security"
+            badgeVariant="warning"
+            date="Jun 2026"
+            tags={['LLM Security', 'Prompt Injection', 'Python']}
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Full Markdown / MDX Prose Stress Test -->
+    <section id="prose-test" class="section-card stack">
+      <div class="section-header">
+        <h2 class="section-heading">03 // Full Markdown / MDX &lt;Prose&gt; Stress Test</h2>
+        <p class="section-subtext">
+          Validates that raw Markdown generated by blog posts renders with optimal typographic hierarchy, margins, and readability.
+        </p>
+      </div>
+
+      <div class="prose-container">
+        <Prose>
+          <h1>Enterprise Network Segmentation &amp; AI Boundary Defense</h1>
+          
+          <p>
+            Modern cybersecurity architecture requires defending both traditional packet transport layers and emergent probabilistic AI runtime environments. When implementing <a href="#zero-trust">Zero Trust Network Architecture (ZTNA)</a>, perimeter defenses must be complemented by granular micro-segmentation and token-level runtime verification.
+          </p>
+
+          <h2>1. Layered Defense Architecture (OSI to Application)</h2>
+          
+          <p>
+            Consider a typical high-throughput data center housing machine learning inference clusters. Traffic flows through multiple evaluation tiers:
+          </p>
+
+          <ul>
+            <li><strong>L3/L4 Network Layer:</strong> BGP EVPN with VXLAN encapsulation separating tenant workloads across distinct Virtual Routing and Forwarding (VRF) instances.</li>
+            <li><strong>L7 Proxy Layer:</strong> Mutual TLS (mTLS) termination with cryptographic hardware security module (HSM) attestation.</li>
+            <li><strong>AI Runtime Layer:</strong> Semantic guardrails and token inspection evaluating inputs before vector database queries are executed.</li>
+          </ul>
+
+          <h3>System Inspection Commands</h3>
+          <p>
+            To inspect active kernel routing tables and firewall drop counters, execute the following commands in your administrative terminal:
+          </p>
+
+          <pre><code># Check active kernel routing table and VRF assignments
+$ ip route show table 100
+10.100.0.0/16 dev vrf-secure proto kernel scope link src 10.100.1.1
+default via 10.100.0.1 dev vrf-secure proto static
+
+# View dropped packets logged by netfilter
+$ sudo nft list table inet filter | grep drop</code></pre>
+
+          <blockquote>
+            "Security is not a product, but a process. In distributed AI systems, every API boundary is a potential vector for unauthorized lateral traversal."
+          </blockquote>
+
+          <h3>Keyboard Shortcuts Reference</h3>
+          <p>
+            During interactive terminal investigations, use <kbd>Ctrl</kbd> + <kbd>C</kbd> to interrupt running packet captures, or press <kbd>Ctrl</kbd> + <kbd>R</kbd> to search shell history for previous <code>nmcli</code> commands.
+          </p>
+
+          <hr />
+
+          <h2>2. Certification Objective Checklist</h2>
+          
+          <ol>
+            <li>Understand the 8 domains of the (ISC)² CISSP CBK.</li>
+            <li>Configure persistent network teaming and IPv6 address resolution on Red Hat Enterprise Linux.</li>
+            <li>Implement OSPFv3 multi-area routing protocols on Cisco IOS-XE routers.</li>
+            <li>Analyze OWASP Top 10 vulnerabilities for Large Language Model Applications.</li>
+          </ol>
+        </Prose>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .hero-section {
+    padding: var(--space-10) 0 var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-content {
+    max-width: 850px;
+  }
+
+  .hero-title {
+    font-size: var(--text-4xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tighter);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .hero-title {
+      font-size: var(--text-5xl);
+    }
+  }
+
+  .hero-lead {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+  }
+
+  .hero-actions {
+    margin-top: var(--space-4);
+  }
+
+  .install-section {
+    margin: var(--space-2) 0;
+  }
+
+  .install-code-box {
+    margin: var(--space-3) 0;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-code-bg);
+    border: 1px solid var(--color-code-border);
+    border-radius: var(--radius-md);
+  }
+
+  .install-code-box code {
+    font-family: var(--font-mono);
+    color: var(--color-accent-primary);
+    font-size: var(--text-sm);
+  }
+
+  /* Section Card */
+  .section-card {
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-sm);
+  }
+
+  @media (min-width: 768px) {
+    .section-card {
+      padding: var(--space-8);
+    }
+  }
+
+  .section-header {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    color: var(--color-text-primary);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .section-subtext {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin-top: var(--space-1);
+  }
+
+  /* Token Swatch Grid */
+  .token-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 640px) {
+    .token-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .swatch-group__title {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+  }
+
+  .swatch-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .swatch {
+    flex: 1 1 80px;
+    min-height: 54px;
+    border-radius: var(--radius-md);
+    padding: var(--space-2);
+    display: flex;
+    align-items: flex-end;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .swatch__label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Component Showcase */
+  .component-showcase {
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .showcase-title {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    color: var(--color-text-primary);
+  }
+
+  .showcase-desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin-top: -0.5rem;
+  }
+
+  .inline-code {
+    font-family: var(--font-mono);
+    color: var(--color-accent-primary);
+    background-color: var(--color-bg-elevated);
+    padding: 0.1em 0.3em;
+    border-radius: var(--radius-sm);
+    font-size: 0.85em;
+  }
+
+  .prose-container {
+    background-color: var(--color-bg-base);
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+</style>

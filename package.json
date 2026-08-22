@@ -1,0 +1,55 @@
+{
+  "name": "@cheahhaoyi/site-kit",
+  "version": "1.0.0",
+  "description": "Single source of truth design tokens and UI components for @cheahhaoyi portfolio and blogs",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/types.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens.css": "./src/styles/tokens.css",
+    "./styles/*": "./src/styles/*",
+    "./components/*": "./src/components/*",
+    "./components": "./src/components/index.ts",
+    "./layouts/*": "./src/components/Layout.astro",
+    "./types": "./src/types.ts"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "typecheck": "tsc --noEmit && astro check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CheahHaoYi/site-kit.git"
+  },
+  "keywords": [
+    "astro",
+    "design-system",
+    "design-tokens",
+    "portfolio",
+    "security"
+  ],
+  "author": "Hao Yi Cheah",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CheahHaoYi/site-kit/issues"
+  },
+  "homepage": "https://github.com/CheahHaoYi/site-kit#readme",
+  "peerDependencies": {
+    "astro": ">=4.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@types/node": "^22.10.2",
+    "astro": "^5.0.0 || ^7.0.0",
+    "typescript": "^5.7.2"
+  }
+}

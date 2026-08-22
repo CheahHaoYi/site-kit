@@ -1,0 +1,159 @@
+---
+interface Props {
+  class?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { class: className = '', size = 'md' } = Astro.props;
+---
+
+<button
+  type="button"
+  id="site-kit-theme-toggle"
+  class:list={['theme-toggle', `theme-toggle--${size}`, className]}
+  aria-label="Toggle color theme"
+  title="Toggle light / dark theme"
+>
+  <!-- Sun Icon (shown in dark mode) -->
+  <svg
+    class="theme-icon theme-icon--sun"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2"></path>
+    <path d="M12 20v2"></path>
+    <path d="m4.93 4.93 1.41 1.41"></path>
+    <path d="m17.66 17.66 1.41 1.41"></path>
+    <path d="M2 12h2"></path>
+    <path d="M20 12h2"></path>
+    <path d="m6.34 17.66-1.41 1.41"></path>
+    <path d="m19.07 4.93-1.41 1.41"></path>
+  </svg>
+
+  <!-- Moon Icon (shown in light mode) -->
+  <svg
+    class="theme-icon theme-icon--moon"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+  </svg>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+    padding: 0;
+  }
+
+  .theme-toggle--sm {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .theme-toggle--md {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .theme-toggle--lg {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .theme-toggle:hover {
+    background-color: var(--color-bg-elevated);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-hover);
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+  }
+
+  .theme-icon {
+    width: 1.15rem;
+    height: 1.15rem;
+    transition: transform var(--transition-normal), opacity var(--transition-fast);
+  }
+
+  .theme-toggle--sm .theme-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .theme-toggle--lg .theme-icon {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  /* In Light mode, show moon (to switch to dark), hide sun */
+  :root .theme-icon--sun,
+  :root:not([data-theme="dark"]) .theme-icon--sun {
+    display: none;
+  }
+  :root .theme-icon--moon,
+  :root:not([data-theme="dark"]) .theme-icon--moon {
+    display: block;
+  }
+
+  /* In Dark mode, show sun (to switch to light), hide moon */
+  :root[data-theme="dark"] .theme-icon--sun {
+    display: block;
+  }
+  :root[data-theme="dark"] .theme-icon--moon {
+    display: none;
+  }
+</style>
+
+<script is:inline>
+  (function() {
+    const initThemeToggle = () => {
+      const toggle = document.getElementById('site-kit-theme-toggle');
+      if (!toggle) return;
+
+      toggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', nextTheme);
+        localStorage.setItem('site-kit-theme', nextTheme);
+
+        // Dispatch custom event for consumers needing reactivity
+        window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme: nextTheme } }));
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initThemeToggle);
+    } else {
+      initThemeToggle();
+    }
+
+    // Support Astro View Transitions if enabled in consumer apps
+    document.addEventListener('astro:after-swap', initThemeToggle);
+  })();
+</script>
