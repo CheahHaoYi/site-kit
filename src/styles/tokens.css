@@ -1,6 +1,8 @@
 /**
  * @cheahhaoyi/site-kit - Design Tokens
  * Single source of truth for color, typography, spacing, elevation, and layout.
+ * Synthesizes Google Material Design 3 (tonal elevation, semantic roles, state layers)
+ * and Apple Human Interface Guidelines (vibrancy, translucent materials, spring motion, typography precision).
  *
  * BREAKPOINTS (for use in component @media queries - CSS custom properties cannot be used in media queries):
  * - Mobile S:   320px
@@ -15,58 +17,68 @@
    Light Mode (Default Theme)
    ========================================================================== */
 :root {
-  /* Surface / Background Levels */
-  --color-bg-base: #f8fafc;        /* Cool engineering chalk base */
-  --color-bg-surface: #ffffff;     /* Card & container pure surface */
-  --color-bg-elevated: #f1f5f9;    /* Hovered / raised layers (Slate 100) */
-  --color-bg-sunken: #e2e8f0;      /* Recessed / sunken wells (Slate 200) */
+  /* Surface / Background Levels (Material 3 Tonal Surfaces & Apple Inset Bases) */
+  --color-bg-base: #f8fafc;                /* Cool engineering chalk base */
+  --color-bg-surface: #ffffff;             /* Card & container pure surface */
+  --color-bg-surface-container: #f1f5f9;   /* M3 Surface Container (Slate 100) */
+  --color-bg-surface-container-high: #e2e8f0; /* M3 Surface Container High (Slate 200) */
+  --color-bg-surface-container-low: #f8fafc;  /* M3 Surface Container Low */
+  --color-bg-elevated: #f1f5f9;            /* Raised layers */
+  --color-bg-sunken: #e2e8f0;              /* Inset wells */
   --color-bg-overlay: rgba(15, 23, 42, 0.4);
 
-  /* Text Levels (WCAG AAA / AA compliant against base & surface) */
-  --color-text-primary: #0f172a;   /* Deep obsidian slate (Slate 900) */
-  --color-text-secondary: #475569; /* Balanced technical steel (Slate 600) */
-  --color-text-muted: #64748b;     /* Subdued metadata / captions (Slate 500) */
-  --color-text-inverse: #ffffff;   /* Text on dark surfaces */
+  /* Apple HIG Translucent Material & Vibrancy */
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-bg-elevated: rgba(255, 255, 255, 0.90);
+  --glass-border: rgba(226, 232, 240, 0.85);
+  --glass-blur: blur(16px);
+  --glass-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+
+  /* Text Levels (WCAG AAA / AA compliant) */
+  --color-text-primary: #0f172a;   /* Slate 900 */
+  --color-text-secondary: #475569; /* Slate 600 */
+  --color-text-muted: #64748b;     /* Slate 500 */
+  --color-text-inverse: #ffffff;
 
   /* Borders & Hairlines */
-  --color-border: #e2e8f0;         /* Clear structural hairline (Slate 200) */
-  --color-border-subtle: #f1f5f9;  /* Inset / inner divider (Slate 100) */
-  --color-border-hover: #cbd5e1;   /* Interactive border hover (Slate 300) */
-  --color-border-focus: #0284c7;   /* Focus outline */
+  --color-border: #e2e8f0;         /* Slate 200 */
+  --color-border-subtle: #f1f5f9;  /* Slate 100 */
+  --color-border-hover: #cbd5e1;   /* Slate 300 */
+  --color-border-focus: #0284c7;
 
-  /* Primary Accent (Signal Cyan/Blue - network telemetry precision) */
+  /* Primary Accent (Sky / Signal Telemetry) */
   --color-accent-primary: #0284c7; /* Sky 600 */
   --color-accent-hover: #0369a1;   /* Sky 700 */
   --color-accent-subtle: #e0f2fe;  /* Sky 100 */
   --color-accent-contrast: #ffffff;
 
-  /* Secondary / Telemetry Accent (Amber - alerts / cert status) */
+  /* Secondary / Telemetry Accent (Amber) */
   --color-telemetry: #d97706;      /* Amber 600 */
   --color-telemetry-subtle: #fef3c7; /* Amber 100 */
 
   /* Semantic Callout & Status Levels (Light Mode) */
-  --color-info-text: #0369a1;      /* Sky 700 */
-  --color-info-bg: #f0f9ff;        /* Sky 50 */
-  --color-info-border: #bae6fd;    /* Sky 200 */
-  --color-info-icon: #0284c7;      /* Sky 600 */
+  --color-info-text: #0369a1;
+  --color-info-bg: #f0f9ff;
+  --color-info-border: #bae6fd;
+  --color-info-icon: #0284c7;
 
-  --color-success-text: #047857;   /* Emerald 700 */
-  --color-success-bg: #ecfdf5;     /* Emerald 50 */
-  --color-success-border: #a7f3d0; /* Emerald 200 */
-  --color-success-icon: #059669;   /* Emerald 600 */
+  --color-success-text: #047857;
+  --color-success-bg: #ecfdf5;
+  --color-success-border: #a7f3d0;
+  --color-success-icon: #059669;
 
-  --color-warning-text: #b45309;   /* Amber 700 */
-  --color-warning-bg: #fffbeb;     /* Amber 50 */
-  --color-warning-border: #fde68a; /* Amber 200 */
-  --color-warning-icon: #d97706;   /* Amber 600 */
+  --color-warning-text: #b45309;
+  --color-warning-bg: #fffbeb;
+  --color-warning-border: #fde68a;
+  --color-warning-icon: #d97706;
 
-  --color-danger-text: #b91c1c;    /* Red 700 */
-  --color-danger-bg: #fef2f2;      /* Red 50 */
-  --color-danger-border: #fecaca;  /* Red 200 */
-  --color-danger-icon: #dc2626;    /* Red 600 */
+  --color-danger-text: #b91c1c;
+  --color-danger-bg: #fef2f2;
+  --color-danger-border: #fecaca;
+  --color-danger-icon: #dc2626;
 
   /* Code Block Colors (Light Mode) */
-  --color-code-bg: #0f172a;        /* High-contrast deep slate for CLI */
+  --color-code-bg: #0f172a;
   --color-code-text: #f8fafc;
   --color-code-border: #1e293b;
   --color-code-header-bg: #1e293b;
@@ -131,27 +143,29 @@
   --space-20: 5rem;     /* 80px */
   --space-24: 6rem;     /* 96px */
 
-  /* Radii */
+  /* Radii (Apple HIG Rounded Primitives & M3 Shape System) */
   --radius-none: 0px;
   --radius-xs: 2px;
   --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
-  --radius-full: 9999px;
+  --radius-md: 8px;     /* Apple Standard Control */
+  --radius-lg: 12px;    /* Apple Standard Card / M3 Small Container */
+  --radius-xl: 16px;    /* M3 Medium Container / Apple Dialog */
+  --radius-2xl: 24px;   /* M3 Large Container */
+  --radius-full: 9999px;/* Pill / Capsule */
 
-  /* Elevation & Shadows (Crisp & Technical) */
+  /* Elevation & Shadows (M3 Ambient Tonal Elevation + Apple Specular Rim) */
   --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
   --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
   --shadow-inner: inset 0 2px 4px 0 rgba(15, 23, 42, 0.04);
   --shadow-focus: 0 0 0 2px var(--color-bg-surface), 0 0 0 4px var(--color-accent-primary);
 
-  /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* Animation & Transitions (Apple Spring & M3 Decelerate Curves) */
+  --ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-m3: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --transition-fast: 150ms var(--ease-spring);
+  --transition-normal: 250ms var(--ease-spring);
+  --transition-slow: 350ms var(--ease-m3);
 
   /* Layout Widths */
   --content-max-width: 1200px;
@@ -163,12 +177,22 @@
    Dark Mode Theme
    ========================================================================== */
 [data-theme="dark"] {
-  /* Surface / Background Levels */
-  --color-bg-base: #0b0f17;        /* Deep obsidian / network rack dark */
-  --color-bg-surface: #111827;     /* High-density component surface */
-  --color-bg-elevated: #1e293b;    /* Hovered / raised layers (Slate 800) */
-  --color-bg-sunken: #070a10;      /* Inset wells */
+  /* Surface / Background Levels (M3 Dark Tone Surfaces & Apple Dark Inset Base) */
+  --color-bg-base: #0b0f17;                /* Deep obsidian / network rack dark */
+  --color-bg-surface: #111827;             /* High-density component surface */
+  --color-bg-surface-container: #1e293b;   /* M3 Dark Surface Container */
+  --color-bg-surface-container-high: #273549; /* M3 Dark Surface Container High */
+  --color-bg-surface-container-low: #0f172a;  /* M3 Dark Surface Container Low */
+  --color-bg-elevated: #1e293b;            /* Raised layers (Slate 800) */
+  --color-bg-sunken: #070a10;              /* Inset wells */
   --color-bg-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Apple HIG Dark Translucent Material & Vibrancy */
+  --glass-bg: rgba(17, 24, 39, 0.78);
+  --glass-bg-elevated: rgba(30, 41, 59, 0.88);
+  --glass-border: rgba(30, 41, 59, 0.85);
+  --glass-blur: blur(18px);
+  --glass-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
 
   /* Text Levels */
   --color-text-primary: #f8fafc;   /* Slate 50 */
@@ -182,36 +206,36 @@
   --color-border-hover: #334155;   /* Slate 700 */
   --color-border-focus: #38bdf8;
 
-  /* Primary Accent (Precision Signal Sky) */
-  --color-accent-primary: #38bdf8; /* Sky 400 */
-  --color-accent-hover: #7dd3fc;   /* Sky 300 */
+  /* Primary Accent (Sky 400) */
+  --color-accent-primary: #38bdf8;
+  --color-accent-hover: #7dd3fc;
   --color-accent-subtle: rgba(56, 189, 248, 0.12);
   --color-accent-contrast: #0f172a;
 
-  /* Secondary / Telemetry Accent */
-  --color-telemetry: #fbbf24;      /* Amber 400 */
+  /* Secondary / Telemetry Accent (Amber 400) */
+  --color-telemetry: #fbbf24;
   --color-telemetry-subtle: rgba(251, 191, 36, 0.12);
 
   /* Semantic Callout & Status Levels (Dark Mode) */
-  --color-info-text: #7dd3fc;      /* Sky 300 */
+  --color-info-text: #7dd3fc;
   --color-info-bg: rgba(2, 132, 199, 0.12);
   --color-info-border: rgba(56, 189, 248, 0.3);
-  --color-info-icon: #38bdf8;      /* Sky 400 */
+  --color-info-icon: #38bdf8;
 
-  --color-success-text: #6ee7b7;   /* Emerald 300 */
+  --color-success-text: #6ee7b7;
   --color-success-bg: rgba(5, 150, 105, 0.12);
   --color-success-border: rgba(52, 211, 153, 0.3);
-  --color-success-icon: #34d399;   /* Emerald 400 */
+  --color-success-icon: #34d399;
 
-  --color-warning-text: #fcd34d;   /* Amber 300 */
+  --color-warning-text: #fcd34d;
   --color-warning-bg: rgba(217, 119, 6, 0.12);
   --color-warning-border: rgba(251, 191, 36, 0.3);
-  --color-warning-icon: #fbbf24;   /* Amber 400 */
+  --color-warning-icon: #fbbf24;
 
-  --color-danger-text: #fca5a5;    /* Red 300 */
+  --color-danger-text: #fca5a5;
   --color-danger-bg: rgba(220, 38, 38, 0.12);
   --color-danger-border: rgba(248, 113, 113, 0.3);
-  --color-danger-icon: #f87171;    /* Red 400 */
+  --color-danger-icon: #f87171;
 
   /* Code Block Colors (Dark Mode) */
   --color-code-bg: #070a10;
@@ -223,7 +247,7 @@
   --color-inline-code-text: #38bdf8;
   --color-inline-code-border: #334155;
 
-  /* Shadows (Subtler rim light & darkness in dark mode) */
+  /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -4px rgba(0, 0, 0, 0.4);

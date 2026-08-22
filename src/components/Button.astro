@@ -56,38 +56,44 @@ const computedRel = target === '_blank' && !rel ? 'noopener noreferrer' : rel;
     transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
     white-space: nowrap;
     user-select: none;
+    position: relative;
+    overflow: hidden;
   }
 
   .button:hover {
     text-decoration: none;
   }
 
-  .button:active {
-    transform: translateY(1px);
+  /* Apple HIG & M3 Tactile Spring Micro-press */
+  .button:active:not(.button--disabled) {
+    transform: scale(0.975) translateY(1px);
+    transition-duration: 80ms;
   }
 
   .button:focus-visible {
     outline: 2px solid var(--color-accent-primary);
     outline-offset: 2px;
+    box-shadow: var(--shadow-focus);
   }
 
-  /* Sizes */
+  /* Sizes (Apple 44px touch target on md/lg, compact on sm) */
   .button--sm {
     font-size: var(--text-xs);
     padding: var(--space-1-5) var(--space-3);
-    min-height: 1.75rem;
+    min-height: 2rem;
   }
 
   .button--md {
     font-size: var(--text-sm);
     padding: var(--space-2-5) var(--space-4);
-    min-height: 2.25rem;
+    min-height: 2.5rem;
   }
 
   .button--lg {
     font-size: var(--text-base);
     padding: var(--space-3) var(--space-6);
-    min-height: 2.75rem;
+    min-height: 3rem;
+    border-radius: var(--radius-lg);
   }
 
   /* Variants */
@@ -101,16 +107,17 @@ const computedRel = target === '_blank' && !rel ? 'noopener noreferrer' : rel;
   .button--primary:hover:not(.button--disabled) {
     background-color: var(--color-accent-hover);
     border-color: var(--color-accent-hover);
+    box-shadow: var(--shadow-md);
   }
 
   .button--secondary {
-    background-color: var(--color-bg-elevated);
+    background-color: var(--color-bg-surface-container);
     color: var(--color-text-primary);
     border-color: var(--color-border);
   }
 
   .button--secondary:hover:not(.button--disabled) {
-    background-color: var(--color-bg-sunken);
+    background-color: var(--color-bg-surface-container-high);
     border-color: var(--color-border-hover);
   }
 
@@ -121,7 +128,7 @@ const computedRel = target === '_blank' && !rel ? 'noopener noreferrer' : rel;
   }
 
   .button--outline:hover:not(.button--disabled) {
-    background-color: var(--color-bg-elevated);
+    background-color: var(--color-accent-subtle);
     border-color: var(--color-accent-primary);
     color: var(--color-accent-primary);
   }
@@ -133,7 +140,7 @@ const computedRel = target === '_blank' && !rel ? 'noopener noreferrer' : rel;
   }
 
   .button--ghost:hover:not(.button--disabled) {
-    background-color: var(--color-bg-elevated);
+    background-color: var(--color-bg-surface-container);
     color: var(--color-text-primary);
   }
 
@@ -147,14 +154,16 @@ const computedRel = target === '_blank' && !rel ? 'noopener noreferrer' : rel;
     background-color: var(--color-danger-icon);
     color: #ffffff;
     border-color: var(--color-danger-icon);
+    box-shadow: var(--shadow-sm);
   }
 
   /* Disabled State */
   .button--disabled,
   .button[disabled] {
-    opacity: 0.5;
+    opacity: 0.45;
     cursor: not-allowed;
     pointer-events: none;
     box-shadow: none;
+    transform: none !important;
   }
 </style>

@@ -112,7 +112,7 @@ const CardTag = href ? 'a' : 'div';
     overflow: hidden;
     text-decoration: none;
     color: var(--color-text-primary);
-    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
   }
 
   .card--default {
@@ -128,6 +128,21 @@ const CardTag = href ? 'a' : 'div';
   .card--bordered {
     background-color: var(--color-bg-base);
     border: 1px solid var(--color-border);
+  }
+
+  /* Material 3 Tonal Surface Container */
+  .card--tonal {
+    background-color: var(--color-bg-surface-container);
+    border-color: transparent;
+  }
+
+  /* Apple HIG Vibrancy Glass Material */
+  .card--glass {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-color: var(--glass-border);
+    box-shadow: var(--shadow-sm), var(--glass-rim);
   }
 
   .card--ghost {
@@ -150,6 +165,7 @@ const CardTag = href ? 'a' : 'div';
     background-color: var(--color-accent-primary);
     opacity: 0;
     transition: opacity var(--transition-fast);
+    z-index: 2;
   }
 
   .card--clickable:hover {
@@ -157,6 +173,20 @@ const CardTag = href ? 'a' : 'div';
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
     text-decoration: none;
+  }
+
+  .card--clickable.card--glass:hover {
+    background-color: var(--glass-bg-elevated);
+    box-shadow: var(--shadow-md), var(--glass-rim);
+  }
+
+  .card--clickable.card--tonal:hover {
+    background-color: var(--color-bg-surface-container-high);
+  }
+
+  .card--clickable:active {
+    transform: scale(0.99) translateY(0);
+    transition-duration: 80ms;
   }
 
   .card--clickable:hover::before {

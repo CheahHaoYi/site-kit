@@ -32,7 +32,7 @@ export interface ButtonProps {
   download?: boolean | string;
 }
 
-export type CardVariant = 'default' | 'elevated' | 'bordered' | 'ghost';
+export type CardVariant = 'default' | 'elevated' | 'bordered' | 'ghost' | 'glass' | 'tonal';
 export type BadgeVariant = 'default' | 'accent' | 'success' | 'warning' | 'danger' | 'cert' | 'outline';
 
 export interface CardProps {

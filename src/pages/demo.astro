@@ -1,0 +1,411 @@
+---
+import Layout from '../components/Layout.astro';
+import Prose from '../components/Prose.astro';
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import Table from '../components/Table.astro';
+import Callout from '../components/Callout.astro';
+import Tag from '../components/Tag.astro';
+import Badge from '../components/Badge.astro';
+
+const breadcrumbsData = [
+  { label: 'Site-Kit', href: '/' },
+  { label: 'Design Framework Testbed' },
+];
+
+const sampleSubnetHeaders = ['VLAN ID', 'Subnet CIDR', 'Security Zone', 'Default Gateway', 'Inspection Level'];
+const sampleSubnetRows = [
+  ['VLAN 10', '10.10.10.0/24', 'Internal Core', '10.10.10.1', 'L3/L4 State Track'],
+  ['VLAN 20', '10.10.20.0/24', 'AI Inference DMZ', '10.10.20.1', 'L7 mTLS + WAF'],
+  ['VLAN 30', '10.10.30.0/24', 'Management Out-of-Band', '10.10.30.1', 'Zero Trust IAM'],
+  ['VLAN 99', '192.168.99.0/28', 'Telemetry & SIEM Ingest', '192.168.99.1', 'Packet Mirror / Tap'],
+];
+
+const aiGuardrailCode = `import re
+from typing import Dict, Any, Optional
+
+class TelemetryGuardrail:
+    """
+    Evaluates LLM input/output tokens against prompt injection heuristics
+    and lateral traversal signatures.
+    """
+    def __init__(self, sensitivity: float = 0.95):
+        self.sensitivity = sensitivity
+        self.denylist = [
+            r"ignore previous instructions",
+            r"system prompt override",
+            r"__import__\s*\(",
+        ]
+
+    def inspect(self, token_payload: str) -> bool:
+        for pattern in self.denylist:
+            if re.search(pattern, token_payload, re.IGNORECASE):
+                return False  # Quarantine & Alert SOC
+        return True`;
+---
+
+<Layout
+  title="Material 3 & Apple HIG Design Testbed"
+  description="Live test website benchmarking Google Material Design 3 and Apple Human Interface Guidelines synthesis for @cheahhaoyi site-kit."
+  breadcrumbs={breadcrumbsData}
+>
+  <div class="container stack-lg">
+    <!-- Header Hero -->
+    <header class="demo-hero stack">
+      <div class="cluster">
+        <Badge variant="accent" pulse={true}>DESIGN BENCHMARK TESTBED</Badge>
+        <Tag variant="cert">Material 3</Tag>
+        <Tag variant="cert">Apple HIG</Tag>
+        <Tag variant="outline">Interactive Proof of Concept</Tag>
+      </div>
+
+      <h1 class="demo-title">
+        Google Material 3 &amp; Apple HIG Framework Benchmark
+      </h1>
+      
+      <p class="demo-lead">
+        Proof-of-concept test page verifying the design system elements before consumer repositories 
+        (e.g., CISSP blog, CCNA notes, portfolio showcase) import <code>@cheahhaoyi/site-kit</code>.
+      </p>
+
+      <Callout variant="tip" title="Design Language Convergence">
+        Combines Material Design 3's high-contrast tonal elevations and structured state roles with Apple HIG's 
+        luminous frosted glass, spring-damped micro-presses, and strict typographic hierarchy.
+      </Callout>
+    </header>
+
+    <!-- Comparison Matrix: Material 3 vs Apple HIG -->
+    <section class="benchmark-grid">
+      <!-- Column 1: Google Material 3 Principles -->
+      <div class="benchmark-column m3-column stack">
+        <div class="framework-header">
+          <div class="framework-badge m3-badge">Google Material Design 3</div>
+          <h2 class="framework-title">Tonal Surfaces &amp; State Layers</h2>
+          <p class="framework-desc">
+            Expressive tonal containers, semantic role tokens, and dynamic depth without heavy artificial drop-shadows.
+          </p>
+        </div>
+
+        <div class="stack">
+          <!-- M3 Tonal Card Example -->
+          <Card
+            variant="tonal"
+            title="M3 Surface Container"
+            description="Uses --color-bg-surface-container for low-strain readability and seamless hierarchy."
+            badge="M3 TONAL"
+            badgeVariant="accent"
+            tags={['Tonal Elevation', 'Slate-100/800', 'State Tint']}
+          />
+
+          <!-- M3 Elevation Matrix -->
+          <div class="m3-elevation-demo stack-sm">
+            <span class="demo-sublabel">M3 Surface Elevation Levels:</span>
+            <div class="cluster">
+              <div class="m3-elevation-card m3-elevation-card--1">Surface Level 1</div>
+              <div class="m3-elevation-card m3-elevation-card--2">Surface Level 2</div>
+              <div class="m3-elevation-card m3-elevation-card--3">Surface Level 3</div>
+            </div>
+          </div>
+
+          <!-- M3 Action Buttons -->
+          <div class="stack-sm">
+            <span class="demo-sublabel">M3 Interactive Button States:</span>
+            <div class="cluster">
+              <Button variant="primary">Filled Button</Button>
+              <Button variant="secondary">Tonal Button</Button>
+              <Button variant="outline">Outlined Button</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2: Apple Human Interface Guidelines (HIG) -->
+      <div class="benchmark-column apple-column stack">
+        <div class="framework-header">
+          <div class="framework-badge apple-badge">Apple Human Interface Guidelines</div>
+          <h2 class="framework-title">Vibrancy, Glass &amp; Tactile Spring</h2>
+          <p class="framework-desc">
+            Translucent frosted materials (<code>backdrop-filter</code>), crisp specular hairlines, and physical spring response.
+          </p>
+        </div>
+
+        <div class="stack">
+          <!-- Apple HIG Glass Card Example -->
+          <Card
+            variant="glass"
+            title="Apple HIG Frosted Glass"
+            description="Translucent backdrop blur with a 1px luminous top-rim highlight and active tactile compression."
+            badge="HIG VIBRANCY"
+            badgeVariant="cert"
+            tags={['Backdrop Blur', 'Specular Rim', 'Spring Physics']}
+          />
+
+          <!-- Apple HIG Segmented Control -->
+          <div class="stack-sm">
+            <span class="demo-sublabel">Apple Inset Segmented Control:</span>
+            <div class="segmented-control" role="tablist">
+              <button class="segmented-btn segmented-btn--active" type="button">All Zones</button>
+              <button class="segmented-btn" type="button">DMZ</button>
+              <button class="segmented-btn" type="button">Core</button>
+              <button class="segmented-btn" type="button">Management</button>
+            </div>
+          </div>
+
+          <!-- Apple HIG Spring Buttons -->
+          <div class="stack-sm">
+            <span class="demo-sublabel">Apple HIG Spring Micro-Press (Click &amp; Hold):</span>
+            <div class="cluster">
+              <Button variant="primary" size="lg">Spring Press Action</Button>
+              <Button variant="ghost" size="lg">Ghost Action</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real-World Security Portfolio Integration Test -->
+    <section class="stack-lg">
+      <div class="section-header">
+        <h2 class="section-heading">Live Integration Proof: Real-World Technical Content</h2>
+        <p class="section-subtext">
+          Demonstrating how multi-repo consumers (e.g. CISSP study guide, RHCSA notes, AI security projects) render with these tokens.
+        </p>
+      </div>
+
+      <!-- Cert Cards Grid -->
+      <div class="grid-responsive">
+        <Card
+          variant="glass"
+          title="CISSP Domain 4: Network & Communications Security"
+          description="In-depth analysis of secure network architectures, IPsec tunnels, TLS 1.3 handshakes, and multi-tenant isolation."
+          href="/cissp/domain-4"
+          badge="CISSP DOMAIN 4"
+          badgeVariant="cert"
+          date="Aug 2026"
+          tags={['IPsec', 'TLS 1.3', 'Zero Trust', 'Micro-segmentation']}
+        />
+
+        <Card
+          variant="tonal"
+          title="Red Hat RHCSA: Storage & Automated Partitioning"
+          description="Operational workflows for configuring LVM thin pools, XFS filesystems, Stratis storage, and LUKS encryption on RHEL 9."
+          href="/rhcsa/storage-automation"
+          badge="RHCSA EX200"
+          badgeVariant="success"
+          date="Jul 2026"
+          tags={['LVM', 'XFS', 'Stratis', 'SELinux']}
+        />
+
+        <Card
+          variant="glass"
+          title="AI Security: LLM Token Guardrails & Red-Teaming"
+          description="Evaluating telemetry streams against prompt injection heuristics, tool poisoning, and indirect context pollution."
+          href="/projects/ai-guardrail"
+          badge="AI SECURITY"
+          badgeVariant="warning"
+          date="Jun 2026"
+          tags={['Guardrails', 'Python', 'Prompt Injection']}
+        />
+      </div>
+
+      <!-- Responsive Table Test -->
+      <div class="stack-sm">
+        <h3 class="showcase-title">Grouped Inset Table (Apple HIG + M3 Numeric Tabular)</h3>
+        <Table
+          caption="Security Zone &amp; Subnet Interface Topology"
+          headers={sampleSubnetHeaders}
+          rows={sampleSubnetRows}
+          striped={true}
+        />
+      </div>
+
+      <!-- Code Block Test -->
+      <div class="stack-sm">
+        <h3 class="showcase-title">Interactive Terminal CodeBlock (Zero-Dependency Shiki)</h3>
+        <CodeBlock
+          filename="telemetry_guardrail.py"
+          lang="python"
+          code={aiGuardrailCode}
+        />
+      </div>
+
+      <!-- Markdown Prose Test -->
+      <div class="prose-wrapper">
+        <Prose>
+          <h2>Verification Summary &amp; Design Proof Acceptance</h2>
+          <p>
+            The design system combines the mathematical discipline of <strong>Google Material Design 3</strong> 
+            (dynamic tonal contrast, state layers, clear semantic roles) with the optical polish of 
+            <strong>Apple Human Interface Guidelines</strong> (vibrancy, translucent glass materials, tactile spring feedback).
+          </p>
+          <ul>
+            <li><strong>Zero Client-Side Framework Bloat:</strong> Pure Astro + standard CSS custom properties.</li>
+            <li><strong>Multi-Repo Base-Path Awareness:</strong> Smooth subpath deployment under <code>/rhcsa</code>, <code>/cissp</code>, or root.</li>
+            <li><strong>Zero Theme Flashing:</strong> Instant inline theme execution before first paint.</li>
+          </ul>
+        </Prose>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .demo-hero {
+    padding: var(--space-8) 0 var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .demo-title {
+    font-size: var(--text-3xl);
+    letter-spacing: var(--tracking-tighter);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .demo-title {
+      font-size: var(--text-4xl);
+    }
+  }
+
+  .demo-lead {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    max-width: 80ch;
+    line-height: var(--leading-relaxed);
+  }
+
+  /* Benchmark Comparison Grid */
+  .benchmark-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 900px) {
+    .benchmark-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .benchmark-column {
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .framework-header {
+    margin-bottom: var(--space-2);
+  }
+
+  .framework-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--space-1) var(--space-2-5);
+    border-radius: var(--radius-full);
+    margin-bottom: var(--space-2);
+  }
+
+  .m3-badge {
+    background-color: var(--color-accent-subtle);
+    color: var(--color-accent-primary);
+    border: 1px solid var(--color-accent-primary);
+  }
+
+  .apple-badge {
+    background-color: var(--color-bg-surface-container);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+  }
+
+  .framework-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-1) 0;
+  }
+
+  .framework-desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .demo-sublabel {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  /* M3 Elevation Matrix */
+  .m3-elevation-card {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-surface);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-primary);
+  }
+
+  .m3-elevation-card--1 {
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border);
+  }
+
+  .m3-elevation-card--2 {
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border-hover);
+  }
+
+  .m3-elevation-card--3 {
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-accent-primary);
+  }
+
+  /* Apple HIG Segmented Control */
+  .segmented-control {
+    display: inline-flex;
+    background-color: var(--color-bg-sunken);
+    padding: 3px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    gap: 2px;
+  }
+
+  .segmented-btn {
+    background: transparent;
+    border: none;
+    padding: var(--space-1-5) var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    border-radius: calc(var(--radius-md) - 2px);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .segmented-btn:hover {
+    color: var(--color-text-primary);
+  }
+
+  .segmented-btn--active {
+    background-color: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .prose-wrapper {
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+  }
+</style>
