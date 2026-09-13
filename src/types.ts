@@ -136,3 +136,11 @@ export interface ProseProps {
   as?: string;
   class?: string;
 }
+
+export interface MermaidProps {
+  code: string;
+  title?: string;
+  subtitle?: string;
+  class?: string;
+}
+

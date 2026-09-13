@@ -8,8 +8,10 @@ import Callout from '../components/Callout.astro';
 import Tag from '../components/Tag.astro';
 import Badge from '../components/Badge.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import Mermaid from '../components/Mermaid.astro';
 
 const breadcrumbsData = [
+
   { label: 'Site-Kit', href: '/' },
   { label: 'Aesthetic Benchmark Testbed' },
 ];
@@ -228,8 +230,555 @@ class TelemetryGuardrail:
         </div>
       </div>
     </section>
+
+    <!-- Interactive Diagram & Mindmap Showcase -->
+    <section class="stack-lg">
+      <div class="framework-header">
+        <Badge pill={true} iosColor="purple">INTERACTIVE TOPOLOGY &amp; MINDMAP</Badge>
+        <h2 class="framework-title">Interactive Pan, Zoom &amp; Fullscreen Lightbox</h2>
+        <p class="framework-desc">
+          High-performance vector architecture viewer with draggable canvas, mouse wheel / pinch zoom, 
+          100% reset, copy source code, and full-resolution lightbox expansion.
+        </p>
+      </div>
+
+      <Mermaid
+        title="CISSP CURRICULUM ARCHITECTURE"
+        subtitle="Interactive Domain Mindmap & Core Knowledge Branches"
+        code={`mindmap
+  root((CISSP Domains))
+    Domain 1: Security & Risk
+      Security Governance
+      Due Care & Diligence
+      Ethics & Policies hierarchies
+      Risk Assessment
+    Domain 2: Asset Security
+      Classification & Ownership
+      Privacy & Retention
+      Data Lifecycle Controls
+    Domain 3: Security Architecture
+      TCB & Cryptography
+      Zero Trust Models
+      Cloud & Evaluation Criteria
+    Domain 4: Network Security
+      OSI & TCP/IP Stack
+      BGP & Routing Security
+      Microsegmentation & WAF
+    Domain 5: Identity & Access
+      Authentication & MFA
+      SSO & SAML/OIDC Federation
+      RBAC & ABAC Access Controls`}
+      />
+    </section>
   </div>
 </Layout>
+
+<script is:inline type="module">
+  async function loadMermaid() {
+    try {
+      const mod = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+      return mod.default;
+    } catch (e) {
+      console.error('Failed to load Mermaid module:', e);
+      return null;
+    }
+  }
+
+  function getMermaidConfig(isDark) {
+    return {
+      startOnLoad: false,
+      securityLevel: 'loose',
+      theme: 'base',
+      fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Geist", "Inter", sans-serif',
+      themeVariables: isDark
+        ? {
+            darkMode: true,
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Geist", "Inter", sans-serif',
+            primaryColor: '#201836',
+            primaryTextColor: '#ede9fe',
+            primaryBorderColor: '#a78bfa',
+            lineColor: '#a78bfa',
+            secondaryColor: '#161026',
+            secondaryTextColor: '#ddd6fe',
+            secondaryBorderColor: '#8b5cf6',
+            tertiaryColor: '#100c1c',
+            tertiaryTextColor: '#c4b5fd',
+            tertiaryBorderColor: '#7c3aed',
+            mainBkg: '#141021',
+            nodeBorder: '#a78bfa',
+            nodeTextColor: '#f3effc',
+            clusterBkg: '#191428',
+            clusterBorder: '#6d28d9',
+            titleColor: '#f3effc',
+            edgeLabelBackground: '#1e1830',
+          }
+        : {
+            darkMode: false,
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Geist", "Inter", sans-serif',
+            primaryColor: '#f3e8ff',
+            primaryTextColor: '#120e24',
+            primaryBorderColor: '#7c3aed',
+            lineColor: '#7c3aed',
+            secondaryColor: '#f8f6fc',
+            secondaryTextColor: '#3b0764',
+            secondaryBorderColor: '#9333ea',
+            tertiaryColor: '#ffffff',
+            tertiaryTextColor: '#4a445e',
+            tertiaryBorderColor: '#c084fc',
+            mainBkg: '#ffffff',
+            nodeBorder: '#7c3aed',
+            nodeTextColor: '#120e24',
+            clusterBkg: '#f8f6fc',
+            clusterBorder: '#e6e0f2',
+            titleColor: '#120e24',
+            edgeLabelBackground: '#ffffff',
+          },
+      mindmap: {
+        padding: 16,
+        useMaxWidth: true,
+      },
+    };
+  }
+
+  let lightboxModal = null;
+  let activeModalCleanup = null;
+
+  function getOrCreateLightboxModal() {
+    if (lightboxModal && document.body.contains(lightboxModal)) {
+      return lightboxModal;
+    }
+    const modal = document.createElement('div');
+    modal.id = 'mermaid-lightbox-modal';
+    modal.className = 'mermaid-lightbox-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen Diagram Viewer');
+    modal.innerHTML = `
+      <div class="mermaid-modal-header">
+        <div class="mermaid-modal-title-cluster">
+          <span class="mermaid-status-dot" aria-hidden="true"></span>
+          <span class="mermaid-modal-title">INTERACTIVE DIAGRAM</span>
+          <span class="mermaid-modal-subtitle">Fullscreen Visual Architecture</span>
+        </div>
+        <div class="mermaid-modal-actions">
+          <div class="mermaid-toolbar" role="toolbar" aria-label="Modal Diagram Controls">
+            <button type="button" class="mermaid-tool-btn modal-zoom-out" title="Zoom Out (-)" aria-label="Zoom out">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+            </button>
+            <button type="button" class="mermaid-tool-btn mermaid-zoom-badge modal-zoom-badge" title="Reset Zoom (100%)" aria-label="Reset zoom level">
+              <span class="zoom-value">100%</span>
+            </button>
+            <button type="button" class="mermaid-tool-btn modal-zoom-in" title="Zoom In (+)" aria-label="Zoom in">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="11" y1="8" x2="11" y2="14"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+            </button>
+            <button type="button" class="mermaid-tool-btn modal-reset" title="Fit / Center Diagram (0)" aria-label="Reset position and zoom">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                <path d="M3 3v5h5"></path>
+              </svg>
+            </button>
+            <button type="button" class="mermaid-tool-btn modal-copy" title="Copy Mermaid Source Code" aria-label="Copy source code">
+              <svg class="icon-copy-default" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+              </svg>
+              <svg class="icon-copy-success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none; color:var(--color-success-text);">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </button>
+          </div>
+          <button type="button" class="mermaid-modal-close-btn" title="Close Fullscreen (Esc)" aria-label="Close fullscreen modal">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="mermaid-modal-body" tabindex="0" role="region" aria-label="Fullscreen Diagram Canvas">
+        <div class="mermaid-stage"></div>
+        <div class="mermaid-modal-footer-hint" aria-hidden="true">
+          <span>Drag to pan • Scroll to zoom • Double-click to zoom • Press Esc to close</span>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    lightboxModal = modal;
+    return modal;
+  }
+
+  function openLightbox(title, subtitle, svgMarkup, code) {
+    const modal = getOrCreateLightboxModal();
+    if (activeModalCleanup) activeModalCleanup();
+
+    const titleEl = modal.querySelector('.mermaid-modal-title');
+    const subtitleEl = modal.querySelector('.mermaid-modal-subtitle');
+    const bodyEl = modal.querySelector('.mermaid-modal-body');
+    const stageEl = modal.querySelector('.mermaid-modal-body .mermaid-stage');
+    const closeBtn = modal.querySelector('.mermaid-modal-close-btn');
+    const zoomInBtn = modal.querySelector('.modal-zoom-in');
+    const zoomOutBtn = modal.querySelector('.modal-zoom-out');
+    const resetBtn = modal.querySelector('.modal-reset');
+    const zoomBadge = modal.querySelector('.modal-zoom-badge');
+    const zoomValue = modal.querySelector('.modal-zoom-badge .zoom-value');
+    const copyBtn = modal.querySelector('.modal-copy');
+
+    if (titleEl) titleEl.textContent = title || 'INTERACTIVE DIAGRAM';
+    if (subtitleEl) subtitleEl.textContent = subtitle || 'Fullscreen Visual Architecture';
+
+    stageEl.innerHTML = svgMarkup;
+
+    let modalState = { panX: 0, panY: 0, scale: 1.0 };
+    const updateModalTransform = () => {
+      stageEl.style.transform = `translate(${modalState.panX}px, ${modalState.panY}px) scale(${modalState.scale})`;
+      if (zoomValue) zoomValue.textContent = `${Math.round(modalState.scale * 100)}%`;
+    };
+    updateModalTransform();
+
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+
+    const onPointerDown = (e) => {
+      if (e.button !== 0) return;
+      isDragging = true;
+      startX = e.clientX - modalState.panX;
+      startY = e.clientY - modalState.panY;
+      bodyEl.setPointerCapture(e.pointerId);
+      bodyEl.classList.add('is-dragging');
+      stageEl.classList.remove('is-resetting');
+    };
+
+    const onPointerMove = (e) => {
+      if (!isDragging) return;
+      modalState.panX = e.clientX - startX;
+      modalState.panY = e.clientY - startY;
+      updateModalTransform();
+    };
+
+    const onPointerUp = (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      try { bodyEl.releasePointerCapture(e.pointerId); } catch (_) {}
+      bodyEl.classList.remove('is-dragging');
+    };
+
+    const onWheel = (e) => {
+      e.preventDefault();
+      const rect = bodyEl.getBoundingClientRect();
+      const cursorX = e.clientX - rect.left - rect.width / 2;
+      const cursorY = e.clientY - rect.top - rect.height / 2;
+
+      const delta = -Math.sign(e.deltaY) * 0.15;
+      const oldScale = modalState.scale;
+      const newScale = Math.min(Math.max(modalState.scale + delta, 0.2), 6.0);
+
+      if (newScale !== oldScale) {
+        const ratio = newScale / oldScale;
+        modalState.panX = cursorX - (cursorX - modalState.panX) * ratio;
+        modalState.panY = cursorY - (cursorY - modalState.panY) * ratio;
+        modalState.scale = newScale;
+        updateModalTransform();
+      }
+    };
+
+    const onDblClick = (e) => {
+      stageEl.classList.add('is-resetting');
+      if (Math.abs(modalState.scale - 1.0) < 0.1) {
+        modalState.scale = 2.0;
+        const rect = bodyEl.getBoundingClientRect();
+        modalState.panX = -(e.clientX - rect.left - rect.width / 2);
+        modalState.panY = -(e.clientY - rect.top - rect.height / 2);
+      } else {
+        modalState.scale = 1.0;
+        modalState.panX = 0;
+        modalState.panY = 0;
+      }
+      updateModalTransform();
+    };
+
+    const onZoomIn = () => {
+      stageEl.classList.remove('is-resetting');
+      modalState.scale = Math.min(modalState.scale + 0.25, 6.0);
+      updateModalTransform();
+    };
+
+    const onZoomOut = () => {
+      stageEl.classList.remove('is-resetting');
+      modalState.scale = Math.max(modalState.scale - 0.25, 0.2);
+      updateModalTransform();
+    };
+
+    const onReset = () => {
+      stageEl.classList.add('is-resetting');
+      modalState.scale = 1.0;
+      modalState.panX = 0;
+      modalState.panY = 0;
+      updateModalTransform();
+    };
+
+    const onCopy = async () => {
+      if (!code) return;
+      try {
+        await navigator.clipboard.writeText(code);
+        const iconDef = copyBtn?.querySelector('.icon-copy-default');
+        const iconSucc = copyBtn?.querySelector('.icon-copy-success');
+        if (iconDef) iconDef.style.display = 'none';
+        if (iconSucc) iconSucc.style.display = 'inline-block';
+        setTimeout(() => {
+          if (iconDef) iconDef.style.display = 'inline-block';
+          if (iconSucc) iconSucc.style.display = 'none';
+        }, 2000);
+      } catch (err) {
+        console.warn('Failed to copy code:', err);
+      }
+    };
+
+    const closeModal = () => {
+      modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      if (activeModalCleanup) {
+        activeModalCleanup();
+        activeModalCleanup = null;
+      }
+    };
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      } else if (e.key === '+' || e.key === '=') {
+        onZoomIn();
+      } else if (e.key === '-' || e.key === '_') {
+        onZoomOut();
+      } else if (e.key === '0') {
+        onReset();
+      } else if (e.key === 'ArrowUp') {
+        modalState.panY += 40;
+        updateModalTransform();
+      } else if (e.key === 'ArrowDown') {
+        modalState.panY -= 40;
+        updateModalTransform();
+      } else if (e.key === 'ArrowLeft') {
+        modalState.panX += 40;
+        updateModalTransform();
+      } else if (e.key === 'ArrowRight') {
+        modalState.panX -= 40;
+        updateModalTransform();
+      }
+    };
+
+    bodyEl.addEventListener('pointerdown', onPointerDown);
+    bodyEl.addEventListener('pointermove', onPointerMove);
+    bodyEl.addEventListener('pointerup', onPointerUp);
+    bodyEl.addEventListener('pointercancel', onPointerUp);
+    bodyEl.addEventListener('wheel', onWheel, { passive: false });
+    bodyEl.addEventListener('dblclick', onDblClick);
+    zoomInBtn?.addEventListener('click', onZoomIn);
+    zoomOutBtn?.addEventListener('click', onZoomOut);
+    resetBtn?.addEventListener('click', onReset);
+    zoomBadge?.addEventListener('click', onReset);
+    copyBtn?.addEventListener('click', onCopy);
+    closeBtn?.addEventListener('click', closeModal);
+    window.addEventListener('keydown', onKeyDown);
+
+    activeModalCleanup = () => {
+      bodyEl.removeEventListener('pointerdown', onPointerDown);
+      bodyEl.removeEventListener('pointermove', onPointerMove);
+      bodyEl.removeEventListener('pointerup', onPointerUp);
+      bodyEl.removeEventListener('pointercancel', onPointerUp);
+      bodyEl.removeEventListener('wheel', onWheel);
+      bodyEl.removeEventListener('dblclick', onDblClick);
+      zoomInBtn?.removeEventListener('click', onZoomIn);
+      zoomOutBtn?.removeEventListener('click', onZoomOut);
+      resetBtn?.removeEventListener('click', onReset);
+      zoomBadge?.removeEventListener('click', onReset);
+      copyBtn?.removeEventListener('click', onCopy);
+      closeBtn?.removeEventListener('click', closeModal);
+      window.removeEventListener('keydown', onKeyDown);
+    };
+
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    closeBtn?.focus();
+  }
+
+  function setupDiagramCard(targetWrapper, svgMarkup, code) {
+    const title = targetWrapper.dataset.mermaidTitle || 'INTERACTIVE DIAGRAM';
+    const subtitle = targetWrapper.dataset.mermaidSubtitle || 'Visual Architecture';
+
+    const stage = targetWrapper.querySelector('.mermaid-stage');
+    if (stage) stage.innerHTML = svgMarkup;
+
+    const canvas = targetWrapper.querySelector('.mermaid-card-canvas');
+    const zoomInBtn = targetWrapper.querySelector('.mermaid-btn-zoom-in');
+    const zoomOutBtn = targetWrapper.querySelector('.mermaid-btn-zoom-out');
+    const resetBtn = targetWrapper.querySelector('.mermaid-btn-reset');
+    const zoomBadge = targetWrapper.querySelector('.mermaid-zoom-badge');
+    const zoomVal = targetWrapper.querySelector('.mermaid-zoom-badge .zoom-value');
+    const copyBtn = targetWrapper.querySelector('.mermaid-btn-copy');
+    const fsBtn = targetWrapper.querySelector('.mermaid-btn-fullscreen');
+
+    if (!canvas || !stage) return;
+
+    let state = { panX: 0, panY: 0, scale: 1.0 };
+    const updateTransform = () => {
+      stage.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.scale})`;
+      if (zoomVal) zoomVal.textContent = `${Math.round(state.scale * 100)}%`;
+    };
+
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+
+    canvas.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0) return;
+      isDragging = true;
+      startX = e.clientX - state.panX;
+      startY = e.clientY - state.panY;
+      canvas.setPointerCapture(e.pointerId);
+      canvas.classList.add('is-dragging');
+      stage.classList.remove('is-resetting');
+    });
+
+    canvas.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      state.panX = e.clientX - startX;
+      state.panY = e.clientY - startY;
+      updateTransform();
+    });
+
+    const stopDragging = (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+      canvas.classList.remove('is-dragging');
+    };
+    canvas.addEventListener('pointerup', stopDragging);
+    canvas.addEventListener('pointercancel', stopDragging);
+
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const cursorX = e.clientX - rect.left - rect.width / 2;
+      const cursorY = e.clientY - rect.top - rect.height / 2;
+
+      const delta = -Math.sign(e.deltaY) * 0.15;
+      const oldScale = state.scale;
+      const newScale = Math.min(Math.max(state.scale + delta, 0.3), 5.0);
+
+      if (newScale !== oldScale) {
+        const ratio = newScale / oldScale;
+        state.panX = cursorX - (cursorX - state.panX) * ratio;
+        state.panY = cursorY - (cursorY - state.panY) * ratio;
+        state.scale = newScale;
+        stage.classList.remove('is-resetting');
+        updateTransform();
+      }
+    }, { passive: false });
+
+    canvas.addEventListener('dblclick', (e) => {
+      stage.classList.add('is-resetting');
+      if (Math.abs(state.scale - 1.0) < 0.1) {
+        state.scale = 2.0;
+        const rect = canvas.getBoundingClientRect();
+        state.panX = -(e.clientX - rect.left - rect.width / 2);
+        state.panY = -(e.clientY - rect.top - rect.height / 2);
+      } else {
+        state.scale = 1.0;
+        state.panX = 0;
+        state.panY = 0;
+      }
+      updateTransform();
+    });
+
+    zoomInBtn?.addEventListener('click', () => {
+      stage.classList.remove('is-resetting');
+      state.scale = Math.min(state.scale + 0.25, 5.0);
+      updateTransform();
+    });
+
+    zoomOutBtn?.addEventListener('click', () => {
+      stage.classList.remove('is-resetting');
+      state.scale = Math.max(state.scale - 0.25, 0.3);
+      updateTransform();
+    });
+
+    const resetAction = () => {
+      stage.classList.add('is-resetting');
+      state.scale = 1.0;
+      state.panX = 0;
+      state.panY = 0;
+      updateTransform();
+    };
+
+    resetBtn?.addEventListener('click', resetAction);
+    zoomBadge?.addEventListener('click', resetAction);
+
+    copyBtn?.addEventListener('click', async () => {
+      if (!code) return;
+      try {
+        await navigator.clipboard.writeText(code);
+        const iconDef = copyBtn.querySelector('.icon-copy-default');
+        const iconSucc = copyBtn.querySelector('.icon-copy-success');
+        if (iconDef) iconDef.style.display = 'none';
+        if (iconSucc) iconSucc.style.display = 'inline-block';
+        setTimeout(() => {
+          if (iconDef) iconDef.style.display = 'inline-block';
+          if (iconSucc) iconSucc.style.display = 'none';
+        }, 2000);
+      } catch (err) {
+        console.warn('Failed to copy code:', err);
+      }
+    });
+
+    fsBtn?.addEventListener('click', () => {
+      openLightbox(title, subtitle, svgMarkup, code);
+    });
+  }
+
+  async function renderMermaidDiagrams() {
+    const mermaid = await loadMermaid();
+    if (!mermaid) return;
+
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    mermaid.initialize(getMermaidConfig(isDark));
+
+    const cards = document.querySelectorAll('.mermaid-diagram-card');
+    let idx = 0;
+    for (const card of cards) {
+      try {
+        const code = card.dataset.mermaidSource?.trim() || '';
+        if (!code) continue;
+
+        const uniqueId = `mermaid-demo-${Date.now()}-${idx++}`;
+        const { svg } = await mermaid.render(uniqueId, code);
+        setupDiagramCard(card, svg, code);
+      } catch (err) {
+        console.warn('Failed to render Mermaid diagram in demo:', err);
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderMermaidDiagrams);
+  } else {
+    renderMermaidDiagrams();
+  }
+
+  window.addEventListener('theme-changed', renderMermaidDiagrams);
+  const observer = new MutationObserver(renderMermaidDiagrams);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+</script>
+
 
 <style>
   .page-wrapper {

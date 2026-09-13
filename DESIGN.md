@@ -440,6 +440,40 @@ import { Prose } from '@cheahhaoyi/site-kit';
 
 ---
 
+### 5.10 `<Mermaid />`
+Interactive vector architecture and mindmap diagram viewer supporting smooth pan & drag physics, mouse wheel / pinch zooming, 100% zoom reset, copy source code, and full-resolution lightbox modal expansion.
+
+```astro
+---
+import { Mermaid } from '@cheahhaoyi/site-kit';
+
+const mindmapCode = `mindmap
+  root((BGP Security))
+    Origin Validation
+      RPKI ROA
+      Cryptographic Route Validation
+    Path Validation
+      BGPsec
+      AS_PATH Signatures`;
+---
+
+<Mermaid
+  code={mindmapCode}
+  title="BGP SECURITY ARCHITECTURE"
+  subtitle="Interactive Mindmap & Validation Mechanisms"
+/>
+```
+
+#### Props (`MermaidProps`)
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `code` | `string` | **Required** | Raw Mermaid diagram markup |
+| `title` | `string` | `'INTERACTIVE DIAGRAM'` | Header title |
+| `subtitle` | `string` | `'Visual Architecture'` | Header subtitle / domain meta |
+
+---
+
+
 ## 6. Page Patterns for Portfolio Sites
 
 ### 6.1 Certification Study Note Page Pattern

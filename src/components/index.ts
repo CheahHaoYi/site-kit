@@ -10,3 +10,5 @@ export { default as Callout } from './Callout.astro';
 export { default as Tag } from './Tag.astro';
 export { default as Badge } from './Badge.astro';
 export { default as ThemeToggle } from './ThemeToggle.astro';
+export { default as Mermaid } from './Mermaid.astro';
+
