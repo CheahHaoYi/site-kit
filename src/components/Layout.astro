@@ -58,7 +58,12 @@ const ogImage = image ? (image.startsWith('http') ? image : new URL(image, siteO
       rel="stylesheet"
     />
 
-    <!-- Zero-Flash Theme Initialization Script (Light mode default with dark mode alternative) -->
+    <!-- Native Color Scheme & Theme Color for Browser/OS Integration -->
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfaff" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0914" />
+
+    <!-- Zero-Flash Theme Initialization Script (Respects OS setting, with manual toggle override) -->
     <script is:inline>
       (function () {
         try {
@@ -67,11 +72,10 @@ const ogImage = image ? (image.startsWith('http') ? image : new URL(image, siteO
           if (saved === 'dark' || saved === 'light') {
             document.documentElement.setAttribute('data-theme', saved);
           } else {
-            // Default to light mode explicitly as the primary design baseline
-            document.documentElement.setAttribute('data-theme', 'light');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
           }
         } catch (e) {
-          // Fallback if localStorage is disabled
           document.documentElement.setAttribute('data-theme', 'light');
         }
       })();

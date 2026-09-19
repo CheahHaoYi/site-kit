@@ -21,6 +21,7 @@
    Light Mode (Default Baseline)
    ========================================================================== */
 :root {
+  color-scheme: light;
   --theme-name: 'light';
 
   /* Dynamic Key Color & Tonal Palette (Key: Deep Purple #7c3aed) */
@@ -208,6 +209,7 @@
    Dark Mode (Alternative Theme)
    ========================================================================== */
 [data-theme="dark"] {
+  color-scheme: dark;
   --theme-name: 'dark';
 
   /* Primary Accent & Tonal Layers (Derived from Key Purple) */

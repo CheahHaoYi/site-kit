@@ -10,3 +10,137 @@ const { as: Tag = 'article', class: className = '' } = Astro.props;
 <Tag class:list={['prose', className]}>
   <slot />
 </Tag>
+
+<script is:inline>
+  (function () {
+    const enhanceCodeBlocks = () => {
+      const proseContainers = document.querySelectorAll('.prose');
+
+      proseContainers.forEach((prose) => {
+        const preElements = prose.querySelectorAll('pre.astro-code');
+
+        preElements.forEach((pre) => {
+          // Skip if already wrapped or marked
+          if (pre.dataset.enhanced === 'true' || pre.closest('.code-block-wrapper')) {
+            return;
+          }
+
+          // Skip mermaid diagrams (handled by Mermaid renderer)
+          const langAttr = pre.getAttribute('data-language') || '';
+          const codeEl = pre.querySelector('code');
+          const codeClass = codeEl ? codeEl.className : '';
+          if (
+            langAttr.toLowerCase() === 'mermaid' ||
+            codeClass.includes('language-mermaid') ||
+            pre.classList.contains('mermaid')
+          ) {
+            return;
+          }
+
+          pre.dataset.enhanced = 'true';
+
+          // Determine language label
+          let lang = langAttr;
+          if (!lang) {
+            const match = codeClass.match(/language-(\w+)/);
+            if (match) lang = match[1];
+          }
+          const displayLabel = lang ? lang.toUpperCase() : 'CODE';
+
+          // Extract plain code text for copying
+          const codeText = pre.textContent ? pre.textContent.trim() : '';
+
+          // Create wrapper
+          const wrapper = document.createElement('div');
+          wrapper.className = 'code-block-wrapper';
+
+          // Create header
+          const header = document.createElement('div');
+          header.className = 'code-block-header';
+          header.innerHTML = `
+            <div class="code-block-header__left">
+              <span class="code-block-dots" aria-hidden="true">
+                <span class="dot dot--red"></span>
+                <span class="dot dot--amber"></span>
+                <span class="dot dot--green"></span>
+              </span>
+              <span class="code-block-label">${displayLabel}</span>
+            </div>
+            <button
+              type="button"
+              class="code-copy-button"
+              aria-label="Copy code to clipboard"
+              title="Copy code"
+            >
+              <svg
+                class="copy-icon copy-icon--default"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+              </svg>
+              <svg
+                class="copy-icon copy-icon--success"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span class="copy-text">Copy</span>
+            </button>
+          `;
+
+          // Insert wrapper in place of pre
+          if (pre.parentNode) {
+            pre.parentNode.insertBefore(wrapper, pre);
+            wrapper.appendChild(header);
+            wrapper.appendChild(pre);
+          }
+
+          // Attach copy button handler
+          const copyButton = header.querySelector('.code-copy-button');
+          if (copyButton) {
+            copyButton.addEventListener('click', async () => {
+              if (!codeText) return;
+              try {
+                await navigator.clipboard.writeText(codeText);
+                copyButton.classList.add('copied');
+                const copyTextEl = copyButton.querySelector('.copy-text');
+                if (copyTextEl) copyTextEl.textContent = 'Copied!';
+
+                setTimeout(() => {
+                  copyButton.classList.remove('copied');
+                  if (copyTextEl) copyTextEl.textContent = 'Copy';
+                }, 2000);
+              } catch (err) {
+                console.error('Failed to copy code block:', err);
+              }
+            });
+          }
+        });
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', enhanceCodeBlocks);
+    } else {
+      enhanceCodeBlocks();
+    }
+
+    document.addEventListener('astro:after-swap', enhanceCodeBlocks);
+  })();
+</script>
+
