@@ -131,6 +131,12 @@
   --text-5xl: 3rem;       /* 48px */
   --text-6xl: 3.75rem;    /* 60px */
 
+  /* Fluid Responsive Type Scale (Scales smoothly from 360px viewport to 1200px) */
+  --text-fluid-2xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);      /* 20px -> 24px */
+  --text-fluid-3xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);        /* 24px -> 30px */
+  --text-fluid-4xl: clamp(1.75rem, 1.45rem + 1.5vw, 2.25rem);     /* 28px -> 36px */
+  --text-fluid-5xl: clamp(2.125rem, 1.7rem + 2.1vw, 3rem);        /* 34px -> 48px */
+
   /* Line Heights */
   --leading-none: 1;
   --leading-tight: 1.15;
@@ -203,6 +209,10 @@
   --content-max-width: 1200px;
   --prose-max-width: 72ch;
   --nav-height: 4.25rem;
+
+  /* Mobile Safe Area Insets */
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-top: env(safe-area-inset-top, 0px);
 }
 
 /* ==========================================================================

@@ -33,14 +33,14 @@
 }
 
 .prose h1 {
-  font-size: var(--text-4xl);
+  font-size: var(--text-fluid-4xl, var(--text-4xl));
   margin-top: var(--space-10);
   margin-bottom: var(--space-4);
   letter-spacing: var(--tracking-tighter);
 }
 
 .prose h2 {
-  font-size: var(--text-2xl);
+  font-size: var(--text-fluid-3xl, var(--text-2xl));
   margin-top: var(--space-8);
   margin-bottom: var(--space-3);
   padding-bottom: var(--space-2);
@@ -48,7 +48,7 @@
 }
 
 .prose h3 {
-  font-size: var(--text-xl);
+  font-size: var(--text-fluid-2xl, var(--text-xl));
   margin-top: var(--space-6);
   margin-bottom: var(--space-2);
 }
@@ -330,9 +330,13 @@ html[data-theme="dark"] .code-block-content pre.astro-code span {
 }
 
 
-/* Tables */
+/* Tables - Responsive Horizontal Scrolling */
 .prose table {
+  display: block;
   width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-collapse: collapse;
   margin-top: var(--space-6);
   margin-bottom: var(--space-6);
@@ -340,7 +344,6 @@ html[data-theme="dark"] .code-block-content pre.astro-code span {
   text-align: left;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  overflow: hidden;
 }
 
 .prose th {

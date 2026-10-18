@@ -90,6 +90,14 @@ button, input, select, textarea {
   margin-right: auto;
   padding-left: var(--space-4);
   padding-right: var(--space-4);
+  min-width: 0;
+}
+
+@media (max-width: 360px) {
+  .container {
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
 }
 
 @media (min-width: 768px) {
@@ -141,17 +149,61 @@ button, input, select, textarea {
   gap: var(--space-4);
 }
 
-/* Responsive Grid */
+/* Responsive Grid (Auto-fill with defensive minmax(min(100%, ...), 1fr)) */
 .grid-responsive {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-6);
+  width: 100%;
+  min-width: 0;
 }
 
 @media (min-width: 640px) {
   .grid-responsive {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   }
+}
+
+.grid-responsive > * {
+  min-width: 0;
+}
+
+/* Domain / Curriculum Syllabus Grid */
+.grid-domains {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 680px) {
+  .grid-domains {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  }
+}
+
+.grid-domains > * {
+  min-width: 0;
+}
+
+/* Architecture & Philosophy Pillars Grid */
+.grid-pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .grid-pillars {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.grid-pillars > * {
+  min-width: 0;
 }
 
 /* Accessibility: Screen Reader Only */
